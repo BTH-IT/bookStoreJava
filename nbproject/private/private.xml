@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+        <file>
+            <url>src/test/test.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>15</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/DAL/PhieuNhapDAL.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>193</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/KhachHangGUI.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/BookGUI.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/test/KhachHangGUI_TEST.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/DTO/ConNguoi.java</file>
+        </group>
+    </open-files>
+</project-private>

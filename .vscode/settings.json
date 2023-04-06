@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "src/lib/itextpdf-5.5.12.jar",
+        "src/lib/mysql-connector-java-8.0.30.jar",
+        "src/lib/protobuf-java-3.19.4.jar",
+        "src/lib/POI/commons-codec-1.12.jar",
+        "src/lib/POI/commons-collections4-4.3.jar",
+        "src/lib/POI/poi-4.1.0.jar"
+    ]
+}
