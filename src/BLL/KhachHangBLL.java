@@ -1,7 +1,6 @@
 package BLL;
 
 import java.util.ArrayList;
-
 import DAL.KhachHangDAL;
 import DTO.KhachHangDTO;
 

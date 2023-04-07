@@ -20,12 +20,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/test/NhanVienGUI_TEST.java</file>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/DAL/NhanVienDAL.java</file>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/KhachHangGUI.java</file>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/BookGUI.java</file>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/BLL/NhanVienBLL.java</file>
-            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/NhanVienGUI.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/NhaXuatBanGUI.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/DTO/NhaXuatBanDTO.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/test/NhaXuatBanGUI_TEST.java</file>
+            <file>file:/C:/Users/Admin/Downloads/QuanLyCuaHangSach/src/GUI/TacGiaGUI.java</file>
         </group>
     </open-files>
 </project-private>
