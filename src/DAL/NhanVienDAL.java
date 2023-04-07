@@ -25,7 +25,7 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
             try {
                 String sql = "INSERT into nhanvien "
                         + "(maNhanVien ,ten, gioiTinh, namSinh, soDienThoai, mucLuong, soNgayDaNghi, vaiTro) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
                 // Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);

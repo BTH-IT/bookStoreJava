@@ -30,14 +30,13 @@ public class KhachHangGUI extends javax.swing.JFrame {
     /**
      * Creates new form KhachHangGUI
      */
-    private KhachHangDTO kh;
+    
     private KhachHangBLL khachHangBLL = new KhachHangBLL();
     
     private JTextField ten = new JTextField();
     private JComboBox gioiTinh = new JComboBox<String>(new String[] {"Nam","Nữ"});
     private JTextField sdt = new JTextField();
     private JTextField namSinh = new JTextField();
-    
     private JPanel popUpUpdateKH = getPopUpUpdateKH();
 
       
@@ -724,6 +723,24 @@ public class KhachHangGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_conditionActionPerformed
 
+    private void inputSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputSearchFocusLost
+        // TODO add your handling code here:
+        inputSearch.setText("Tìm kiếm ...");
+        inputSearch.setForeground(new Color(102, 102, 102));
+    }//GEN-LAST:event_inputSearchFocusLost
+
+    private void tenKHInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenKHInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tenKHInputActionPerformed
+
+    private void sdtInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sdtInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sdtInputActionPerformed
+
+    private void namSinhInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namSinhInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_namSinhInputActionPerformed
+
     private void inputSDTActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_inputSDTActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_inputSDTActionPerformed
@@ -786,10 +803,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
         inputSearch.setForeground(new Color(51, 51, 51));
     }                                         
 
-    private void inputSearchFocusLost(java.awt.event.FocusEvent evt) { 
-        inputSearch.setText("Tìm kiếm ...");
-        inputSearch.setForeground(new Color(102, 102, 102));
-    }              
+                
     
     private void addBtnMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_addBtnMouseClicked
         if (validateValueAddKH() == false)
@@ -804,7 +818,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
 
         if (khachHangBLL.insert(kh)) {
             tenKHInput.setText("");
-            genderInput.setSelectedItem("");
+            genderInput.setSelectedIndex(0);
             sdtInput.setText("");
             namSinhInput.setText("");
             
@@ -819,7 +833,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_resetBtnMouseClicked
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
             tenKHInput.setText("");
-            genderInput.setSelectedItem("Nam");
+            genderInput.setSelectedIndex(0);
             sdtInput.setText("");
             namSinhInput.setText("");
         }
