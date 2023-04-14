@@ -37,8 +37,8 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaPhieuNhap());
-                stmt.setString(2, t.getMaSach());
+                stmt.setInt(1, t.getMaPhieuNhap());
+                stmt.setInt(2, t.getMaSach());
                 stmt.setInt(3, t.getSoLuong());
                 stmt.setLong(4, t.getDonGia());
                 
@@ -53,7 +53,8 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         return result;
     }
 
-    public boolean update(ChiTietPhieuNhapDTO t, String maPhieuNhap, String maSach) {
+    @Override
+    public boolean update(ChiTietPhieuNhapDTO t) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
@@ -61,17 +62,15 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         if (connect != null) {
             try {
                 String sql = "UPDATE chitietphieunhap SET "
-                        + "maPhieuNhap=?, maSach=?, soLuong=?, donGia=? "
+                        + "soLuong=?, donGia=? "
                         + "WHERE maPhieuNhap=? AND maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaPhieuNhap());
-                stmt.setString(2, t.getMaSach());
-                stmt.setInt(3, t.getSoLuong());
-                stmt.setLong(4, t.getDonGia());
-                stmt.setString(5, maPhieuNhap);
-                stmt.setString(6, maSach);
+                stmt.setInt(1, t.getSoLuong());
+                stmt.setLong(2, t.getDonGia());
+                stmt.setInt(3, t.getMaPhieuNhap());
+                stmt.setInt(4, t.getMaSach());
                 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -84,19 +83,19 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         return result;
     }
 
-    public boolean delete(String maPhieuNhap, String maSach) {
+    public boolean delete(int maPhieuNhap, int maSach) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "DELETE FROM chitietphieunhap "
+                String sql = "UPDATE chitietphieunhap SET hienThi=0 "
                         + "WHERE maPhieuNhap=? AND maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, maPhieuNhap);
-                stmt.setString(2, maSach);
+                stmt.setInt(1, maPhieuNhap);
+                stmt.setInt(2, maSach);
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -117,7 +116,7 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM chitietphieunhap";
+                String sql = "SELECT * FROM chitietphieunhap WHERE hienThi=1";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -126,8 +125,8 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuNhap = rs.getString("maPhieuNhap");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuNhap = rs.getInt("maPhieuNhap");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -145,13 +144,13 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         return result;
     }
 
-    public ArrayList<ChiTietPhieuNhapDTO> getByPNId(String id) {
+    public ArrayList<ChiTietPhieuNhapDTO> getByPNId(int id) {
         ArrayList<ChiTietPhieuNhapDTO> result = new ArrayList<>();
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "SELECT * FROM chitietphieunhap WHERE maPhieuNhap='" + id + "'";
+                String sql = "SELECT * FROM chitietphieunhap WHERE hienThi=1 AND maPhieuNhap=" + id;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -160,8 +159,8 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuNhap = rs.getString("maPhieuNhap");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuNhap = rs.getInt("maPhieuNhap");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -187,7 +186,7 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM chitietphieunhap WHERE " + condition;
+                String sql = "SELECT * FROM chitietphieunhap WHERE hienThi=1 AND " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -196,8 +195,8 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuNhap = rs.getString("maPhieuNhap");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuNhap = rs.getInt("maPhieuNhap");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -216,17 +215,22 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
     }
 
     @Override
-    public boolean update(ChiTietPhieuNhapDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public boolean delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChiTietPhieuNhapDTO getById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ChiTietPhieuNhapDTO getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

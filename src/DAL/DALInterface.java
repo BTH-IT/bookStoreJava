@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Hung
+ * @param <T>
  */
 public interface DALInterface<T> {
     public boolean insert(T t);
@@ -17,9 +18,13 @@ public interface DALInterface<T> {
     
     public boolean delete(String id);
     
+    public boolean delete(int id);
+    
     public ArrayList<T> getAll();
     
     public T getById(String id);
+    
+    public T getById(int id);
     
     public ArrayList<T> getByCondition(String condition);
 }

@@ -9,9 +9,9 @@ package DTO;
  * @author Hung
  */
 public class ChiTietPhieuNhapDTO extends ChiTietPhieu {
-    private String maPhieuNhap;
+    private int maPhieuNhap;
 
-    public ChiTietPhieuNhapDTO(String maPhieuNhap, String maSach, int soLuong, long donGia) {
+    public ChiTietPhieuNhapDTO(int maPhieuNhap, int maSach, int soLuong, long donGia) {
         super(maSach, soLuong, donGia);
         this.maPhieuNhap = maPhieuNhap;
     }
@@ -19,11 +19,7 @@ public class ChiTietPhieuNhapDTO extends ChiTietPhieu {
     public ChiTietPhieuNhapDTO() {
     }
 
-    public String getMaPhieuNhap() {
+    public int getMaPhieuNhap() {
         return maPhieuNhap;
-    }
-
-    public void setMaPhieuNhap(String maPhieuNhap) {
-        this.maPhieuNhap = maPhieuNhap;
     }
 }

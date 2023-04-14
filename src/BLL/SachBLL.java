@@ -23,7 +23,7 @@ public class SachBLL {
         return sachDAL.getAll();
     }
     
-    public SachDTO getById(String id){ 
+    public SachDTO getById(int id){ 
         return sachDAL.getById(id);
     }
     
@@ -31,15 +31,15 @@ public class SachBLL {
         return sachDAL.getByCondition(condition);
     }
     
-    public boolean update(SachDTO s, String maSach) {
-        return sachDAL.update(s, maSach);
+    public boolean update(SachDTO s) {
+        return sachDAL.update(s);
     }
     
-    public boolean insert(SachDTO s) {
-        return sachDAL.insert(s);
+    public int insert(SachDTO s) {
+        return sachDAL.insert(s.getTenSach(), s.getMaTheLoai(), s.getMaTacGia(), s.getMaNhaXuatBan(), s.getSoLuongConLai(), s.getGiaBan(), s.getGiaNhap(), s.getNamXuatBan());
     }
     
-    public boolean delete(String maSach) {
+    public boolean delete(int maSach) {
         return sachDAL.delete(maSach);
     }
 }

@@ -34,8 +34,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaPhieuBan());
-                stmt.setString(2, t.getMaSach());
+                stmt.setInt(1, t.getMaPhieuBan());
+                stmt.setInt(2, t.getMaSach());
                 stmt.setInt(3, t.getSoLuong());
                 stmt.setLong(4, t.getDonGia());
 
@@ -63,8 +63,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaPhieuBan());
-                stmt.setString(2, t.getMaSach());
+                stmt.setInt(1, t.getMaPhieuBan());
+                stmt.setInt(2, t.getMaSach());
                 stmt.setInt(3, t.getSoLuong());
                 stmt.setLong(4, t.getDonGia());
                 stmt.setString(5, maPhieuBan);
@@ -81,19 +81,19 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
         return result;
     }
 
-    public boolean delete(String mapPhieuBan, String maSach) {
+    public boolean delete(int mapPhieuBan, int maSach) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "DELETE FROM chitietphieuban "
+                String sql = "UPDATE chitietphieuban SET hienThi=0 "
                         + "WHERE maPhieuBan=? AND maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, mapPhieuBan);
-                stmt.setString(2, maSach);
+                stmt.setInt(1, mapPhieuBan);
+                stmt.setInt(2, maSach);
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -114,7 +114,7 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM chitietphieuban";
+                String sql = "SELECT * FROM chitietphieuban WHERE hienThi=1";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -123,8 +123,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -142,13 +142,13 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
         return result;
     }
 
-    public ArrayList<ChiTietPhieuBanDTO> getByPBId(String id) {
+    public ArrayList<ChiTietPhieuBanDTO> getByPBId(int id) {
         ArrayList<ChiTietPhieuBanDTO> result = new ArrayList<>();
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "SELECT * FROM chitietphieuban WHERE maPhieuBan='" + id + "'";
+                String sql = "SELECT * FROM chitietphieuban WHERE hienThi=1 AND maPhieuBan=" + id;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -157,8 +157,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -184,7 +184,7 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM chitietphieuban WHERE " + condition;
+                String sql = "SELECT * FROM chitietphieuban WHERE hienThi=1 AND " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -193,8 +193,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maSach = rs.getString("maSach");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maSach = rs.getInt("maSach");
                     int soLuong = rs.getInt("soLuong");
                     long donGia = rs.getLong("donGia");
                     
@@ -224,6 +224,16 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
 
     @Override
     public boolean update(ChiTietPhieuBanDTO t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ChiTietPhieuBanDTO getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

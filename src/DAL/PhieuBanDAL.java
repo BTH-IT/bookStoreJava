@@ -21,25 +21,32 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
         return new PhieuBanDAL();
     }
 
-    @Override
-    public boolean insert(PhieuBanDTO t) {
+    public int insert(int maKhachHang, int maNhanVien, Date ngayLap, double tongTien, int maKhuyenMai) {
         boolean result = false;
+        int auto_id = -1;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
                 String sql = "INSERT into phieuban "
-                        + "(maPhieuBan, maKhachHang, maNhanVien, ngayLap) "
-                        + "VALUES (?, ?, ?, ?)";
+                        + "(maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai) "
+                        + "VALUES (?, ?, ?, ?, ?)";
 
                 //Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaPhieuBan());
-                stmt.setString(2, t.getMaKhachHang());
-                stmt.setString(3, t.getMaNhanVien());
-                stmt.setDate(4, t.getNgayLap());
+                PreparedStatement stmt = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+                stmt.setInt(1, maKhachHang);
+                stmt.setInt(2, maNhanVien);
+                stmt.setDate(3, ngayLap);
+                stmt.setDouble(4, tongTien);
+                stmt.setDouble(5, maKhuyenMai);
 
                 result = stmt.executeUpdate()>=1;
+                
+                if (result) {
+                    ResultSet rs = stmt.getGeneratedKeys();
+                    rs.next();
+                    auto_id = rs.getInt(1);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(PhieuBanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -47,7 +54,7 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
             }
         }
         
-        return result;
+        return auto_id;
     }
 
     @Override
@@ -64,10 +71,10 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getMaKhachHang());
-                stmt.setString(2, t.getMaNhanVien());
+                stmt.setInt(1, t.getMaKhachHang());
+                stmt.setInt(2, t.getMaNhanVien());
                 stmt.setDate(3, t.getNgayLap());
-                stmt.setString(4, t.getMaPhieuBan());
+                stmt.setInt(4, t.getMaPhieuBan());
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -81,18 +88,18 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(int id) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "DELETE FROM phieuban "
+                String sql = "UPDATE phieuban SET hienThi=0 "
                         + "WHERE maPhieuBan=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, id); 
+                stmt.setInt(1, id); 
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -113,7 +120,7 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM phieuban";
+                String sql = "SELECT * FROM phieuban WHERE hienThi=1";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -122,12 +129,14 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maKhachHang = rs.getString("maKhachHang");
-                    String maNhanVien = rs.getString("maNhanVien");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    int maNhanVien = rs.getInt("maNhanVien");
                     Date ngayLap = rs.getDate("ngayLap");
+                    double tongTien = rs.getDouble("tongTien");
+                    int maKhuyenMai = rs.getInt("maKhuyenMai");
                     
-                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap);
+                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai);
                  
                     result.add(pb);
                 }
@@ -142,13 +151,13 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
     }
 
     @Override
-    public PhieuBanDTO getById(String id) {
+    public PhieuBanDTO getById(int id) {
         PhieuBanDTO result = null;
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "SELECT * FROM phieuban WHERE maPhieuBan=\'" + id + "\'";
+                String sql = "SELECT * FROM phieuban WHERE hienThi=1 AND maPhieuBan=" + id;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -157,12 +166,14 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maKhachHang = rs.getString("maKhachHang");
-                    String maNhanVien = rs.getString("maNhanVien");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    int maNhanVien = rs.getInt("maNhanVien");
                     Date ngayLap = rs.getDate("ngayLap");
+                    double tongTien = rs.getDouble("tongTien");
+                    int maKhuyenMai = rs.getInt("maKhuyenMai");
                     
-                    result = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap);
+                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(PhieuBanDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -182,7 +193,7 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM phieuban WHERE " + condition;
+                String sql = "SELECT * FROM phieuban WHERE hienThi=1 AND " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -191,12 +202,14 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    String maPhieuBan = rs.getString("maPhieuBan");
-                    String maKhachHang = rs.getString("maKhachHang");
-                    String maNhanVien = rs.getString("maNhanVien");
+                    int maPhieuBan = rs.getInt("maPhieuBan");
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    int maNhanVien = rs.getInt("maNhanVien");
                     Date ngayLap = rs.getDate("ngayLap");
+                    double tongTien = rs.getDouble("tongTien");
+                    int maKhuyenMai = rs.getInt("maKhuyenMai");
                     
-                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap);
+                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai);
                  
                     result.add(pb);
                 }
@@ -208,5 +221,20 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
         }
         
         return result;
+    }
+
+    @Override
+    public boolean delete(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean insert(PhieuBanDTO t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public PhieuBanDTO getById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

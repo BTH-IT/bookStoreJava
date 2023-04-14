@@ -5,16 +5,19 @@ import java.sql.Date;
 
 public abstract class Phieu {
     private Date ngayLap;
-    private String maNhanVien;
+    private int maNhanVien;
+    private double tongTien;
 
-    public Phieu(String maNhanVien, Date ngayLap) {
+    public Phieu(int maNhanVien, Date ngayLap, double tongTien) {
         this.maNhanVien = maNhanVien;
         this.ngayLap = ngayLap;
+        this.tongTien = tongTien;
     }
 
     public Phieu() {
         this.ngayLap = null;
-        this.maNhanVien = null;
+        this.maNhanVien = 0;
+        this.tongTien = 0;
     }
 
     public Date getNgayLap() {
@@ -25,11 +28,21 @@ public abstract class Phieu {
         this.ngayLap = ngayLap;
     }
 
-    public String getMaNhanVien() {
+    public int getMaNhanVien() {
         return maNhanVien;
     }
 
-    public void setMaNhanVien(String maNhanVien) {
+    public void setMaNhanVien(int maNhanVien) {
         this.maNhanVien = maNhanVien;
     }
+
+    public double getTongTien() {
+        return tongTien;
+    }
+
+    public void setTongTien(double tongTien) {
+        this.tongTien = tongTien;
+    }
+    
+    
 }

@@ -3,23 +3,19 @@ package DTO;
 import java.sql.Date;
 
 public class PhieuNhapDTO extends Phieu {
-    private String maPhieuNhap;
+    private int maPhieuNhap;
     
-    public PhieuNhapDTO(String maPhieuNhap, String maNhanVien, Date ngayLap) {
-        super(maNhanVien, ngayLap);
+    public PhieuNhapDTO(int maPhieuNhap, int maNhanVien, Date ngayLap, double tongTien) {
+        super(maNhanVien, ngayLap, tongTien);
         this.maPhieuNhap = maPhieuNhap;
     }
 
     public PhieuNhapDTO() {
         super();
-        this.maPhieuNhap = "";
+        this.maPhieuNhap = 0;
     }
 
-    public String getMaPhieuNhap() {
+    public int getMaPhieuNhap() {
         return this.maPhieuNhap;
-    }
-    
-    public void setMaPhieuNhap(String maPhieuNhap) {
-        this.maPhieuNhap = maPhieuNhap;
     }
 }

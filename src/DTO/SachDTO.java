@@ -9,19 +9,19 @@ package DTO;
  * @author Hung
  */
 public class SachDTO {
-    private String maSach;
+    private int maSach;
     private String tenSach;
-    private String maTacGia;
-    private String maTheLoai;
-    private String maNhaXuatBan;
+    private int maTacGia;
+    private int maTheLoai;
+    private int maNhaXuatBan;
     private int namXuatBan;
     private int soLuongConLai;
     private long giaBan;
     private long giaNhap;
 
-    public SachDTO(String maSach, String tenSach, String maTheLoai, String maTacGia,
-            String maNhaXuatBan, int soLuongConLai, long giaBan, long giaNhap, int namXuatBan) {
-        this.maSach = maSach.toUpperCase();
+    public SachDTO(int maSach, String tenSach, int maTheLoai, int maTacGia,
+            int maNhaXuatBan, int soLuongConLai, long giaBan, long giaNhap, int namXuatBan) {
+        this.maSach = maSach;
         this.tenSach = tenSach;
         this.maTacGia = maTacGia;
         this.maTheLoai = maTheLoai;
@@ -33,23 +33,19 @@ public class SachDTO {
     }
 
     public SachDTO() {
-        this.maSach = "";
+        this.maSach = 0;
         this.tenSach = "";
-        this.maTacGia = "";
-        this.maTheLoai = "";
-        this.maNhaXuatBan = "";
+        this.maTacGia = 0;
+        this.maTheLoai = 0;
+        this.maNhaXuatBan = 0;
         this.namXuatBan = 0;
         this.soLuongConLai = 0;
         this.giaBan = 0;
         this.giaNhap = 0;
     }
 
-    public String getMaSach() {
+    public int getMaSach() {
         return this.maSach;
-    }
-    
-    public void setMaSach(String maSach) {
-        this.maSach = maSach;
     }
 
     public String getTenSach() {
@@ -60,27 +56,27 @@ public class SachDTO {
         this.tenSach = tenSach;
     }
 
-    public String getMaTacGia() {
+    public int getMaTacGia() {
         return maTacGia;
     }
 
-    public void setMaTacGia(String maTacGia) {
+    public void setMaTacGia(int maTacGia) {
         this.maTacGia = maTacGia;
     }
 
-    public String getMaTheLoai() {
+    public int getMaTheLoai() {
         return maTheLoai;
     }
 
-    public void setMaTheLoai(String maTheLoai) {
+    public void setMaTheLoai(int maTheLoai) {
         this.maTheLoai = maTheLoai;
     }
 
-    public String getMaNhaXuatBan() {
+    public int getMaNhaXuatBan() {
         return maNhaXuatBan;
     }
 
-    public void setMaNhaXuatBan(String maNhaXuatBan) {
+    public void setMaNhaXuatBan(int maNhaXuatBan) {
         this.maNhaXuatBan = maNhaXuatBan;
     }
 

@@ -23,11 +23,11 @@ public class ChiTietPhieuNhapBLL {
         return chiTietPhieuNhapDAL.insert(ctpb);
     }
     
-    public boolean update(ChiTietPhieuNhapDTO ctpb, String maPhieuNhap, String maSach) {
-        return chiTietPhieuNhapDAL.update(ctpb, maPhieuNhap, maSach);
+    public boolean update(ChiTietPhieuNhapDTO ctpb) {
+        return chiTietPhieuNhapDAL.update(ctpb);
     }
     
-    public boolean delete(String maPhieuBan, String maSach) {
+    public boolean delete(int maPhieuBan, int maSach) {
         return chiTietPhieuNhapDAL.delete(maPhieuBan, maSach);
     }
     
@@ -35,7 +35,7 @@ public class ChiTietPhieuNhapBLL {
         return chiTietPhieuNhapDAL.getAll();
     }
     
-    public ArrayList<ChiTietPhieuNhapDTO> getByPNId(String id) {
+    public ArrayList<ChiTietPhieuNhapDTO> getByPNId(int id) {
         return chiTietPhieuNhapDAL.getByPNId(id);
     }
 }

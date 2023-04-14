@@ -9,24 +9,24 @@ package DTO;
  * @author Hung
  */
 public class ChiTietPhieu {
-    private String maSach;
+    private int maSach;
     private int soLuong;
     private long donGia;
 
     public ChiTietPhieu() {
     }
 
-    public ChiTietPhieu(String maSach, int soLuong, long donGia) {
+    public ChiTietPhieu(int maSach, int soLuong, long donGia) {
         this.maSach = maSach;
         this.soLuong = soLuong;
         this.donGia = donGia;
     }
 
-    public String getMaSach() {
+    public int getMaSach() {
         return maSach;
     }
 
-    public void setMaSach(String maSach) {
+    public void setMaSach(int maSach) {
         this.maSach = maSach;
     }
 

@@ -24,15 +24,15 @@ public class PhieuNhapBLL {
         return phieuNhapDAL.getAll().size();
     }
     
-    public boolean insert(PhieuNhapDTO pn) {
-        return phieuNhapDAL.insert(pn);
+    public int insert(PhieuNhapDTO pn) {
+        return phieuNhapDAL.insert(pn.getMaNhanVien(), pn.getNgayLap(), pn.getTongTien());
     }
     
     public boolean update(PhieuNhapDTO pb) {
         return phieuNhapDAL.update(pb);
     }
     
-    public boolean delete(String id) {
+    public boolean delete(int id) {
         return phieuNhapDAL.delete(id);
     }
     
@@ -44,7 +44,7 @@ public class PhieuNhapBLL {
         return phieuNhapDAL.getByCondition(condition);
     }
     
-    public PhieuNhapDTO getById(String id) {
+    public PhieuNhapDTO getById(int id) {
         return phieuNhapDAL.getById(id);
     }
 }

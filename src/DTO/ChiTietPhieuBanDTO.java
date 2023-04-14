@@ -12,21 +12,21 @@ import java.util.Scanner;
  */
 public class ChiTietPhieuBanDTO extends ChiTietPhieu {
     Scanner sc = new Scanner(System.in);
-    private String maPhieuBan;
+    private int maPhieuBan;
 
     public ChiTietPhieuBanDTO() {
     }
 
-    public ChiTietPhieuBanDTO(String maPhieuBan, String maSach, int soLuong, long donGia) {
+    public ChiTietPhieuBanDTO(int maPhieuBan, int maSach, int soLuong, long donGia) {
         super(maSach, soLuong, donGia);
         this.maPhieuBan = maPhieuBan;
     }
 
-    public String getMaPhieuBan() {
+    public int getMaPhieuBan() {
         return maPhieuBan;
     }
 
-    public void setMaPhieuBan(String maPhieuBan) {
+    public void setMaPhieuBan(int maPhieuBan) {
         this.maPhieuBan = maPhieuBan;
     }
 }

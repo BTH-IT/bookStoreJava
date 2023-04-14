@@ -4,23 +4,16 @@
  */
 package GUI;
 
-import BLL.ChiTietPhieuBanBLL;
-import BLL.KhachHangBLL;
-import BLL.KhuyenMaiBLL;
+import BLL.ChiTietPhieuNhapBLL;
 import BLL.NhanVienBLL;
-import BLL.PhieuBanBLL;
+import BLL.PhieuNhapBLL;
 import BLL.SachBLL;
-import DTO.ChiTietPhieuBanDTO;
-import DTO.KhachHangDTO;
-import DTO.KhuyenMaiDTO;
+import DTO.ChiTietPhieuNhapDTO;
 import DTO.NhanVienDTO;
-import DTO.PhieuBanDTO;
+import DTO.PhieuNhapDTO;
 import DTO.SachDTO;
 import DTO.TaiKhoanDTO;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -32,103 +25,26 @@ import java.util.Locale;
 import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
  * @author Hung
  */
-public final class SellBookGUI extends javax.swing.JFrame {
+public final class ImportBookGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form MenuEmployee
      */
     private TaiKhoanDTO tk;
-    private KhachHangDTO kh;
     private SachBLL sachBLL = new SachBLL();
-    private PhieuBanBLL phieuBanBLL = new PhieuBanBLL();
-    private KhuyenMaiBLL khuyenMaiBLL = new KhuyenMaiBLL();
-    private KhachHangBLL khachHangBLL = new KhachHangBLL();
-    private ChiTietPhieuBanBLL chiTietPhieuBanBLL = new ChiTietPhieuBanBLL();
+    private PhieuNhapBLL phieuNhapBLL = new PhieuNhapBLL();
+    private ChiTietPhieuNhapBLL chiTietPhieuNhapBLL = new ChiTietPhieuNhapBLL();
     
     private Locale lc = new Locale("nv","VN"); //Định dạng locale việt nam
     private NumberFormat nf = NumberFormat.getInstance(lc);
     
     private ArrayList<Object[]> buyList = new ArrayList<>();
-    private JTextField name = new JTextField();
-    private JTextField phone = new JTextField();
-    private JComboBox gender = new JComboBox(new String[]{"Nam", "Nữ", "Khác"});
-    private JTextField yearBirth = new JTextField();
     private double tongTien = 0;
-    private double tmp = 0;
-    private JPanel popUpAddCustomer = getPopUpAddCustomer();
-    
-    private JPanel getPopUpAddCustomer() {
-        Font font_16_plain = new Font("Monospaced", Font.PLAIN, 16);
-        Font font_16_bold = new Font("Monospaced", Font.BOLD, 16);
-        
-        name.setFont(font_16_plain);
-        phone.setFont(font_16_plain);
-        gender.setFont(font_16_plain);
-        yearBirth.setFont(font_16_plain);
-        
-        JLabel nameLabel = new JLabel("Tên khách hàng: ");
-        nameLabel.setFont(font_16_bold);
-        
-        JLabel phoneLabel = new JLabel("Số Điện Thoại: ");
-        phoneLabel.setFont(font_16_bold);
-        
-        JLabel genderLabel = new JLabel("Giới tính: ");
-        genderLabel.setFont(font_16_bold);
-        
-        JLabel yearBirthLabel = new JLabel("Năm sinh: ");
-        yearBirthLabel.setFont(font_16_bold);
-        
-        JPanel containerPanel = new JPanel();
-        JPanel namePanel = new JPanel();
-        JPanel phonePanel = new JPanel();
-        JPanel yearBirthPanel = new JPanel();
-        JPanel genderPanel = new JPanel();
-        genderPanel.setBorder(new EmptyBorder(0, 0, 20, 0));
-        
-
-        containerPanel.setLayout(new GridLayout(2, 2, 10, 10));
-        namePanel.setLayout(new BorderLayout());
-        phonePanel.setLayout(new BorderLayout());
-        genderPanel.setLayout(new BorderLayout());
-        yearBirthPanel.setLayout(new BorderLayout());
-        
-        namePanel.add(nameLabel, BorderLayout.NORTH);
-        namePanel.add(name, BorderLayout.CENTER);
-        
-        phonePanel.add(phoneLabel, BorderLayout.NORTH);
-        phonePanel.add(phone, BorderLayout.CENTER);
-        
-        genderPanel.add(genderLabel, BorderLayout.NORTH);
-        genderPanel.add(gender, BorderLayout.CENTER);
-        
-        yearBirthPanel.add(yearBirthLabel, BorderLayout.NORTH);
-        yearBirthPanel.add(yearBirth, BorderLayout.CENTER);
-        
-        containerPanel.add(namePanel);
-        containerPanel.add(phonePanel);
-        containerPanel.add(genderPanel);
-        containerPanel.add(yearBirthPanel);
-        
-        return containerPanel;
-    }
-    
-    private void setComboBoxSale(Date now) {
-        ArrayList<KhuyenMaiDTO> saleList = khuyenMaiBLL.getSaleByDate(now);
-        
-        saleCbx.removeAllItems();
-        
-        saleCbx.addItem("");
-        
-        for (KhuyenMaiDTO t : saleList) {
-            saleCbx.addItem(String.valueOf(t.getMaKhuyenMai()));
-        }
-    }
     
     private void updateBuyTable(int ma, int soLuong, long thanhTien) {
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
@@ -152,7 +68,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         for (int i = 0; i < row; i++) {
             int maSach = Integer.parseInt(String.valueOf(modelBook.getValueAt(i, 0)));
             if (maSach == ma) {
-                int soLuongConLai = Integer.parseInt(modelBook.getValueAt(i, 2).toString()) + soLuong;
+                int soLuongConLai = Integer.parseInt(modelBook.getValueAt(i, 2).toString()) - soLuong;
                 modelBook.setValueAt(soLuongConLai, i, 2);
             }
         }
@@ -193,7 +109,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         int maSach;
         String tenSach;
         int soLuongConLai;
-        long giaBan;
+        long giaNhap;
         
         DefaultTableModel modelBook = (DefaultTableModel) bookTable.getModel();
         
@@ -201,8 +117,8 @@ public final class SellBookGUI extends javax.swing.JFrame {
             maSach = s.getMaSach();
             tenSach = s.getTenSach();
             soLuongConLai = s.getSoLuongConLai();
-            giaBan = s.getGiaBan();
-            modelBook.addRow(new Object[]{maSach, tenSach, soLuongConLai, giaBan, "+"});
+            giaNhap = s.getGiaNhap();
+            modelBook.addRow(new Object[]{maSach, tenSach, soLuongConLai, giaNhap, "+"});
         }
         
         
@@ -233,7 +149,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                         return;
                     }
                     
-                    conLai -= soLuong;
+                    conLai += soLuong;
                     modelBook.setValueAt(conLai, row, 2);
                     
                     long thanhTien = donGia * soLuong;
@@ -241,8 +157,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                     Object[] buyObject = new Object[]{ma, ten, donGia, soLuong, thanhTien, "-", "X"};
                     
                     for (int i = 0; i < buyList.size(); i++) {
-                        int maSach = Integer.parseInt(String.valueOf(Array.get(buyList.get(i), 0)));
-                        if (maSach == ma) {
+                        if (Array.get(buyList.get(i), 0).toString().equals(ma)) {
                             int soLuongCu = Integer.parseInt(Array.get(buyList.get(i), 3).toString());
                             soLuong += soLuongCu;
                             thanhTien = soLuong * donGia;
@@ -335,13 +250,11 @@ public final class SellBookGUI extends javax.swing.JFrame {
                         }
                     }
                 }
-                
-                
             }
         });
     }
     
-    public SellBookGUI(TaiKhoanDTO tk) {
+    public ImportBookGUI(TaiKhoanDTO tk) {
         initComponents();
         
         this.tk = tk;
@@ -360,9 +273,6 @@ public final class SellBookGUI extends javax.swing.JFrame {
         buyTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
         buyTable.getColumn("Xóa Tất Cả").setCellRenderer(new ButtonRenderer());
         
-        long millis=System.currentTimeMillis();  
-        Date now = new Date(millis);
-        setComboBoxSale(now);
         setBookTable();
         addEventBookTable();
         addEventRemoveBookBuyList();
@@ -390,20 +300,13 @@ public final class SellBookGUI extends javax.swing.JFrame {
         backBtn = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         employeeName = new javax.swing.JLabel();
         totalPay = new javax.swing.JLabel();
-        customerPhone = new javax.swing.JLabel();
-        customerName = new javax.swing.JLabel();
         payBtn = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        saleCbx = new javax.swing.JComboBox<>();
-        inputCustomerId = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        addCustomerBtn = new javax.swing.JLabel();
+        supplierCbx = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         buyTable = new javax.swing.JTable();
@@ -415,9 +318,10 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
+        searchCbbox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Bán Hàng");
+        setTitle("Nhập Sách");
         setBackground(new java.awt.Color(255, 204, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -488,12 +392,6 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 204, 0));
         jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jLabel2.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel2.setText("Tên khách hàng :");
-
-        jLabel3.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel3.setText("Số điện thoại  :");
-
         jLabel4.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         jLabel4.setText("Tên nhân viên  :");
 
@@ -506,12 +404,6 @@ public final class SellBookGUI extends javax.swing.JFrame {
         totalPay.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         totalPay.setText("0 VNĐ");
 
-        customerPhone.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        customerPhone.setText("");
-
-        customerName.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        customerName.setText("");
-
         payBtn.setBackground(new java.awt.Color(255, 255, 153));
         payBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         payBtn.setForeground(new java.awt.Color(51, 51, 51));
@@ -523,14 +415,8 @@ public final class SellBookGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel7.setText("Khuyến mãi     :");
-
-        saleCbx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saleCbxActionPerformed(evt);
-            }
-        });
+        jLabel6.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        jLabel6.setText("Nhà cung cấp   :");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -539,14 +425,14 @@ public final class SellBookGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(payBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(140, 140, 140))
+                .addGap(139, 139, 139))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saleCbx, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(supplierCbx, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -554,15 +440,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(employeeName))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customerPhone))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customerName)))
+                        .addComponent(employeeName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -570,57 +448,20 @@ public final class SellBookGUI extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(customerName))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(customerPhone))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(employeeName))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(saleCbx))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(totalPay))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(supplierCbx))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(payBtn)
-                .addGap(20, 20, 20))
+                .addGap(15, 15, 15))
         );
-
-        inputCustomerId.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        inputCustomerId.setForeground(new java.awt.Color(102, 102, 102));
-        inputCustomerId.setText("Nhập số điện thoại");
-        inputCustomerId.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                inputCustomerIdFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                inputCustomerIdFocusLost(evt);
-            }
-        });
-        inputCustomerId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                inputCustomerIdKeyPressed(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Monospaced", 1, 14)); // NOI18N
-        jLabel6.setText("Tìm Khách Hàng :");
-
-        addCustomerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/add.png"))); // NOI18N
-        addCustomerBtn.setToolTipText("Thêm khách hàng");
-        addCustomerBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        addCustomerBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addCustomerBtnMouseClicked(evt);
-            }
-        });
 
         buyTable.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         buyTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -628,7 +469,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Sách", "Tên Sách", "Giá Bán", "Số Lượng", "Thành Tiền", "Xóa", "Xóa Tất Cả"
+                "Mã Sách", "Tên Sách", "Giá Nhập", "Số Lượng", "Thành Tiền", "Xóa", "Xóa Tất Cả"
             }
         ) {
             Class[] types = new Class [] {
@@ -647,9 +488,6 @@ public final class SellBookGUI extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(buyTable);
-        if (buyTable.getColumnModel().getColumnCount() > 0) {
-            buyTable.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -659,7 +497,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -667,28 +505,14 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(addCustomerBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(inputCustomerId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(addCustomerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -721,7 +545,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Sách", "Tên Sách", "Còn Lại", "Giá Bán", "Thêm"
+                "Mã Sách", "Tên Sách", "Còn Lại", "Giá Nhập", "Thêm"
             }
         ) {
             Class[] types = new Class [] {
@@ -747,14 +571,16 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 834, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 83, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 15, Short.MAX_VALUE))
         );
+
+        searchCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sách", "Tên sách" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -763,21 +589,24 @@ public final class SellBookGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputBookId, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(inputBookId, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 833, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(inputBookId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(inputBookId, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(searchCbbox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -796,13 +625,10 @@ public final class SellBookGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 609, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(footer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -825,33 +651,27 @@ public final class SellBookGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backBtnMouseClicked
 
-    private void inputCustomerIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputCustomerIdKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String value = inputCustomerId.getText();
-            if ("".equals(value)) return;
-
-            this.kh = khachHangBLL.getCustomerByPhone(value);
-            if (this.kh == null) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
-            } else {
-                customerName.setText(this.kh.getTen());
-                customerPhone.setText(this.kh.getSoDienThoai());
-                inputCustomerId.setText("");
-            }
-        }
-    }//GEN-LAST:event_inputCustomerIdKeyPressed
-
     private void inputBookIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBookIdKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String value = inputBookId.getText();
+            int searchType = searchCbbox.getSelectedIndex();
             int maSach;
             String tenSach;
             int soLuongConLai;
-            long giaBan;
+            long giaNhap;
             
-            ArrayList<SachDTO> bookList = sachBLL.getByCondition("tenSach LIKE '%" + value + "%'");
+            ArrayList<SachDTO> bookList = null;
             DefaultTableModel modelBook = (DefaultTableModel) bookTable.getModel();
             modelBook.setRowCount(0);
+            
+            switch (searchType) {
+                case 0 -> {
+                    bookList = sachBLL.getByCondition("maSach LIKE '%" + value + "%'");
+                }
+                case 1 -> {
+                    bookList = sachBLL.getByCondition("tenSach LIKE '%" + value + "%'");
+                }
+            }
 
             if (bookList.isEmpty()) {
                 JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
@@ -861,8 +681,8 @@ public final class SellBookGUI extends javax.swing.JFrame {
                     maSach = s.getMaSach();
                     tenSach = s.getTenSach();
                     soLuongConLai = s.getSoLuongConLai();
-                    giaBan = s.getGiaBan();
-                    modelBook.addRow(new Object[]{maSach, tenSach, soLuongConLai, giaBan, "+"});
+                    giaNhap = s.getGiaNhap();
+                    modelBook.addRow(new Object[]{maSach, tenSach, soLuongConLai, giaNhap, "+"});
                 }
             }
         }
@@ -874,50 +694,36 @@ public final class SellBookGUI extends javax.swing.JFrame {
             return;
         }
         
-        if ("".equals(customerName.getText()) || "".equals(customerPhone.getText())) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn khách hàng!!!");
-            return;
-        }
-        
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
         long millis=System.currentTimeMillis();  
         Date ngayLap = new Date(millis);
         SachDTO s;
         int ma;
         int soLuongMua;
-        int maKhuyenMai;
         
-        if (String.valueOf(saleCbx.getSelectedItem()).equals("")) {
-            maKhuyenMai = 0;
-        } else {
-            maKhuyenMai = Integer.parseInt(String.valueOf(saleCbx.getSelectedItem()));
-        }
+        PhieuNhapDTO pn = new PhieuNhapDTO(-1, tk.getMaNhanVien(), ngayLap, tongTien);
         
-        PhieuBanDTO pb = new PhieuBanDTO(-1, kh.getMaKhachHang(), tk.getMaNhanVien(), ngayLap, tongTien, maKhuyenMai);
+        int maPhieuNhap = phieuNhapBLL.insert(pn);
         
-        int maPhieuBan = phieuBanBLL.insert(pb);
-        
-        if (maPhieuBan >= 0) {
-            ChiTietPhieuBanDTO ctpb;
+        if (maPhieuNhap >= 0) {
+            ChiTietPhieuNhapDTO ctpn;
         
             for (Object[] buy : buyList) {
-                ma = Integer.parseInt(String.valueOf(Array.get(buy, 0)));
+                ma = Integer.parseInt(Array.get(buy, 0).toString());
                 soLuongMua = Integer.parseInt(Array.get(buy, 3).toString());
                 s = sachBLL.getById(ma);
                 s.setSoLuongConLai(s.getSoLuongConLai() - soLuongMua);
                 sachBLL.update(s);
 
-                ctpb = new ChiTietPhieuBanDTO(maPhieuBan, ma, soLuongMua, s.getGiaBan());
+                ctpn = new ChiTietPhieuNhapDTO(pn.getMaPhieuNhap(), ma, soLuongMua, s.getGiaNhap());
 
-                chiTietPhieuBanBLL.insert(ctpb);
+                chiTietPhieuNhapBLL.insert(ctpn);
             }
 
             for (int i = 0; i < modelBuy.getRowCount(); i++) {
                 modelBuy.removeRow(i);
             }
 
-            customerName.setText("");
-            customerPhone.setText("");
             totalPay.setText("0 VNĐ");
             buyList.removeAll(buyList);
         }
@@ -925,109 +731,30 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
     
     
-    private void addCustomerBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCustomerBtnMouseClicked
-        String patternPhone = "^[0-9]{10}$";
-        String patternYear = "[0-9]\\d{1,}";
-        
-        int result = JOptionPane.showConfirmDialog(null, popUpAddCustomer, 
-               "Mời nhập dữ liệu khách hàng mới", JOptionPane.OK_CANCEL_OPTION);
-        
-        if (result == JOptionPane.OK_OPTION) {
-            String ten = name.getText();
-            String sdt = phone.getText();
-            String gioiTinh = (String) gender.getSelectedItem();
-            String nam = yearBirth.getText();
-            
-            if ("".equals(ten) || "".equals(sdt) || "".equals(nam)) {
-                JOptionPane.showMessageDialog(this, "Không được để trống tên hoặc số điện thoại");
-                return;
-            }
-            
-            if (sdt.matches(patternPhone) == false) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
-                return;
-            }
-            
-            if (nam.matches(patternYear) == false) {
-                JOptionPane.showMessageDialog(this, "Năm không hợp lệ");
-                return;
-            }
-            
-            int namNumber = Integer.parseInt(nam);
-            
-            this.kh = new KhachHangDTO(-1, ten, gioiTinh, sdt, namNumber);
-            
-            int maKhachHang = khachHangBLL.insert(kh);
-            
-            if (maKhachHang >= 0) {
-                customerName.setText(ten);
-                customerPhone.setText(sdt);
-                name.setText("");
-                phone.setText("");
-                gender.setSelectedItem("Nam");
-            }
-        }
-
-    }//GEN-LAST:event_addCustomerBtnMouseClicked
-
-    private void inputCustomerIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputCustomerIdFocusGained
-        inputCustomerId.setText("");
-        inputCustomerId.setForeground(new Color(51, 51, 51));
-    }//GEN-LAST:event_inputCustomerIdFocusGained
-
-    private void inputCustomerIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputCustomerIdFocusLost
-        inputCustomerId.setText("Nhập số điện thoại");
-        inputCustomerId.setForeground(new Color(102, 102, 102));
-    }//GEN-LAST:event_inputCustomerIdFocusLost
-
     private void inputBookIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputBookIdFocusGained
         inputBookId.setText("");
         inputBookId.setForeground(new Color(51, 51, 51));
     }//GEN-LAST:event_inputBookIdFocusGained
 
     private void inputBookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputBookIdFocusLost
-        inputBookId.setText("Nhập thông tin sách");
+        inputBookId.setText("Nhập tên sách");
         inputBookId.setForeground(new Color(102, 102, 102));
     }//GEN-LAST:event_inputBookIdFocusLost
 
-    private void saleCbxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saleCbxActionPerformed
-        if (String.valueOf(saleCbx.getSelectedItem()).equals("")) {
-            tongTien += tmp;
-            tmp = 0;
-            totalPay.setText(nf.format(tongTien) + " VNĐ");
-            return;
-        }
-        
-        int maKhuyenMai;
-        maKhuyenMai = Integer.parseInt(String.valueOf(saleCbx.getSelectedItem()));
-        KhuyenMaiDTO km = khuyenMaiBLL.getById(maKhuyenMai);
-        
-        tmp = tongTien * km.getPhanTram() / 100;
-        tongTien = tongTien - tmp;
-        totalPay.setText(nf.format(tongTien) + " VNĐ");
-    }//GEN-LAST:event_saleCbxActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel addCustomerBtn;
     private javax.swing.JLabel backBtn;
     private javax.swing.JTable bookTable;
     private javax.swing.JTable buyTable;
-    private javax.swing.JLabel customerName;
-    private javax.swing.JLabel customerPhone;
     private javax.swing.JLabel dateTimeLabel;
     private javax.swing.JLabel employeeName;
     private javax.swing.JPanel footer;
     private javax.swing.JPanel header;
     private javax.swing.JLabel infoUser;
     private javax.swing.JTextField inputBookId;
-    private javax.swing.JTextField inputCustomerId;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1039,7 +766,8 @@ public final class SellBookGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel logoutBtn;
     private javax.swing.JButton payBtn;
-    private javax.swing.JComboBox<String> saleCbx;
+    private javax.swing.JComboBox<String> searchCbbox;
+    private javax.swing.JComboBox<String> supplierCbx;
     private javax.swing.JLabel totalPay;
     // End of variables declaration//GEN-END:variables
 }
