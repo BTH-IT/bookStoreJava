@@ -21,14 +21,21 @@ public class SachDAL implements DALInterface<SachDTO>{
         return new SachDAL();
     }
 
+<<<<<<< HEAD
     public int insert(String tenSach, int maTheLoai, int maTacGia, int maNhaXuatBan, int soLuongConLai, long giaBan, long giaNhap, int namXuatBan) {
         boolean result = false;
         int auto_id = -1;
+=======
+    @Override
+    public boolean insert(SachDTO t) {
+        boolean result = false;
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
                 String sql = "INSERT into sach "
+<<<<<<< HEAD
                         + "(tenSach, maTheLoai, maTacGia, maNhaXuatBan, soLuongConLai, giaBan, giaNhap, namXuatBan) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -50,6 +57,24 @@ public class SachDAL implements DALInterface<SachDTO>{
                     rs.next();
                     auto_id = rs.getInt(1);
                 }
+=======
+                        + "(maSach, tenSach, maTheLoai, maTacGia, maNhaXuatBan, soLuongConLai, giaBan, giaNhap, namXuatBan) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setString(1, t.getMaSach());
+                stmt.setString(2, t.getTenSach());
+                stmt.setString(3, t.getMaTheLoai());
+                stmt.setString(4, t.getMaTacGia());
+                stmt.setString(5, t.getMaNhaXuatBan());
+                stmt.setInt(6, t.getSoLuongConLai());
+                stmt.setLong(7, t.getGiaBan());
+                stmt.setLong(8, t.getGiaNhap());
+                stmt.setInt(9, t.getNamXuatBan());
+
+                result = stmt.executeUpdate()>=1;
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             } catch (SQLException ex) {
                 Logger.getLogger(SachDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -57,11 +82,18 @@ public class SachDAL implements DALInterface<SachDTO>{
             }
         }
         
+<<<<<<< HEAD
         return auto_id;
     }
 
     @Override
     public boolean update(SachDTO t) {
+=======
+        return result;
+    }
+
+    public boolean update(SachDTO t, String maSach) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
@@ -69,11 +101,16 @@ public class SachDAL implements DALInterface<SachDTO>{
         if (connect != null) {
             try {
                 String sql = "UPDATE sach SET "
+<<<<<<< HEAD
                         + "tenSach=?, maTheLoai=?, maTacGia=?, maNhaXuatBan=?, soLuongConLai=?, giaBan=?, giaNhap=?, namXuatBan=? "
+=======
+                        + "maSach=?, tenSach=?, maTheLoai=?, maTacGia=?, maNhaXuatBan=?, soLuongConLai=?, giaBan=?, giaNhap=?, namXuatBan=? "
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         + "WHERE maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
+<<<<<<< HEAD
                 stmt.setString(1, t.getTenSach());
                 stmt.setInt(2, t.getMaTheLoai());
                 stmt.setInt(3, t.getMaTacGia());
@@ -83,6 +120,18 @@ public class SachDAL implements DALInterface<SachDTO>{
                 stmt.setLong(7, t.getGiaNhap());
                 stmt.setInt(8, t.getNamXuatBan());
                 stmt.setInt(9, t.getMaSach());
+=======
+                stmt.setString(1, t.getMaSach());
+                stmt.setString(2, t.getTenSach());
+                stmt.setString(3, t.getMaTheLoai());
+                stmt.setString(4, t.getMaTacGia());
+                stmt.setString(5, t.getMaNhaXuatBan());
+                stmt.setInt(6, t.getSoLuongConLai());
+                stmt.setLong(7, t.getGiaBan());
+                stmt.setLong(8, t.getGiaNhap());
+                stmt.setInt(9, t.getNamXuatBan());
+                stmt.setString(10, maSach);
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -96,18 +145,30 @@ public class SachDAL implements DALInterface<SachDTO>{
     }
 
     @Override
+<<<<<<< HEAD
     public boolean delete(int id) {
+=======
+    public boolean delete(String id) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
+<<<<<<< HEAD
                 String sql = "UPDATE sach SET hienThi=0 "
+=======
+                String sql = "DELETE FROM sach "
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         + "WHERE maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
+<<<<<<< HEAD
                 stmt.setInt(1, id); 
+=======
+                stmt.setString(1, id); 
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -128,7 +189,11 @@ public class SachDAL implements DALInterface<SachDTO>{
         if (connect != null) {
             
             try {
+<<<<<<< HEAD
                 String sql = "SELECT * FROM sach WHERE hienThi=1";
+=======
+                String sql = "SELECT * FROM sach";
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -137,11 +202,19 @@ public class SachDAL implements DALInterface<SachDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
+<<<<<<< HEAD
                     int maSach = rs.getInt("maSach");
                     String tenSach = rs.getString("tenSach");
                     int maTheLoai = rs.getInt("maTheLoai");
                     int maTacGia = rs.getInt("maTacGia");
                     int maNhaXuatBan = rs.getInt("maNhaXuatBan");
+=======
+                    String maSach = rs.getString("maSach");
+                    String tenSach = rs.getString("tenSach");
+                    String maTheLoai = rs.getString("maTheLoai");
+                    String maTacGia = rs.getString("maTacGia");
+                    String maNhaXuatBan = rs.getString("maNhaXuatBan");
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                     int soLuongConLai = rs.getInt("soLuongConLai");
                     long giaBan = rs.getLong("giaBan");
                     long giaNhap = rs.getLong("giaNhap");
@@ -162,13 +235,21 @@ public class SachDAL implements DALInterface<SachDTO>{
     }
 
     @Override
+<<<<<<< HEAD
     public SachDTO getById(int id) {
+=======
+    public SachDTO getById(String id) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         SachDTO result = null;
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
+<<<<<<< HEAD
                 String sql = "SELECT * FROM sach WHERE hienThi=1 AND maSach=" + id;
+=======
+                String sql = "SELECT * FROM sach WHERE maSach=\'" + id + "\'";
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -177,11 +258,19 @@ public class SachDAL implements DALInterface<SachDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
+<<<<<<< HEAD
                     int maSach = rs.getInt("maSach");
                     String tenSach = rs.getString("tenSach");
                     int maTheLoai = rs.getInt("maTheLoai");
                     int maTacGia = rs.getInt("maTacGia");
                     int maNhaXuatBan = rs.getInt("maNhaXuatBan");
+=======
+                    String maSach = rs.getString("maSach");
+                    String tenSach = rs.getString("tenSach");
+                    String maTheLoai = rs.getString("maTheLoai");
+                    String maTacGia = rs.getString("maTacGia");
+                    String maNhaXuatBan = rs.getString("maNhaXuatBan");
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                     int soLuongConLai = rs.getInt("soLuongConLai");
                     long giaBan = rs.getLong("giaBan");
                     long giaNhap = rs.getLong("giaNhap");
@@ -207,7 +296,11 @@ public class SachDAL implements DALInterface<SachDTO>{
         if (connect != null) {
             
             try {
+<<<<<<< HEAD
                 String sql = "SELECT * FROM sach WHERE hienThi=1 AMD " + condition;
+=======
+                String sql = "SELECT * FROM sach WHERE " + condition;
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -216,11 +309,19 @@ public class SachDAL implements DALInterface<SachDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
+<<<<<<< HEAD
                     int maSach = rs.getInt("maSach");
                     String tenSach = rs.getString("tenSach");
                     int maTheLoai = rs.getInt("maTheLoai");
                     int maTacGia = rs.getInt("maTacGia");
                     int maNhaXuatBan = rs.getInt("maNhaXuatBan");
+=======
+                    String maSach = rs.getString("maSach");
+                    String tenSach = rs.getString("tenSach");
+                    String maTheLoai = rs.getString("maTheLoai");
+                    String maTacGia = rs.getString("maTacGia");
+                    String maNhaXuatBan = rs.getString("maNhaXuatBan");
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                     int soLuongConLai = rs.getInt("soLuongConLai");
                     long giaBan = rs.getLong("giaBan");
                     long giaNhap = rs.getLong("giaNhap");
@@ -241,6 +342,7 @@ public class SachDAL implements DALInterface<SachDTO>{
     }
 
     @Override
+<<<<<<< HEAD
     public boolean insert(SachDTO t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -252,6 +354,9 @@ public class SachDAL implements DALInterface<SachDTO>{
 
     @Override
     public SachDTO getById(String id) {
+=======
+    public boolean update(SachDTO t) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

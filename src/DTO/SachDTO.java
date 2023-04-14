@@ -9,19 +9,33 @@ package DTO;
  * @author Hung
  */
 public class SachDTO {
+<<<<<<< HEAD
     private int maSach;
     private String tenSach;
     private int maTacGia;
     private int maTheLoai;
     private int maNhaXuatBan;
+=======
+    private String maSach;
+    private String tenSach;
+    private String maTacGia;
+    private String maTheLoai;
+    private String maNhaXuatBan;
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     private int namXuatBan;
     private int soLuongConLai;
     private long giaBan;
     private long giaNhap;
 
+<<<<<<< HEAD
     public SachDTO(int maSach, String tenSach, int maTheLoai, int maTacGia,
             int maNhaXuatBan, int soLuongConLai, long giaBan, long giaNhap, int namXuatBan) {
         this.maSach = maSach;
+=======
+    public SachDTO(String maSach, String tenSach, String maTheLoai, String maTacGia,
+            String maNhaXuatBan, int soLuongConLai, long giaBan, long giaNhap, int namXuatBan) {
+        this.maSach = maSach.toUpperCase();
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         this.tenSach = tenSach;
         this.maTacGia = maTacGia;
         this.maTheLoai = maTheLoai;
@@ -33,20 +47,38 @@ public class SachDTO {
     }
 
     public SachDTO() {
+<<<<<<< HEAD
         this.maSach = 0;
         this.tenSach = "";
         this.maTacGia = 0;
         this.maTheLoai = 0;
         this.maNhaXuatBan = 0;
+=======
+        this.maSach = "";
+        this.tenSach = "";
+        this.maTacGia = "";
+        this.maTheLoai = "";
+        this.maNhaXuatBan = "";
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         this.namXuatBan = 0;
         this.soLuongConLai = 0;
         this.giaBan = 0;
         this.giaNhap = 0;
     }
 
+<<<<<<< HEAD
     public int getMaSach() {
         return this.maSach;
     }
+=======
+    public String getMaSach() {
+        return this.maSach;
+    }
+    
+    public void setMaSach(String maSach) {
+        this.maSach = maSach;
+    }
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
     public String getTenSach() {
         return this.tenSach;
@@ -56,6 +88,7 @@ public class SachDTO {
         this.tenSach = tenSach;
     }
 
+<<<<<<< HEAD
     public int getMaTacGia() {
         return maTacGia;
     }
@@ -77,6 +110,29 @@ public class SachDTO {
     }
 
     public void setMaNhaXuatBan(int maNhaXuatBan) {
+=======
+    public String getMaTacGia() {
+        return maTacGia;
+    }
+
+    public void setMaTacGia(String maTacGia) {
+        this.maTacGia = maTacGia;
+    }
+
+    public String getMaTheLoai() {
+        return maTheLoai;
+    }
+
+    public void setMaTheLoai(String maTheLoai) {
+        this.maTheLoai = maTheLoai;
+    }
+
+    public String getMaNhaXuatBan() {
+        return maNhaXuatBan;
+    }
+
+    public void setMaNhaXuatBan(String maNhaXuatBan) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         this.maNhaXuatBan = maNhaXuatBan;
     }
 

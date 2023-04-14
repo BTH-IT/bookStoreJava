@@ -23,7 +23,11 @@ public class SachBLL {
         return sachDAL.getAll();
     }
     
+<<<<<<< HEAD
     public SachDTO getById(int id){ 
+=======
+    public SachDTO getById(String id){ 
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return sachDAL.getById(id);
     }
     
@@ -31,6 +35,7 @@ public class SachBLL {
         return sachDAL.getByCondition(condition);
     }
     
+<<<<<<< HEAD
     public boolean update(SachDTO s) {
         return sachDAL.update(s);
     }
@@ -40,6 +45,17 @@ public class SachBLL {
     }
     
     public boolean delete(int maSach) {
+=======
+    public boolean update(SachDTO s, String maSach) {
+        return sachDAL.update(s, maSach);
+    }
+    
+    public boolean insert(SachDTO s) {
+        return sachDAL.insert(s);
+    }
+    
+    public boolean delete(String maSach) {
+>>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return sachDAL.delete(maSach);
     }
 }
