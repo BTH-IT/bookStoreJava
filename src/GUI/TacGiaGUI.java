@@ -12,6 +12,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -19,6 +22,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -241,6 +249,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        exportExcel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         dateTimeLabel = new javax.swing.JLabel();
@@ -274,6 +283,15 @@ public class TacGiaGUI extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
 
+        exportExcel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel1.setToolTipText("Xuất Excel");
+        exportExcel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcel1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -282,6 +300,8 @@ public class TacGiaGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
@@ -290,7 +310,8 @@ public class TacGiaGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(exportExcel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -669,11 +690,76 @@ public class TacGiaGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inputSearchActionPerformed
 
+    private void exportExcel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcel1MouseClicked
+        ArrayList<TacGiaDTO> tgList = tacGiaBLL.getAll();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("nhaxuatban");
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            row = sheet.createRow(0);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã tác giả");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Tên tác giả");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Giới tính");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Năm sinh");
+
+            int i = 1;
+            for (TacGiaDTO tg : tgList) {
+                row = sheet.createRow(0 + i);
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(tg.getMaTacGia());
+
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(tg.getTen());
+
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(tg.getGioiTinh());
+
+                cell = row.createCell(4, CellType.NUMERIC);
+                cell.setCellValue(tg.getNamSinh());
+
+                i++;
+            }
+
+            File f = new File("D://tacgia.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcel1MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TGTable;
     private javax.swing.JButton addBtn;
     private javax.swing.JComboBox<String> condition;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
+    private javax.swing.JLabel exportExcel1;
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;

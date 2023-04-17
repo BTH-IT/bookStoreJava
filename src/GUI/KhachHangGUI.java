@@ -15,11 +15,19 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -300,6 +308,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         backBtn = new javax.swing.JLabel();
         dateTimeLabel = new javax.swing.JLabel();
@@ -342,6 +351,15 @@ public class KhachHangGUI extends javax.swing.JFrame {
             }
         });
 
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -350,6 +368,8 @@ public class KhachHangGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
@@ -358,7 +378,8 @@ public class KhachHangGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logoutBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                    .addComponent(logoutBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -683,7 +704,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -728,6 +749,75 @@ public class KhachHangGUI extends javax.swing.JFrame {
     private void namSinhInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namSinhInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_namSinhInputActionPerformed
+
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<KhachHangDTO> khList = khachHangBLL.getAll();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("nhaxuatban");
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            row = sheet.createRow(0);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã khách hàng");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Tên khách hàng");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Giới tính");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Số điện thoại");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Năm sinh");
+
+            int i = 1;
+            for (KhachHangDTO kh : khList) {
+                row = sheet.createRow(0 + i);
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(kh.getMaKhachHang());
+
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(kh.getTen());
+
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(kh.getGioiTinh());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(kh.getSoDienThoai());
+                
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(kh.getNamSinh());
+
+                i++;
+            }
+
+            File f = new File("D://khachhang.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
 
     private void inputSDTActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_inputSDTActionPerformed
         // TODO add your handling code here:
@@ -856,6 +946,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
     private javax.swing.JLabel backBtn;
     private javax.swing.JComboBox<String> condition;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JComboBox<String> genderInput;
     private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;

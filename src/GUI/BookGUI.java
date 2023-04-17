@@ -23,9 +23,17 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -390,6 +398,7 @@ public final class BookGUI extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         infoUser = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         dateTimeLabel = new javax.swing.JLabel();
         backBtn = new javax.swing.JLabel();
@@ -444,6 +453,15 @@ public final class BookGUI extends javax.swing.JFrame {
             }
         });
 
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -452,6 +470,8 @@ public final class BookGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
@@ -459,6 +479,7 @@ public final class BookGUI extends javax.swing.JFrame {
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         footer.setBackground(new java.awt.Color(255, 204, 102));
@@ -951,12 +972,106 @@ public final class BookGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<SachDTO> sList = sachBLL.getAllSach();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("nhanvien");
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            row = sheet.createRow(0);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã sách");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Tên sách");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã thể loại");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Mã tác giả");
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Mã nhà xuất bản");
+
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Số lượng còn lại");
+
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Giá bán");
+
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Giá nhập");
+            
+            cell = row.createCell(9, CellType.STRING);
+            cell.setCellValue("Năm xuất bản");
+
+            int i = 1;
+            for (SachDTO s : sList) {
+                row = sheet.createRow(0 + i);
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(s.getMaSach());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(s.getTenSach());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(s.getMaTheLoai());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(s.getMaTacGia());
+
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(s.getMaNhaXuatBan());
+
+                cell = row.createCell(6, CellType.NUMERIC);
+                cell.setCellValue(s.getSoLuongConLai());
+
+                cell = row.createCell(7, CellType.NUMERIC);
+                cell.setCellValue(s.getGiaBan());
+
+                cell = row.createCell(8, CellType.NUMERIC);
+                cell.setCellValue(s.getGiaNhap());
+                
+                cell = row.createCell(9, CellType.NUMERIC);
+                cell.setCellValue(s.getNamXuatBan());
+
+                i++;
+            }
+
+            File f = new File("D://sach.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JLabel backBtn;
     private javax.swing.JComboBox<String> bookCbbox;
     private javax.swing.JTable bookTable;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JPanel footer;
     private javax.swing.JTextField giaBanInput;
     private javax.swing.JTextField giaNhapInput;

@@ -5,10 +5,12 @@
 package GUI;
 
 import BLL.ChiTietPhieuNhapBLL;
+import BLL.NhaCungCapBLL;
 import BLL.NhanVienBLL;
 import BLL.PhieuNhapBLL;
 import BLL.SachBLL;
 import DTO.ChiTietPhieuNhapDTO;
+import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
 import DTO.PhieuNhapDTO;
 import DTO.SachDTO;
@@ -21,6 +23,9 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -31,6 +36,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -45,6 +55,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private SachBLL sachBLL = new SachBLL();
     private PhieuNhapBLL phieuNhapBLL = new PhieuNhapBLL();
     private NhanVienBLL nhanVienBLL = new NhanVienBLL();
+    private NhaCungCapBLL nhaCungCapBLL = new NhaCungCapBLL();
     private ChiTietPhieuNhapBLL chiTietPhieuNhapBLL = new ChiTietPhieuNhapBLL();
     
     private Locale lc = new Locale("nv","VN"); //Định dạng locale việt nam
@@ -53,6 +64,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private Font font_16_bold = new Font("Monospaced", Font.BOLD, 16);
     
     private JComboBox maNhanVienPN = new JComboBox();
+    private JComboBox maNhaCungCapPN = new JComboBox();
     private JDateChooser ngayLapPN = new JDateChooser();
     private JPanel popUpUpdatePN = getPopUpUpdatePN();
     
@@ -71,6 +83,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         ArrayList<NhanVienDTO> nhanVienList = nhanVienBLL.getAll();
         ArrayList<PhieuNhapDTO> phieuNhapList = phieuNhapBLL.getAll();
         ArrayList<SachDTO> sachList = sachBLL.getAllSach();
+        ArrayList<NhaCungCapDTO> nhaCungCapList = nhaCungCapBLL.getAll();
         
         maPhieuNhapCTPN_update.addItem("");
         maPhieuNhapCTPN_add.addItem("");
@@ -79,13 +92,19 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         maSachCTPN_add.addItem("");
         
         maNhanVienPN.addItem("");
+        maNhaCungCapPN.addItem("");
         
         maPhieuNhapCTPN_add.setSelectedIndex(0);
         maSachCTPN_add.setSelectedIndex(0);
         maNhanVienPN.setSelectedIndex(0);
+        maNhaCungCapPN.setSelectedIndex(0);
         
         for (NhanVienDTO nv : nhanVienList) {
             maNhanVienPN.addItem(nv.getMaNhanVien());
+        }
+        
+        for (NhaCungCapDTO ncc : nhaCungCapList) {
+            maNhaCungCapPN.addItem(ncc.getMaNhaCungCap());
         }
         
         for (PhieuNhapDTO pn : phieuNhapList) {
@@ -181,10 +200,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     
     private JPanel getPopUpUpdatePN() {
         maNhanVienPN.setFont(font_16_plain);
+        maNhaCungCapPN.setFont(font_16_plain);
         ngayLapPN.setFont(font_16_plain);
         
         JLabel maNhanVienPNLabel = new JLabel("Mã nhân viên: ");
         maNhanVienPNLabel.setFont(font_16_bold);
+        
+        JLabel maNhaCungCapPNLabel = new JLabel("Mã nhà cung cấp: ");
+        maNhaCungCapPNLabel.setFont(font_16_bold);
         
         JLabel ngayLapPNLabel = new JLabel("Ngày lập: ");
         ngayLapPNLabel.setFont(font_16_bold);
@@ -192,14 +215,19 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         
         JPanel containerPanel = new JPanel();
         JPanel maNhanVienPNPanel = new JPanel();
+        JPanel maNhaCungCapPNPanel = new JPanel();
         JPanel ngayLapPNPanel = new JPanel();
 
         containerPanel.setLayout(new GridLayout(3, 1, 10, 10));
         maNhanVienPNPanel.setLayout(new BorderLayout());
+        maNhaCungCapPNPanel.setLayout(new BorderLayout());
         ngayLapPNPanel.setLayout(new BorderLayout());
 
-        maNhanVienPNPanel.add(maNhanVienPNLabel, BorderLayout.NORTH);
-        maNhanVienPNPanel.add(maNhanVienPN, BorderLayout.CENTER);
+        maNhanVienPNPanel.add(maNhaCungCapPNLabel, BorderLayout.NORTH);
+        maNhanVienPNPanel.add(maNhaCungCapPN, BorderLayout.CENTER);
+        
+        maNhaCungCapPNPanel.add(maNhaCungCapPNLabel, BorderLayout.NORTH);
+        maNhaCungCapPNPanel.add(maNhaCungCapPN, BorderLayout.CENTER);
         
         ngayLapPNPanel.add(ngayLapPNLabel, BorderLayout.NORTH);
         ngayLapPNPanel.add(ngayLapPN, BorderLayout.CENTER);
@@ -230,8 +258,9 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     
     private boolean validateValueUpdatePN() {
         String maNhanVien = (String) maNhanVienPN.getSelectedItem();
+        String maNhaCungCap = (String) maNhanVienPN.getSelectedItem();
         
-        if ("".equals(maNhanVien)) {
+        if ("".equals(maNhanVien) || "".equals(maNhaCungCap)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
@@ -260,6 +289,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         ArrayList<PhieuNhapDTO> PNList = phieuNhapBLL.getAll();
         int maPhieuNhap;
         int maNhanVien;
+        int maNhaCungCap;
         Date ngayLap;
         double tongTien;
         
@@ -268,10 +298,11 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         for (PhieuNhapDTO pn : PNList) {
             maPhieuNhap = pn.getMaPhieuNhap();
             maNhanVien = pn.getMaNhanVien();
+            maNhaCungCap = pn.getMaNhaCungCap();
             ngayLap = pn.getNgayLap();
             tongTien = pn.getTongTien();
             
-            modelPN.addRow(new Object[]{maPhieuNhap, maNhanVien, ngayLap, tongTien, "O", "X"});
+            modelPN.addRow(new Object[]{maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien, "O", "X"});
         }
         
         
@@ -284,12 +315,13 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 int row = PNTable.rowAtPoint(evt.getPoint());
                 int col = PNTable.columnAtPoint(evt.getPoint());
 
-                if (row >= 0 && col == 3) {
+                if (row >= 0 && col == 4) {
                     try {
                         int maPhieuNhap =  Integer.parseInt(String.valueOf(PNTable.getValueAt(row, 0)));
                         int maNhanVien = Integer.parseInt(String.valueOf(PNTable.getValueAt(row, 1)));
-                        String ngayLap = String.valueOf(PNTable.getValueAt(row, 2));
-                        double tongTien = Double.parseDouble(String.valueOf(PNTable.getValueAt(row, 3)));
+                        int maNhaCungCap = Integer.parseInt(String.valueOf(PNTable.getValueAt(row, 2)));
+                        String ngayLap = String.valueOf(PNTable.getValueAt(row, 3));
+                        double tongTien = Double.parseDouble(String.valueOf(PNTable.getValueAt(row, 4)));
                         
                         java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngayLap);
                         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -307,7 +339,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                             utilDate = ngayLapPN.getDate();
                             sqlDate = new java.sql.Date(utilDate.getTime());
                             
-                            PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, sqlDate, tongTien);
+                            PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, maNhaCungCap, sqlDate, tongTien);
                             
                             phieuNhapBLL.update(pn);
                             
@@ -321,7 +353,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                     }
                 }
                 
-                if (row >= 0 && col == 3) {
+                if (row >= 0 && col == 5) {
                     showComfirmRemovePN(row);
                 }
             }
@@ -436,7 +468,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         
         infoUser.setText(tk.getTenDangNhap());
         
-        PNTable.getColumnModel().getColumn(3).setCellRenderer(new CurrencyTableCellRenderer());
+        PNTable.getColumnModel().getColumn(4).setCellRenderer(new CurrencyTableCellRenderer());
         PNTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
         PNTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
         
@@ -468,7 +500,8 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
 
         header = new javax.swing.JPanel();
         infoUser = new javax.swing.JLabel();
-        logoutBtn = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
+        logoutBtn1 = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         dateTimeLabel = new javax.swing.JLabel();
         backBtn = new javax.swing.JLabel();
@@ -502,11 +535,20 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         infoUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         infoUser.setText("NV1 - Biện Thành Hưng");
 
-        logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
-        logoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutBtnMouseClicked(evt);
+                exportExcelMouseClicked(evt);
+            }
+        });
+
+        logoutBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
+        logoutBtn1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        logoutBtn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutBtn1MouseClicked(evt);
             }
         });
 
@@ -518,13 +560,20 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
+            .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
+                    .addContainerGap(1222, Short.MAX_VALUE)
+                    .addComponent(logoutBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(14, 14, 14)))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+            .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(logoutBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
         );
 
         footer.setBackground(new java.awt.Color(255, 204, 102));
@@ -548,7 +597,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, footerLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(backBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1000, Short.MAX_VALUE)
                 .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         footerLayout.setVerticalGroup(
@@ -682,14 +731,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Phiếu Nhập", "Mã Nhân Viên", "Ngày Lập", "Tổng Tiền", "Sửa", "Xóa"
+                "Mã Phiếu Nhập", "Mã Nhân Viên", "Mã Nhà Cung Cấp", "Ngày Lập", "Tổng Tiền", "Sửa", "Xóa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -708,9 +757,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane3)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -728,7 +775,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             }
         });
 
-        searchCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu nhập", "Mã nhân viên" }));
+        searchCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu nhập", "Mã nhân viên", "Mã nhà cung cấp" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -738,9 +785,9 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputPNId, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputPNId)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchCbbox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(searchCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addPBBtn)
                 .addGap(14, 14, 14))
@@ -770,7 +817,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -786,10 +833,119 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
-        this.dispose();
-        new LoginGUI();
-    }//GEN-LAST:event_logoutBtnMouseClicked
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<PhieuNhapDTO> pnList = phieuNhapBLL.getAll();
+        ArrayList<ChiTietPhieuNhapDTO> ctpnList = chiTietPhieuNhapBLL.getAll();
+        
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("phieunhap");
+            XSSFSheet sheet1 = workbook.createSheet("chitietphieunhap");
+            
+            XSSFRow row = null;
+            XSSFCell cell = null;
+            
+            row = sheet.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu nhập");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã nhân viên");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã nhà cung cấp");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Ngày lập");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Tổng tiền");
+            
+            int i = 1;
+            for (PhieuNhapDTO pn : pnList) {
+                row = sheet.createRow(0 + i);
+                
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(pn.getMaPhieuNhap());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(pn.getMaNhanVien());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(pn.getMaNhaCungCap());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(pn.getNgayLap().toString());
+
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(pn.getTongTien());
+                
+                i++;
+            }
+            
+            
+            row = null;
+            cell = null;
+            
+            row = sheet1.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu nhập");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã sách");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Số lượng");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Đơn giá");
+            
+            i = 1;
+            for (ChiTietPhieuNhapDTO ctpn : ctpnList) {
+                row = sheet1.createRow(0 + i);
+                
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(ctpn.getMaPhieuNhap());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(ctpn.getMaSach());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(ctpn.getSoLuong());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(ctpn.getDonGia());
+                
+                i++;
+            }
+            
+            File f = new File("D://phieunhapvachitietphieunhap.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+                
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
@@ -808,6 +964,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             int searchType = searchCbbox.getSelectedIndex();
             int maPhieuNhap;
             int maNhanVien;
+            int maNhaCungCap;
             Date ngayLap;
             double tongTien;
             
@@ -832,10 +989,11 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 for (PhieuNhapDTO pn : PNList) {
                     maPhieuNhap = pn.getMaPhieuNhap();
                     maNhanVien = pn.getMaNhanVien();
+                    maNhaCungCap = pn.getMaNhaCungCap();
                     ngayLap = pn.getNgayLap();
                     tongTien = pn.getTongTien();
                     
-                    modelPN.addRow(new Object[]{maPhieuNhap, maNhanVien, ngayLap, tongTien, "O", "X"});
+                    modelPN.addRow(new Object[]{maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien, "O", "X"});
                 }
             }
         }
@@ -929,8 +1087,12 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
 
     private void addPBBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addPBBtnMouseClicked
         this.dispose();
-        new SellBookGUI(tk);
+        new ImportBookGUI(tk);
     }//GEN-LAST:event_addPBBtnMouseClicked
+
+    private void logoutBtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtn1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoutBtn1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CTPNTable;
@@ -939,6 +1101,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private javax.swing.JLabel addPBBtn;
     private javax.swing.JLabel backBtn;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JPanel footer;
     private javax.swing.JPanel header;
     private javax.swing.JLabel infoUser;
@@ -954,7 +1117,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JLabel logoutBtn;
+    private javax.swing.JLabel logoutBtn1;
     private javax.swing.JComboBox<String> searchCbbox;
     // End of variables declaration//GEN-END:variables
 }

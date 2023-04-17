@@ -15,12 +15,20 @@ import DTO.NhanVienDTO;
 import DTO.PhieuBanDTO;
 import DTO.PhieuNhapDTO;
 import DTO.TaiKhoanDTO;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -50,12 +58,10 @@ public final class StatiticsGUI extends javax.swing.JFrame {
     
     private void setImportBookTable() {
         int maPhieuNhap;
-        int maSach;
         int maNhanVien;
+        int maNhaCungCap;
         Date ngayLap;
-        int soLuong;
-        long donGia;
-        long thanhTien;
+        double tongTien;
         
         totalImport = 0;
         totalImportBook = 0;
@@ -63,23 +69,21 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         DefaultTableModel modelImportBookTable = (DefaultTableModel) importBookTable.getModel();
         
         for (PhieuNhapDTO pn : PNList) {
-            maPhieuNhap = pn.getMaPhieuNhap();
+            maPhieuNhap = pn .getMaPhieuNhap();
             maNhanVien = pn.getMaNhanVien();
+            maNhaCungCap = pn.getMaNhaCungCap();
             ngayLap = pn.getNgayLap();
+            tongTien = pn.getTongTien();
             
             ArrayList<ChiTietPhieuNhapDTO> ctpnList = chiTietPhieuNhapBLL.getByPNId(maPhieuNhap);
             
             for (ChiTietPhieuNhapDTO ctpn : ctpnList) {
-                maSach = ctpn.getMaSach();
-                soLuong = ctpn.getSoLuong();
-                donGia = ctpn.getDonGia();
-                thanhTien = soLuong * donGia;
+                int soLuong = ctpn.getSoLuong();
                 
                 totalImportBook += soLuong;
-                totalImport += thanhTien;
-                
-                modelImportBookTable.addRow(new Object[]{maPhieuNhap, maSach, maNhanVien, ngayLap, soLuong, donGia, thanhTien});
             }
+            
+            modelImportBookTable.addRow(new Object[]{maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien});
         }
         
         totalImportBookLabel.setText(totalImportBook + " sách");
@@ -89,13 +93,11 @@ public final class StatiticsGUI extends javax.swing.JFrame {
     
     private void setSellBookTable() {
         int maPhieuBan;
-        int maSach;
         int maKhachHang;
         int maNhanVien;
+        int maKhuyenMai;
         Date ngayLap;
-        int soLuong;
-        long donGia;
-        long thanhTien;
+        double tongTien;
         
         totalSellBook = 0;
         totalSell = 0;
@@ -103,23 +105,21 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         DefaultTableModel modelSellBookTable = (DefaultTableModel) sellBookTable.getModel();
         
         for (PhieuBanDTO pb : PBList) {
-            maPhieuBan = pb.getMaPhieuBan();
+            maPhieuBan = pb .getMaPhieuBan();
             maKhachHang = pb.getMaKhachHang();
             maNhanVien = pb.getMaNhanVien();
+            maKhuyenMai = pb.getMaKhuyenMai();
             ngayLap = pb.getNgayLap();
+            tongTien = pb.getTongTien();
+            
+            modelSellBookTable.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, maKhuyenMai, ngayLap, tongTien});
             
             ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(maPhieuBan);
             
             for (ChiTietPhieuBanDTO ctpb : ctpbList) {
-                maSach = ctpb.getMaSach();
-                soLuong = ctpb.getSoLuong();
-                donGia = ctpb.getDonGia();
-                thanhTien = soLuong * donGia;
+                int soLuong = ctpb.getSoLuong();
                 
                 totalSellBook += soLuong;
-                totalSell += thanhTien;
-                
-                modelSellBookTable.addRow(new Object[]{maPhieuBan, maSach, maKhachHang, maNhanVien, ngayLap, soLuong, donGia, thanhTien});
             }
         }
         
@@ -142,8 +142,8 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         importBookTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
         importBookTable.getColumnModel().getColumn(6).setCellRenderer(new CurrencyTableCellRenderer());
         
+        sellBookTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
         sellBookTable.getColumnModel().getColumn(6).setCellRenderer(new CurrencyTableCellRenderer());
-        sellBookTable.getColumnModel().getColumn(7).setCellRenderer(new CurrencyTableCellRenderer());
         
         setImportBookTable();
         
@@ -167,6 +167,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         infoUser = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         dateTimeLabel = new javax.swing.JLabel();
         backBtn = new javax.swing.JLabel();
@@ -221,6 +222,15 @@ public final class StatiticsGUI extends javax.swing.JFrame {
             }
         });
 
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -229,6 +239,8 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
@@ -236,6 +248,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         footer.setBackground(new java.awt.Color(255, 204, 102));
@@ -281,14 +294,14 @@ public final class StatiticsGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Phiếu Bán", "Mã Nhân Viên", "Mã Sách", "Ngày Lập", "Số Lượng", "Đơn Giá", "Thành Tiền"
+                "Mã Phiếu Nhập", "Mã Nhân Viên", "Mã Nhà Cung Cấp", "Ngày Lập", "Tổng Tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Long.class, java.lang.Long.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -423,14 +436,14 @@ public final class StatiticsGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Phiếu Bán", "Mã Sách", "Mã Khách Hàng", "Mã Nhân Viên", "Ngày Lập", "Số Lượng", "Đơn Giá", "Thành Tiền"
+                "Mã Phiếu Bán", "Mã Khách Hàng", "Mã Nhân Viên", "Mã Khuyến Mãi", "Ngày Lập", "Tổng Tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Long.class, java.lang.Long.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -449,9 +462,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane3)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,7 +524,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(totalSellBookLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -545,7 +556,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sellTo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
-            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,7 +583,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
             .addComponent(footer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -674,10 +685,164 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         setSellBookTable();
     }//GEN-LAST:event_sellToPropertyChange
 
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<PhieuBanDTO> pbList = phieuBanBLL.getAll();
+        int maPhieuBan;
+        int maPhieuNhap;
+        int maNhaCungCap;
+        int maKhachHang;
+        int maNhanVien;
+        int maKhuyenMai;
+        Date ngayLap;
+        double tongTien;
+        
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("thongkephieuban");
+            XSSFSheet sheet1 = workbook.createSheet("thongkephieunhap");
+            
+            XSSFRow row = null;
+            XSSFCell cell = null;
+            
+            row = sheet.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu bán");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã khách hàng");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã nhân viên");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Mã khuyến mãi");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Ngày lập");
+            
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Tổng tiền");
+            
+            int i = 1;
+            
+            for (PhieuBanDTO pb : PBList) {
+                maPhieuBan = pb .getMaPhieuBan();
+                maKhachHang = pb.getMaKhachHang();
+                maNhanVien = pb.getMaNhanVien();
+                maKhuyenMai = pb.getMaKhuyenMai();
+                ngayLap = pb.getNgayLap();
+                tongTien = pb.getTongTien();
+
+                row = sheet.createRow(0 + i);
+                
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(maPhieuBan);
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(maKhachHang);
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(maNhanVien);
+
+                cell = row.createCell(4, CellType.NUMERIC);
+                cell.setCellValue(maKhuyenMai);
+
+                cell = row.createCell(5, CellType.STRING);
+                cell.setCellValue(ngayLap);
+
+                cell = row.createCell(6, CellType.NUMERIC);
+                cell.setCellValue(tongTien);
+
+                i++;
+            }
+            
+            row = null;
+            cell = null;
+            
+            row = sheet1.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu nhập");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã nhân viên");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã nhà cung cấp");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Mã sách");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Ngày lập");
+            
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Số lượng");
+            
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Đơn giá");
+            
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Thành tiền");
+            
+            i = 1;
+            for (PhieuNhapDTO pn : PNList) {
+                maPhieuNhap = pn .getMaPhieuNhap();
+                maNhanVien = pn.getMaNhanVien();
+                maNhaCungCap = pn.getMaNhaCungCap();
+                ngayLap = pn.getNgayLap();
+                tongTien = pn.getTongTien();
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(maPhieuNhap);
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(maNhanVien);
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(maNhaCungCap);
+
+                cell = row.createCell(4, CellType.NUMERIC);
+                cell.setCellValue(ngayLap);
+
+                cell = row.createCell(5, CellType.STRING);
+                cell.setCellValue(tongTien);
+                
+                i++;
+            }
+            
+            File f = new File("D://thongke.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+                
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backBtn;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JPanel footer;
     private javax.swing.JPanel header;
     private javax.swing.JTable importBookTable;

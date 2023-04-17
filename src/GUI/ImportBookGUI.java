@@ -97,7 +97,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
         
         int row = modelBuy.getRowCount();
         for (int i = 0; i < row; i++) {
-            double pay = (double) modelBuy.getValueAt(i, 4);
+            double pay = Double.parseDouble(String.valueOf(modelBuy.getValueAt(i, 4)));
             tongTien += pay;
         }
         
@@ -432,15 +432,15 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(supplierCbx, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(supplierCbx, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalPay))
+                        .addComponent(totalPay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(employeeName)))
+                        .addComponent(employeeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -699,9 +699,10 @@ public final class ImportBookGUI extends javax.swing.JFrame {
         Date ngayLap = new Date(millis);
         SachDTO s;
         int ma;
+        int maNhaCungCap = Integer.parseInt(String.valueOf(supplierCbx.getSelectedItem()));
         int soLuongMua;
         
-        PhieuNhapDTO pn = new PhieuNhapDTO(-1, tk.getMaNhanVien(), ngayLap, tongTien);
+        PhieuNhapDTO pn = new PhieuNhapDTO(-1, tk.getMaNhanVien(), maNhaCungCap, ngayLap, tongTien);
         
         int maPhieuNhap = phieuNhapBLL.insert(pn);
         
@@ -737,7 +738,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inputBookIdFocusGained
 
     private void inputBookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputBookIdFocusLost
-        inputBookId.setText("Nhập tên sách");
+        inputBookId.setText("Nhập thông tin sách");
         inputBookId.setForeground(new Color(102, 102, 102));
     }//GEN-LAST:event_inputBookIdFocusLost
 

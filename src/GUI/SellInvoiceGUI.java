@@ -25,6 +25,9 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -35,6 +38,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -323,7 +331,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             tongTien = pb.getTongTien();
             maKhuyenMai = pb.getMaKhuyenMai();
             
-            modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai, "O", "X"});
+            modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, maKhuyenMai, ngayLap, tongTien, "O", "X"});
         }
     }
     
@@ -533,6 +541,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         infoUser = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         dateTimeLabel = new javax.swing.JLabel();
         backBtn = new javax.swing.JLabel();
@@ -574,6 +583,15 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             }
         });
 
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -582,13 +600,16 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+            .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(exportExcel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         footer.setBackground(new java.awt.Color(255, 204, 102));
@@ -746,11 +767,11 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã Phiếu Bán", "Mã Khách Hàng", "Mã Nhân Viên", "Ngày Lập", "Tổng tiền", "Mã Khuyến Mãi", "Sửa", "Xóa"
+                "Mã Phiếu Bán", "Mã Khách Hàng", "Mã Nhân Viên", "Mã Khuyến Mãi", "Ngày Lập", "Tổng tiền", "Sửa", "Xóa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
@@ -875,6 +896,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             int maPhieuBan;
             int maKhachHang;
             int maNhanVien;
+            int maKhuyenMai;
             Date ngayLap;
             
             ArrayList<PhieuBanDTO> PBList = null;
@@ -901,9 +923,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     maPhieuBan = pb.getMaPhieuBan();
                     maKhachHang = pb.getMaKhachHang();
                     maNhanVien = pb.getMaNhanVien();
+                    maKhuyenMai = pb.getMaKhuyenMai();
                     ngayLap = pb.getNgayLap();
                     
-                    modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, ngayLap, "O", "X"});
+                    modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, maKhuyenMai, ngayLap, "O", "X"});
                 }
             }
         }
@@ -1002,6 +1025,120 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         new SellBookGUI(tk);
     }//GEN-LAST:event_addPBBtnMouseClicked
 
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<PhieuBanDTO> pbList = phieuBanBLL.getAll();
+        ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getAll();
+        
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("phieuban");
+            XSSFSheet sheet1 = workbook.createSheet("chitietphieuban");
+            
+            XSSFRow row = null;
+            XSSFCell cell = null;
+            
+            row = sheet.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu bán");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã khách hàng");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã nhân viên");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Ngày lập");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Tổng tiền");
+            
+            int i = 1;
+            for (PhieuBanDTO pb : pbList) {
+                row = sheet.createRow(0 + i);
+                
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(pb.getMaPhieuBan());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(pb.getMaKhachHang());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(pb.getMaNhanVien());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(pb.getNgayLap().toString());
+
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(pb.getTongTien());
+                
+                i++;
+            }
+            
+            
+            row = null;
+            cell = null;
+            
+            row = sheet1.createRow(0);
+            
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã phiếu bán");
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Mã sách");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Số lượng");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Đơn giá");
+            
+            i = 1;
+            for (ChiTietPhieuBanDTO ctpb : ctpbList) {
+                row = sheet1.createRow(0 + i);
+                
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(ctpb.getMaPhieuBan());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(ctpb.getMaSach());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(ctpb.getSoLuong());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(ctpb.getDonGia());
+                
+                i++;
+            }
+            
+            File f = new File("D://phieunhapvachitietphieunhap.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+                
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CTPBTable;
     private javax.swing.JTable PBTable;
@@ -1009,6 +1146,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private javax.swing.JLabel addPBBtn;
     private javax.swing.JLabel backBtn;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JPanel footer;
     private javax.swing.JPanel header;
     private javax.swing.JLabel infoUser;

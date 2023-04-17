@@ -13,6 +13,9 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -372,6 +380,7 @@ public class NhanVienGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        exportExcel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         dateTimeLabel = new javax.swing.JLabel();
@@ -413,6 +422,15 @@ public class NhanVienGUI extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
 
+        exportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/import-excel.png"))); // NOI18N
+        exportExcel.setToolTipText("Xuất Excel");
+        exportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportExcelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -421,6 +439,8 @@ public class NhanVienGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
@@ -428,6 +448,7 @@ public class NhanVienGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(exportExcel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -895,6 +916,93 @@ public class NhanVienGUI extends javax.swing.JFrame {
         inputSearch.setForeground(new Color(102, 102, 102));
     }//GEN-LAST:event_inputSearchFocusLost
 
+    private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
+        ArrayList<NhanVienDTO> nvList = nhanVienBLL.getAll();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("nhanvien");
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            row = sheet.createRow(0);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã nhân viên");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Tên nhân viên");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Năm sinh");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Giới tính");
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Số điện thoại");
+            
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Lương");
+            
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Ngày đã nghỉ");
+            
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Vai trò");
+
+            int i = 1;
+            for (NhanVienDTO nv : nvList) {
+                row = sheet.createRow(0 + i);
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(nv.getMaNhanVien());
+
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(nv.getTen());
+
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(nv.getNamSinh());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(nv.getGioiTinh());
+
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(nv.getSoDienThoai());
+                
+                cell = row.createCell(6, CellType.NUMERIC);
+                cell.setCellValue(nv.getLuong());
+                
+                cell = row.createCell(7, CellType.NUMERIC);
+                cell.setCellValue(nv.getSoNgayNghi());
+                
+                cell = row.createCell(8, CellType.NUMERIC);
+                cell.setCellValue(nv.getVaiTro());
+
+                i++;
+            }
+
+            File f = new File("D://nhanvien.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportExcelMouseClicked
+
         private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
                 // TODO add your handling code here:
         }// GEN-LAST:event_jTextField1ActionPerformed
@@ -988,6 +1096,7 @@ public class NhanVienGUI extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JComboBox<String> condition;
     private javax.swing.JLabel dateTimeLabel;
+    private javax.swing.JLabel exportExcel;
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;

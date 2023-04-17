@@ -21,7 +21,7 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
         return new PhieuNhapDAL();
     }
 
-    public int insert(int maNhanVien, Date ngayLap, double tongTien) {
+    public int insert(int maNhanVien, int maNhaCungCap, Date ngayLap, double tongTien) {
         boolean result = false;
         int auto_id = -1;
         //Bước 1: tạo kết nối với sql
@@ -29,14 +29,15 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
         if (connect != null) {
             try {
                 String sql = "INSERT into phieunhap "
-                        + "(maNhanVien, ngayLap, tongTien) "
-                        + "VALUES (?, ?, ?)";
+                        + "(maNhanVien, maNhaCungCap, ngayLap, tongTien) "
+                        + "VALUES (?, ?, ?, ?)";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
                 stmt.setInt(1, maNhanVien);
-                stmt.setDate(2, ngayLap);
-                stmt.setDouble(3, tongTien);
+                stmt.setInt(2, maNhaCungCap);
+                stmt.setDate(3, ngayLap);
+                stmt.setDouble(4, tongTien);
 
                 result = stmt.executeUpdate()>=1;
                 
@@ -139,10 +140,11 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
                 while(rs.next()) {
                     int maPhieuNhap = rs.getInt("maPhieuNhap");
                     int maNhanVien = rs.getInt("maNhanVien");
+                    int maNhaCungCap = rs.getInt("maNhaCungCap");
                     Date ngayLap = rs.getDate("ngayLap");
                     double tongTien = rs.getInt("tongTien");
                     
-                    PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, ngayLap, tongTien);
+                    PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien);
                  
                     result.add(pn);
                 }
@@ -175,10 +177,12 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
                 while(rs.next()) {
                     int maPhieuNhap = rs.getInt("maPhieuNhap");
                     int maNhanVien = rs.getInt("maNhanVien");
+                    int maNhaCungCap = rs.getInt("maNhaCungCap");
                     Date ngayLap = rs.getDate("ngayLap");
                     double tongTien = rs.getInt("tongTien");
                     
-                    PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, ngayLap, tongTien);
+                    result = new PhieuNhapDTO(maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien);
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(PhieuNhapDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,10 +213,11 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
                 while(rs.next()) {
                     int maPhieuNhap = rs.getInt("maPhieuNhap");
                     int maNhanVien = rs.getInt("maNhanVien");
+                    int maNhaCungCap = rs.getInt("maNhaCungCap");
                     Date ngayLap = rs.getDate("ngayLap");
                     double tongTien = rs.getInt("tongTien");
                     
-                    PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, ngayLap, tongTien);
+                    PhieuNhapDTO pn = new PhieuNhapDTO(maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien);
                  
                     result.add(pn);
                 }

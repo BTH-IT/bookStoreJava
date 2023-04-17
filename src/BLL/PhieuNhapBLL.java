@@ -25,7 +25,7 @@ public class PhieuNhapBLL {
     }
     
     public int insert(PhieuNhapDTO pn) {
-        return phieuNhapDAL.insert(pn.getMaNhanVien(), pn.getNgayLap(), pn.getTongTien());
+        return phieuNhapDAL.insert(pn.getMaNhanVien(), pn.getMaNhaCungCap(), pn.getNgayLap(), pn.getTongTien());
     }
     
     public boolean update(PhieuNhapDTO pb) {
