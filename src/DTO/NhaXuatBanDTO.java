@@ -1,43 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DTO;
 
-/**
- *
- * @author Admin
- */
+import java.util.Scanner;
+
 public class NhaXuatBanDTO {
-    private String maNXB;
-    private String tenNXB;
+    private int maNhaXuatBan;
+    private String tenNhaXuatBan;
     private String diaChi;
     private String soDienThoai;
 
-    public NhaXuatBanDTO() {
-    }
-
-    public NhaXuatBanDTO(String maNXB, String tenNXB, String diaChi, String soDienThoai) {
-        this.maNXB = maNXB;
-        this.tenNXB = tenNXB;
+    public NhaXuatBanDTO(int maNhaXuatBan, String tenNhaXuatBan, String diaChi, String soDienThoai) {
+        this.maNhaXuatBan = maNhaXuatBan;
+        this.tenNhaXuatBan = tenNhaXuatBan;
         this.diaChi = diaChi;
         this.soDienThoai = soDienThoai;
     }
 
-    public String getMaNXB() {
-        return this.maNXB;
+    public NhaXuatBanDTO() {
+        this.maNhaXuatBan = 0;
+        this.tenNhaXuatBan = "";
+        this.soDienThoai = "";
+        this.diaChi = "";
     }
 
-    public void setMaNXB(String maNXB) {
-        this.maNXB = maNXB;
+    public int getMaNhaXuatBan() {
+        return this.maNhaXuatBan;
     }
 
-    public String getTenNXB() {
-        return this.tenNXB;
+    public String getTenNhaXuatBan() {
+        return this.tenNhaXuatBan;
     }
 
-    public void setTenNXB(String tenNXB) {
-        this.tenNXB = tenNXB;
+    public void setTenNhaXuatBan(String tenNhaXuatBan) {
+        this.tenNhaXuatBan = tenNhaXuatBan;
     }
 
     public String getDiaChi() {
@@ -55,15 +49,4 @@ public class NhaXuatBanDTO {
     public void setSoDienThoai(String soDienThoai) {
         this.soDienThoai = soDienThoai;
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-                " maNXB='" + getMaNXB() + "'" +
-                ", tenNXB='" + getTenNXB() + "'" +
-                ", diaChi='" + getDiaChi() + "'" +
-                ", soDienThoai='" + getSoDienThoai() + "'" +
-                "}";
-    }
-
 }

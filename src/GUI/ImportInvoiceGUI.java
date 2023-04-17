@@ -442,7 +442,6 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         
         CTPNTable.getColumnModel().getColumn(3).setCellRenderer(new CurrencyTableCellRenderer());
         CTPNTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
-        CTPNTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
         
         setPNTable();
         addEventPNTable();

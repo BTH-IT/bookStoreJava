@@ -63,7 +63,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         DefaultTableModel modelImportBookTable = (DefaultTableModel) importBookTable.getModel();
         
         for (PhieuNhapDTO pn : PNList) {
-            maPhieuNhap = pn .getMaPhieuNhap();
+            maPhieuNhap = pn.getMaPhieuNhap();
             maNhanVien = pn.getMaNhanVien();
             ngayLap = pn.getNgayLap();
             
@@ -103,7 +103,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         DefaultTableModel modelSellBookTable = (DefaultTableModel) sellBookTable.getModel();
         
         for (PhieuBanDTO pb : PBList) {
-            maPhieuBan = pb .getMaPhieuBan();
+            maPhieuBan = pb.getMaPhieuBan();
             maKhachHang = pb.getMaKhachHang();
             maNhanVien = pb.getMaNhanVien();
             ngayLap = pb.getNgayLap();

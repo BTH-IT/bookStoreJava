@@ -21,15 +21,15 @@ public class NhaXuatBanBLL {
 
     }
 
-    public boolean insert(NhaXuatBanDTO kh) {
-        return nhaXuatBanDAL.insert(kh);
+    public int insert(NhaXuatBanDTO nxb) {
+        return nhaXuatBanDAL.insert(nxb.getTenNhaXuatBan(), nxb.getDiaChi(), nxb.getSoDienThoai());
     }
 
-    public boolean update(NhaXuatBanDTO nxb, String manxb) {
-        return nhaXuatBanDAL.update(nxb, manxb);
+    public boolean update(NhaXuatBanDTO nxb) {
+        return nhaXuatBanDAL.update(nxb);
     }
 
-    public boolean delete(String manxb) {
+    public boolean delete(int manxb) {
         return nhaXuatBanDAL.delete(manxb);
     }
 
@@ -37,7 +37,7 @@ public class NhaXuatBanBLL {
         return nhaXuatBanDAL.getAll();
     }
 
-    public NhaXuatBanDTO getByKHid(String manxb) {
+    public NhaXuatBanDTO getByKHid(int manxb) {
         return nhaXuatBanDAL.getById(manxb);
     }
     

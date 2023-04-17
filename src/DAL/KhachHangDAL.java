@@ -9,153 +9,129 @@ import java.util.logging.Logger;
 
 import DTO.KhachHangDTO;
 
-public class KhachHangDAL implements DALInterface<KhachHangDTO> {
-
+public class KhachHangDAL implements DALInterface<KhachHangDTO>{
+    
     public static KhachHangDAL getInstance() {
         return new KhachHangDAL();
     }
 
-    @Override
-    public boolean insert(KhachHangDTO t) {
+    public int insert(String tenKhachHang, String soDienThoai, String gioiTinh, int namSinh) {
         boolean result = false;
-
-        // Bước 1: tạo kết nối với sql
+        int auto_id = -1;
+        //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
                 String sql = "INSERT into khachhang "
-                        + "(ten, gioiTinh, namSinh, soDienThoai) "
+                        + "(tenKhachHang, soDienThoai, gioiTinh, namSinh) "
                         + "VALUES (?, ?, ?, ?)";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-                stmt.setString(1, t.getTen());
-                stmt.setString(2, t.getGioiTinh());
-                stmt.setInt(3, t.getNamSinh());
-                stmt.setString(4, t.getSoDienThoai());
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+                stmt.setString(1, tenKhachHang);
+                stmt.setString(2, soDienThoai);
+                stmt.setString(3, gioiTinh);
+                stmt.setInt(4, namSinh);
 
-                result = stmt.executeUpdate() >= 1;
+                result = stmt.executeUpdate()>=1;
+                
+                if (result) {
+                    ResultSet rs = stmt.getGeneratedKeys();
+                    rs.next();
+                    auto_id = rs.getInt(1);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
         }
+        
+        return auto_id;
+    }
 
-        return result;
-    };
-
-    public boolean update(KhachHangDTO t, String soDienThoai) {
+    @Override
+    public boolean update(KhachHangDTO t) {
         boolean result = false;
-        // Bước 1: tạo kết nối với sql
+        //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
-
+        
         if (connect != null) {
             try {
                 String sql = "UPDATE khachhang SET "
-                        + "ten=?, gioiTinh=?, namSinh=?, soDienThoai=? "
-                        + "WHERE soDienThoai=?";
+                        + "tenKhachHang=?, soDienThoai=?, gioiTinh=?, namSinh=? "
+                        + "WHERE maKhachHang=?";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
                 stmt.setString(1, t.getTen());
-                stmt.setString(2, t.getGioiTinh());
-                stmt.setInt(3, t.getNamSinh());
-                stmt.setString(4, t.getSoDienThoai());
-                stmt.setString(5, soDienThoai);
+                stmt.setString(2, t.getSoDienThoai());
+                stmt.setString(3, t.getGioiTinh());
+                stmt.setInt(4, t.getNamSinh());
+                stmt.setInt(5, t.getMaKhachHang());
 
-                result = stmt.executeUpdate() >= 1;
+                result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
                 Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
         }
-
-        return result;
-    };
-
-    public boolean delete(String soDienThoai) {
-        boolean result = false;
-        // Bước 1: tạo kết nối với sql
-        Connection connect = ConnectDatabase.openConnection();
-        if (connect != null) {
-            try {
-                String sql = "DELETE FROM khachhang "
-                        + "WHERE soDienThoai=?";
-
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-                stmt.setString(1, soDienThoai);
-
-                result = stmt.executeUpdate() >= 1;
-            } catch (SQLException ex) {
-                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                ConnectDatabase.closeConnection(connect);
-            }
-        }
-
+        
         return result;
     }
 
+    @Override
+    public boolean delete(int id) {
+        boolean result = false;
+        //Bước 1: tạo kết nối với sql
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            try {
+                String sql = "UPDATE khachhang SET hienThi=0 "
+                        + "WHERE maKhachHang=?";
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setInt(1, id); 
+
+                result = stmt.executeUpdate()>=1;
+            } catch (SQLException ex) {
+                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
     public ArrayList<KhachHangDTO> getAll() {
         ArrayList<KhachHangDTO> result = new ArrayList<>();
-
+        
         Connection connect = ConnectDatabase.openConnection();
-
         if (connect != null) {
-
+            
             try {
-                String sql = "SELECT * FROM khachhang";
+                String sql = "SELECT * FROM khachhang WHERE hienThi=1";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql);  
 
                 ResultSet rs = stmt.executeQuery();
-
-                // Bước 3: lấy dữ liệu
-                while (rs.next()) {
-                    String ten = rs.getString("ten");
-                    String gioiTinh = rs.getString("gioiTinh");
-                    int namSinh = rs.getInt("namSinh");
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    String tenKhachHang = rs.getString("tenKhachHang");
                     String soDienThoai = rs.getString("soDienThoai");
-
-                    KhachHangDTO s = new KhachHangDTO(ten, gioiTinh, soDienThoai, namSinh);
-
-                    result.add(s);
-                }
-            } catch (SQLException ex) {
-
-                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                ConnectDatabase.closeConnection(connect);
-            }
-        }
-
-        return result;
-    };
-
-    public KhachHangDTO getById(String soDienThoai) {
-        KhachHangDTO result = null;
-
-        Connection connect = ConnectDatabase.openConnection();
-        if (connect != null) {
-            try {
-                String sql = "SELECT * FROM khachhang WHERE soDienThoai=\'" + soDienThoai + "\'";
-
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-
-                ResultSet rs = stmt.executeQuery();
-
-                // Bước 3: lấy dữ liệu
-                while (rs.next()) {
-                    String ten = rs.getString("ten");
                     String gioiTinh = rs.getString("gioiTinh");
                     int namSinh = rs.getInt("namSinh");
-
-                    result = new KhachHangDTO(ten, gioiTinh, soDienThoai, namSinh);
+                    
+                    KhachHangDTO kh = new KhachHangDTO(maKhachHang, tenKhachHang, gioiTinh, soDienThoai, namSinh);
+                 
+                    result.add(kh);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,54 +139,83 @@ public class KhachHangDAL implements DALInterface<KhachHangDTO> {
                 ConnectDatabase.closeConnection(connect);
             }
         }
-
+        
         return result;
-    };
-
-    public ArrayList<KhachHangDTO> getByCondition(String condition) {
-        ArrayList<KhachHangDTO> result = new ArrayList<>();
-
-        Connection connect = ConnectDatabase.openConnection();
-        if (connect != null) {
-
-            try {
-                String sql = "SELECT * FROM khachhang WHERE " + condition;
-
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-
-                ResultSet rs = stmt.executeQuery();
-
-                // Bước 3: lấy dữ liệu
-                while (rs.next()) {
-                    String ten = rs.getString("ten");
-                    String gioiTinh = rs.getString("gioiTinh");
-                    int namSinh = rs.getInt("namSinh");
-                    String soDienThoai = rs.getString("soDienThoai");
-
-                    KhachHangDTO s = new KhachHangDTO(ten, gioiTinh, soDienThoai, namSinh);
-
-                    result.add(s);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                ConnectDatabase.closeConnection(connect);
-            }
-        }
-
-        return result;
-    };
-
-    public boolean update(KhachHangDTO t) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public static void main(String[] args) {
-        ArrayList<KhachHangDTO> x = KhachHangDAL.getInstance().getAll();
-        for (KhachHangDTO i : x) {
-            System.out.println(i.toString());
+    @Override
+    public KhachHangDTO getById(int id) {
+        KhachHangDTO result = null;
+        
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            try {
+                String sql = "SELECT * FROM khachhang WHERE hienThi=1 AND maKhachHang=" + id;
 
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+
+                ResultSet rs = stmt.executeQuery();
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    String tenKhachHang = rs.getString("tenKhachHang");
+                    String soDienThoai = rs.getString("soDienThoai");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    int namSinh = rs.getInt("namSinh");
+                    
+                    result = new KhachHangDTO(maKhachHang, tenKhachHang, gioiTinh, soDienThoai, namSinh);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
         }
+        
+        return result;
+    }
+
+    @Override
+    public ArrayList<KhachHangDTO> getByCondition(String condition) {
+        ArrayList<KhachHangDTO> result = new ArrayList<>();
+        
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            
+            try {
+                String sql = "SELECT * FROM khachhang WHERE hienThi=1 AND " + condition;
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql);  
+
+                ResultSet rs = stmt.executeQuery();
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maKhachHang = rs.getInt("maKhachHang");
+                    String tenKhachHang = rs.getString("tenKhachHang");
+                    String soDienThoai = rs.getString("soDienThoai");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    int namSinh = rs.getInt("namSinh");
+                    
+                    KhachHangDTO kh = new KhachHangDTO(maKhachHang, tenKhachHang, gioiTinh, soDienThoai, namSinh);
+                 
+                    result.add(kh);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(KhachHangDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public boolean insert(KhachHangDTO t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

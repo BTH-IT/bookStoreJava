@@ -44,7 +44,6 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="header" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-<<<<<<< HEAD
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jPanel2" min="-2" pref="597" max="-2" attributes="0"/>
@@ -55,13 +54,6 @@
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   </Group>
               </Group>
-=======
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel1" max="32767" attributes="0"/>
-                  <Component id="jPanel2" pref="597" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
               <Component id="footer" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -233,7 +225,6 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-<<<<<<< HEAD
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="payBtn" min="-2" pref="314" max="-2" attributes="0"/>
@@ -247,11 +238,6 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="saleCbx" min="-2" pref="189" max="-2" attributes="0"/>
                           </Group>
-=======
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -275,14 +261,6 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
-<<<<<<< HEAD
-=======
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="payBtn" min="-2" pref="314" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
-                  </Group>
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -304,27 +282,18 @@
                           <Component id="employeeName" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-<<<<<<< HEAD
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel7" max="32767" attributes="0"/>
                           <Component id="saleCbx" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="totalPay" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-<<<<<<< HEAD
                       <EmptySpace pref="28" max="32767" attributes="0"/>
                       <Component id="payBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-=======
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="payBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="10" max="32767" attributes="0"/>
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                   </Group>
               </Group>
             </DimensionLayout>
@@ -422,7 +391,6 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="payBtnMouseClicked"/>
               </Events>
             </Component>
-<<<<<<< HEAD
             <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -440,8 +408,6 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
           </SubComponents>
         </Container>
         <Component class="javax.swing.JTextField" name="inputCustomerId">
@@ -645,13 +611,8 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-<<<<<<< HEAD
                       <Component id="jScrollPane3" min="-2" pref="554" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
-=======
-                      <Component id="jScrollPane3" pref="554" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                   </Group>
               </Group>
             </DimensionLayout>

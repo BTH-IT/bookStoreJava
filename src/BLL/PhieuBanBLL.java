@@ -24,24 +24,15 @@ public class PhieuBanBLL {
         return phieuBanDAL.getAll().size();
     }
     
-<<<<<<< HEAD
     public int insert(PhieuBanDTO pb) {
         return phieuBanDAL.insert(pb.getMaKhachHang(), pb.getMaNhanVien(), pb.getNgayLap(), pb.getTongTien(), pb.getMaKhuyenMai());
-=======
-    public boolean insert(PhieuBanDTO pb) {
-        return phieuBanDAL.insert(pb);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     }
     
     public boolean update(PhieuBanDTO pb) {
         return phieuBanDAL.update(pb);
     }
     
-<<<<<<< HEAD
     public boolean delete(int id) {
-=======
-    public boolean delete(String id) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return phieuBanDAL.delete(id);
     }
     
@@ -53,11 +44,7 @@ public class PhieuBanBLL {
         return phieuBanDAL.getByCondition(condition);
     }
     
-<<<<<<< HEAD
     public PhieuBanDTO getById(int id) {
-=======
-    public PhieuBanDTO getById(String id) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return phieuBanDAL.getById(id);
     }
 }

@@ -10,25 +10,36 @@ public class KhachHangBLL {
     public KhachHangBLL() {
 
     }
-
-    public boolean insert(KhachHangDTO kh) {
-        return khachHangDAL.insert(kh);
+    
+    public KhachHangDTO getCustomerByPhone(String soDienThoai) {
+        ArrayList<KhachHangDTO> list = this.getAll();
+        for (KhachHangDTO kh : list) {
+            if (soDienThoai.equals(kh.getSoDienThoai())) {
+                return kh;
+            }
+        }
+        
+        return null;
     }
 
-    public boolean update(KhachHangDTO kh, String sdt) {
-        return khachHangDAL.update(kh, sdt);
+    public int insert(KhachHangDTO kh) {
+        return khachHangDAL.insert(kh.getTen(), kh.getSoDienThoai(), kh.getGioiTinh(), kh.getNamSinh());
     }
 
-    public boolean delete(String sdt) {
-        return khachHangDAL.delete(sdt);
+    public boolean update(KhachHangDTO kh) {
+        return khachHangDAL.update(kh);
+    }
+
+    public boolean delete(int id) {
+        return khachHangDAL.delete(id);
     }
 
     public ArrayList<KhachHangDTO> getAll() {
         return khachHangDAL.getAll();
     }
 
-    public KhachHangDTO getByKHid(String sdt) {
-        return khachHangDAL.getById(sdt);
+    public KhachHangDTO getByKHid(int id) {
+        return khachHangDAL.getById(id);
     }
     
     public ArrayList<KhachHangDTO> getByCondition(String condition){

@@ -1,75 +1,70 @@
 package DTO;
 
 public class NhanVienDTO extends ConNguoi {
-    private String maNhanVien;
-    private long mucLuong;
+    private int maNhanVien;
+    private long luong;
     private String soDienThoai;
-    private int soNgayDaNghi;
+    private int soNgayNghi;
     private String vaiTro;
 
-    public NhanVienDTO() {
-    }
-
-    public NhanVienDTO(String maNhanVien, String ten, int namSinh, String gioiTinh, String soDienThoai, long mucLuong,
-            int soNgayDaNghi, String vaiTro) {
+    public NhanVienDTO(int maNhanVien, String ten, int namSinh, String gioiTinh, String soDienThoai, long luong, int soNgayNghi, String vaiTro) {
         super(ten, namSinh, gioiTinh);
         this.maNhanVien = maNhanVien;
-        this.mucLuong = mucLuong;
+        this.luong = luong;
+        this.soNgayNghi = soNgayNghi;
         this.soDienThoai = soDienThoai;
-        this.soNgayDaNghi = soNgayDaNghi;
         this.vaiTro = vaiTro;
-
     }
 
-    public String getMaNhanVien() {
+    public NhanVienDTO() {
+        super();
+        this.maNhanVien = 0;
+        this.luong = 0;
+        this.soNgayNghi = 0;
+        this.vaiTro = "";
+    }
+    
+
+    public int getMaNhanVien() {
         return this.maNhanVien;
     }
-
-    public void setMaNhanVien(String maNhanVien) {
-        this.maNhanVien = maNhanVien;
+    
+    public long getLuong() {
+        return this.luong;
     }
 
-    public long getMucLuong() {
-        return this.mucLuong;
+    public void setLuong(long luong) {
+        if (luong < 0) {
+            return;
+        }
+        this.luong = luong;
     }
 
-    public void setMucLuong(long mucLuong) {
-        this.mucLuong = mucLuong;
+    public int getSoNgayNghi() {
+        return this.soNgayNghi;
+    }
+
+    public void setSoNgayNghi(int soNgayNghi) {
+        if (soNgayNghi < 0) {
+            return;
+        }
+        this.soNgayNghi = soNgayNghi;
     }
 
     public String getSoDienThoai() {
-        return this.soDienThoai;
+        return soDienThoai;
     }
 
     public void setSoDienThoai(String soDienThoai) {
         this.soDienThoai = soDienThoai;
     }
 
-    public int getSoNgayDaNghi() {
-        return this.soNgayDaNghi;
-    }
-
-    public void setSoNgayDaNghi(int soNgayDaNghi) {
-        this.soNgayDaNghi = soNgayDaNghi;
-    }
-
     public String getVaiTro() {
-        return this.vaiTro;
+        return vaiTro;
     }
 
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
     }
-
-    @Override
-    public String toString() {
-        return super.toString() + "{" +
-                " maNhanVien='" + getMaNhanVien() + "'" +
-                ", mucLuong='" + getMucLuong() + "'" +
-                ", soDienThoai='" + getSoDienThoai() + "'" +
-                ", soNgayDaNghi='" + getSoNgayDaNghi() + "'" +
-                ", vaiTro='" + getVaiTro() + "'" +
-                "}";
-    }
-
+    
 }

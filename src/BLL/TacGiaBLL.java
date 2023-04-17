@@ -19,15 +19,15 @@ public class TacGiaBLL {
 
     }
 
-    public boolean insert(TacGiaDTO tg) {
-        return tacGiaDAL.insert(tg);
+    public int insert(TacGiaDTO tg) {
+        return tacGiaDAL.insert(tg.getTen(), tg.getGioiTinh(), tg.getNamSinh());
     }
 
-    public boolean update(TacGiaDTO tg, String matg) {
-        return tacGiaDAL.update(tg, matg);
+    public boolean update(TacGiaDTO tg) {
+        return tacGiaDAL.update(tg);
     }
 
-    public boolean delete(String matg) {
+    public boolean delete(int matg) {
         return tacGiaDAL.delete(matg);
     }
 
@@ -35,7 +35,7 @@ public class TacGiaBLL {
         return tacGiaDAL.getAll();
     }
 
-    public TacGiaDTO getByKHid(String matg) {
+    public TacGiaDTO getByKHid(int matg) {
         return tacGiaDAL.getById(matg);
     }
     

@@ -6,19 +6,13 @@ package GUI;
 
 import BLL.ChiTietPhieuBanBLL;
 import BLL.KhachHangBLL;
-<<<<<<< HEAD
 import BLL.KhuyenMaiBLL;
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 import BLL.NhanVienBLL;
 import BLL.PhieuBanBLL;
 import BLL.SachBLL;
 import DTO.ChiTietPhieuBanDTO;
 import DTO.KhachHangDTO;
-<<<<<<< HEAD
 import DTO.KhuyenMaiDTO;
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 import DTO.NhanVienDTO;
 import DTO.PhieuBanDTO;
 import DTO.SachDTO;
@@ -56,10 +50,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private PhieuBanBLL phieuBanBLL = new PhieuBanBLL();
     private KhachHangBLL khachHangBLL = new KhachHangBLL();
     private NhanVienBLL nhanVienBLL = new NhanVienBLL();
-<<<<<<< HEAD
     private KhuyenMaiBLL khuyenMaiBLL = new KhuyenMaiBLL();
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     private ChiTietPhieuBanBLL chiTietPhieuBanBLL = new ChiTietPhieuBanBLL();
     
     private Locale lc = new Locale("nv","VN"); //Định dạng locale việt nam
@@ -70,10 +61,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private JComboBox maKhachHangPB = new JComboBox();
     private JComboBox maNhanVienPB = new JComboBox();
     private JDateChooser ngayLapPB = new JDateChooser();
-<<<<<<< HEAD
     private JComboBox maKhuyenMaiPB = new JComboBox();
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     private JPanel popUpUpdatePB = getPopUpUpdatePB();
     
     private JComboBox maPhieuBanCTPB_add = new JComboBox();
@@ -87,24 +75,17 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private JPanel popUpAddCTPB = getPopUpAddCTPB();
     private JPanel popUpUpdateCTPB = getPopUpUpdateCTPB();
     
-<<<<<<< HEAD
     
     private void setJComboBox() {
         long millis=System.currentTimeMillis();  
         java.sql.Date now = new java.sql.Date(millis);
-=======
-    private void setJComboBox() {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         ArrayList<KhachHangDTO> khachHangList = khachHangBLL.getAll();
         ArrayList<NhanVienDTO> nhanVienList = nhanVienBLL.getAll();
         ArrayList<PhieuBanDTO> phieuBanList = phieuBanBLL.getAll();
         ArrayList<SachDTO> sachList = sachBLL.getAllSach();
-<<<<<<< HEAD
         ArrayList<KhuyenMaiDTO> khuyenMaiList = khuyenMaiBLL.getSaleByDate(now);
         
         maKhuyenMaiPB.addItem("");
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         maPhieuBanCTPB_update.addItem("");
         maPhieuBanCTPB_add.addItem("");
@@ -120,14 +101,11 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         maSachCTPB_add.setSelectedIndex(0);
         maKhachHangPB.setSelectedIndex(0);
         maNhanVienPB.setSelectedIndex(0);
-<<<<<<< HEAD
         maKhuyenMaiPB.setSelectedIndex(0);
         
         for (KhuyenMaiDTO km : khuyenMaiList) {
             maKhuyenMaiPB.addItem(km.getMaKhuyenMai());
         }
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         for (KhachHangDTO kh : khachHangList) {
             maKhachHangPB.addItem(kh.getMaKhachHang());
@@ -242,18 +220,14 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         JLabel ngayLapPBLabel = new JLabel("Ngày lập: ");
         ngayLapPBLabel.setFont(font_16_bold);
         
-<<<<<<< HEAD
         JLabel maKhuyenMaiPBLabel = new JLabel("Mã khuyến mãi: ");
         maKhuyenMaiPBLabel.setFont(font_16_bold);
         
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         JPanel containerPanel = new JPanel();
         JPanel maKhachHangPBPanel = new JPanel();
         JPanel maNhanVienPBPanel = new JPanel();
         JPanel ngayLapPBPanel = new JPanel();
-<<<<<<< HEAD
         JPanel maKhuyenMaiPBPanel = new JPanel();
 
         containerPanel.setLayout(new GridLayout(2, 2, 10, 10));
@@ -261,13 +235,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         maNhanVienPBPanel.setLayout(new BorderLayout());
         ngayLapPBPanel.setLayout(new BorderLayout());
         maKhuyenMaiPBPanel.setLayout(new BorderLayout());
-=======
-
-        containerPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        maKhachHangPBPanel.setLayout(new BorderLayout());
-        maNhanVienPBPanel.setLayout(new BorderLayout());
-        ngayLapPBPanel.setLayout(new BorderLayout());
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         maKhachHangPBPanel.add(maKhachHangPBLabel, BorderLayout.NORTH);
         maKhachHangPBPanel.add(maKhachHangPB, BorderLayout.CENTER);
@@ -278,7 +245,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         ngayLapPBPanel.add(ngayLapPBLabel, BorderLayout.NORTH);
         ngayLapPBPanel.add(ngayLapPB, BorderLayout.CENTER);
         
-<<<<<<< HEAD
         maKhuyenMaiPBPanel.add(maKhuyenMaiPBLabel, BorderLayout.NORTH);
         maKhuyenMaiPBPanel.add(maKhuyenMaiPB, BorderLayout.CENTER);
         
@@ -286,11 +252,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         containerPanel.add(maNhanVienPBPanel);
         containerPanel.add(ngayLapPBPanel);
         containerPanel.add(maKhuyenMaiPBPanel);
-=======
-        containerPanel.add(maKhachHangPBPanel);
-        containerPanel.add(maNhanVienPBPanel);
-        containerPanel.add(ngayLapPBPanel);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         return containerPanel;
     }
@@ -316,14 +277,9 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private boolean validateValueUpdatePB() {
         String maKhachHang = (String) maKhachHangPB.getSelectedItem();
         String maNhanVien = (String) maNhanVienPB.getSelectedItem();
-<<<<<<< HEAD
         String maKhuyenMai = (String) maKhuyenMaiPB.getSelectedItem();
         
         if ("".equals(maKhachHang) || "".equals(maNhanVien) || "".equals(maKhuyenMai)) {
-=======
-        
-        if ("".equals(maKhachHang) || "".equals(maNhanVien)) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
@@ -341,11 +297,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private void showComfirmRemovePB(int row) {
         DefaultTableModel modelPB = (DefaultTableModel) PBTable.getModel();
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
-<<<<<<< HEAD
             int ma = Integer.parseInt(String.valueOf(modelPB.getValueAt(row, 0)));
-=======
-            String ma = (String) modelPB.getValueAt(row, 0);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             modelPB.removeRow(row);
             phieuBanBLL.delete(ma);
             setCTPBTable();
@@ -354,19 +306,12 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     
     private void setPBTable() {
         ArrayList<PhieuBanDTO> PBList = phieuBanBLL.getAll();
-<<<<<<< HEAD
         int maPhieuBan;
         int maKhachHang;
         int maNhanVien;
         Date ngayLap;
         int maKhuyenMai;
         double tongTien;
-=======
-        String maPhieuBan;
-        String maKhachHang;
-        String maNhanVien;
-        Date ngayLap;
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         
         DefaultTableModel modelPB = (DefaultTableModel) PBTable.getModel();
         
@@ -375,15 +320,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             maKhachHang = pb.getMaKhachHang();
             maNhanVien = pb.getMaNhanVien();
             ngayLap = pb.getNgayLap();
-<<<<<<< HEAD
             tongTien = pb.getTongTien();
             maKhuyenMai = pb.getMaKhuyenMai();
             
             modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai, "O", "X"});
-=======
-            
-            modelPB.addRow(new Object[]{maPhieuBan, maKhachHang, maNhanVien, ngayLap, "O", "X"});
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         }
     }
     
@@ -394,7 +334,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 int row = PBTable.rowAtPoint(evt.getPoint());
                 int col = PBTable.columnAtPoint(evt.getPoint());
 
-<<<<<<< HEAD
                 if (row >= 0 && col == 6) {
                     try {
                         int maPhieuBan =  Integer.parseInt(String.valueOf(PBTable.getValueAt(row, 0)));
@@ -403,14 +342,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         String ngayLap = String.valueOf(PBTable.getValueAt(row, 3));
                         double tongTien = Double.parseDouble(String.valueOf(PBTable.getValueAt(row, 4)));
                         int maKhuyenMaiCu = Integer.parseInt(String.valueOf(PBTable.getValueAt(row, 5)));
-=======
-                if (row >= 0 && col == 4) {
-                    try {
-                        String maPhieuBan =  String.valueOf(PBTable.getValueAt(row, 0));
-                        String maKhachHang = String.valueOf(PBTable.getValueAt(row, 1));
-                        String maNhanVien = String.valueOf(PBTable.getValueAt(row, 2));
-                        String ngayLap = String.valueOf(PBTable.getValueAt(row, 3));
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         
                         java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngayLap);
                         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -418,10 +349,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         maKhachHangPB.setSelectedItem(maKhachHang);
                         maNhanVienPB.setSelectedItem(maNhanVien);
                         ngayLapPB.setDate(utilDate);
-<<<<<<< HEAD
                         maKhuyenMaiPB.setSelectedItem(maKhuyenMaiCu);
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         
                         int result = JOptionPane.showConfirmDialog(null, popUpUpdatePB,
                                 "Mời sửa phiếu bán " + maPhieuBan, JOptionPane.OK_CANCEL_OPTION);
@@ -429,7 +357,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         if (result == JOptionPane.OK_OPTION) {
                             if (validateValueUpdatePB() == false) return;
                             
-<<<<<<< HEAD
                             maKhachHang = Integer.parseInt(String.valueOf(maKhachHangPB.getSelectedItem()));
                             maNhanVien = Integer.parseInt(String.valueOf(maNhanVienPB.getSelectedItem()));
                             utilDate = ngayLapPB.getDate();
@@ -440,14 +367,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                             double tongTienMoi = tongTienBanDau - (tongTienBanDau * maKhuyenMaiMoi / 100);
                             
                             PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, sqlDate, tongTienMoi, maKhuyenMaiMoi);
-=======
-                            maKhachHang = (String) maKhachHangPB.getSelectedItem();
-                            maNhanVien = (String) maNhanVienPB.getSelectedItem();
-                            utilDate = ngayLapPB.getDate();
-                            sqlDate = new java.sql.Date(utilDate.getTime());
-                            
-                            PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, sqlDate);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                             
                             phieuBanBLL.update(pb);
                             
@@ -462,11 +381,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     }
                 }
                 
-<<<<<<< HEAD
                 if (row >= 0 && col == 7) {
-=======
-                if (row >= 0 && col == 5) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                     showComfirmRemovePB(row);
                 }
             }
@@ -493,28 +408,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         setCTPBTable();
     }
     
-<<<<<<< HEAD
     private void setCTPBTable() {
         ArrayList<ChiTietPhieuBanDTO> CTPBList = chiTietPhieuBanBLL.getAll();
         int maPhieuBan;
         int maSach;
-=======
-    private void showComfirmRemoveCTPB(int row) {
-        DefaultTableModel modelCTPB = (DefaultTableModel) CTPBTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
-            String maPhieuBan = (String) modelCTPB.getValueAt(row, 0);
-            String maSach = (String) modelCTPB.getValueAt(row, 1);
-            
-            modelCTPB.removeRow(row);
-            chiTietPhieuBanBLL.delete(maPhieuBan, maSach);
-        }
-    }
-    
-    private void setCTPBTable() {
-        ArrayList<ChiTietPhieuBanDTO> CTPBList = chiTietPhieuBanBLL.getAll();
-        String maPhieuBan;
-        String maSach;
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         int soLuong;
         long donGia;
         
@@ -540,21 +437,11 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 int col = CTPBTable.columnAtPoint(evt.getPoint());
 
                 if (row >= 0 && col == 4) {
-<<<<<<< HEAD
                     int maPhieuBan =  Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 0)));
                     int maSach = Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 1)));
                     int soLuong = Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 2)));
                     long donGia = Long.parseLong(String.valueOf(CTPBTable.getValueAt(row, 3)));
 
-=======
-                    String maPhieuBan =  String.valueOf(CTPBTable.getValueAt(row, 0));
-                    String maSach = String.valueOf(CTPBTable.getValueAt(row, 1));
-                    int soLuong = Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 2)));
-                    long donGia = Long.parseLong(String.valueOf(CTPBTable.getValueAt(row, 3)));
-
-                    ChiTietPhieuBanDTO ctpbCu = new ChiTietPhieuBanDTO(maPhieuBan, maSach, soLuong, donGia);
-                    
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                     maPhieuBanCTPB_update.setSelectedItem(maPhieuBan);
                     maSachCTPB_update.setSelectedItem(maSach);
                     soLuongCTPB_update.setText(soLuong + "");
@@ -566,19 +453,13 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         if (validateValueUpdateCTPB() == false) return;
                         
                         
-<<<<<<< HEAD
                         maPhieuBan = Integer.parseInt(String.valueOf(maPhieuBanCTPB_update.getSelectedItem()));
                         maSach = Integer.parseInt(String.valueOf(maSachCTPB_update.getSelectedItem()));
-=======
-                        maPhieuBan = (String) maPhieuBanCTPB_update.getSelectedItem();
-                        maSach = (String) maSachCTPB_update.getSelectedItem();
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         soLuong = Integer.parseInt(soLuongCTPB_update.getText());
                         donGia = sachBLL.getById(maSach).getGiaBan();
                         
                         ChiTietPhieuBanDTO ctpb = new ChiTietPhieuBanDTO(maPhieuBan, maSach, soLuong, donGia);
                         
-<<<<<<< HEAD
                         chiTietPhieuBanBLL.update(ctpb);
                         
                         updateCTPBTable();
@@ -601,24 +482,11 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         
                         updatePBTable();
                         
-=======
-                        chiTietPhieuBanBLL.update(ctpb, ctpbCu.getMaPhieuBan(), ctpbCu.getMaSach());
-                        
-                        updateCTPBTable();
-                        
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                         maPhieuBanCTPB_update.setSelectedItem("");
                         maSachCTPB_update.setSelectedItem("");
                         soLuongCTPB_update.setText("");
                     }
                 }
-<<<<<<< HEAD
-=======
-                
-                if (row >= 0 && col == 5) {
-                    showComfirmRemoveCTPB(row);
-                }
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             }
         });
     }
@@ -638,7 +506,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         
         CTPBTable.getColumnModel().getColumn(3).setCellRenderer(new CurrencyTableCellRenderer());
         CTPBTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
-        CTPBTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
         
         setPBTable();
         addEventPBTable();
@@ -685,10 +552,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         PBTable = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         addPBBtn = new javax.swing.JLabel();
-<<<<<<< HEAD
         searchCbbox = new javax.swing.JComboBox<>();
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Phiếu Bán và Chi Tiết Phiếu Bán");
@@ -748,11 +612,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, footerLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(backBtn)
-<<<<<<< HEAD
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 951, Short.MAX_VALUE)
-=======
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
                 .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         footerLayout.setVerticalGroup(
@@ -798,7 +658,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-<<<<<<< HEAD
                 "Mã Phiếu Bán", "Mã Sách", "Số Lượng", "Đơn Giá", "Sửa"
             }
         ) {
@@ -807,16 +666,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
-=======
-                "Mã Phiếu Bán", "Mã Sách", "Số Lượng", "Đơn Giá", "Sửa", "Xóa"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -897,7 +746,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-<<<<<<< HEAD
                 "Mã Phiếu Bán", "Mã Khách Hàng", "Mã Nhân Viên", "Ngày Lập", "Tổng tiền", "Mã Khuyến Mãi", "Sửa", "Xóa"
             }
         ) {
@@ -906,16 +754,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
-=======
-                "Mã Phiếu Bán", "Mã Khách Hàng", "Mã Nhân Viên", "Ngày Lập", "Sửa", "Xóa"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -934,13 +772,9 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 749, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-=======
-            .addComponent(jScrollPane3)
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -958,11 +792,8 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             }
         });
 
-<<<<<<< HEAD
         searchCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu bán", "Mã khách hàng", "Mã nhân viên" }));
 
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -971,19 +802,12 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-<<<<<<< HEAD
                 .addComponent(inputPBId)
                 .addGap(18, 18, 18)
                 .addComponent(searchCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(addPBBtn)
                 .addGap(16, 16, 16))
-=======
-                .addComponent(inputPBId, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(addPBBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -991,7 +815,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                             .addComponent(inputPBId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
@@ -1002,15 +825,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
-=======
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                        .addComponent(inputPBId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(addPBBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1045,7 +859,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
-<<<<<<< HEAD
         NhanVienDTO nv = new NhanVienBLL().getById(tk.getMaNhanVien());
             
         switch (nv.getVaiTro()) {
@@ -1053,14 +866,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
             case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
         }
-=======
-        new InvoiceMenuGUI(tk);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     }//GEN-LAST:event_backBtnMouseClicked
 
     private void inputPBIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputPBIdKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-<<<<<<< HEAD
             int searchType = searchCbbox.getSelectedIndex();
             String value = inputPBId.getText();
             int maPhieuBan;
@@ -1083,17 +892,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     PBList = phieuBanBLL.getByCondition("maNhanVien LIKE '%" + value.toUpperCase() + "%'");
                 }
             }
-=======
-            String value = inputPBId.getText();
-            String maPhieuBan;
-            String maKhachHang;
-            String maNhanVien;
-            Date ngayLap;
-            
-            ArrayList<PhieuBanDTO> PBList = phieuBanBLL.getByCondition("maPhieuBan LIKE '%" + value + "%'");
-            DefaultTableModel modelPB = (DefaultTableModel) PBTable.getModel();
-            modelPB.setRowCount(0);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
 
             if (PBList.isEmpty()) {
                 JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
@@ -1132,13 +930,8 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         if (result == JOptionPane.OK_OPTION) {
             if (validateValueAddCTPB() == false) return;
             
-<<<<<<< HEAD
             int maPhieuBan = Integer.parseInt(String.valueOf(maPhieuBanCTPB_add.getSelectedItem()));
             int maSach = Integer.parseInt(String.valueOf(maSachCTPB_add.getSelectedItem()));
-=======
-            String maPhieuBan = (String) maPhieuBanCTPB_add.getSelectedItem();
-            String maSach = (String) maSachCTPB_add.getSelectedItem();
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             int soLuong = Integer.parseInt(soLuongCTPB_add.getText());
             long donGia = sachBLL.getById(maSach).getGiaBan();
             
@@ -1169,21 +962,12 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             String value = inputCTPBId.getText();
             if ("".equals(value)) return;
             
-<<<<<<< HEAD
             int maPhieuBan;
             int maSach;
             int soLuong;
             long donGia;
 
             ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(Integer.parseInt(value));
-=======
-            String maPhieuBan;
-            String maSach;
-            int soLuong;
-            long donGia;
-
-            ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(value);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
             DefaultTableModel modelCTPB = (DefaultTableModel) CTPBTable.getModel();
             modelCTPB.setRowCount(0);
             
@@ -1241,9 +1025,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel logoutBtn;
-<<<<<<< HEAD
     private javax.swing.JComboBox<String> searchCbbox;
-=======
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     // End of variables declaration//GEN-END:variables
 }

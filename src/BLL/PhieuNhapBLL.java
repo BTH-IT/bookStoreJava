@@ -24,24 +24,15 @@ public class PhieuNhapBLL {
         return phieuNhapDAL.getAll().size();
     }
     
-<<<<<<< HEAD
     public int insert(PhieuNhapDTO pn) {
         return phieuNhapDAL.insert(pn.getMaNhanVien(), pn.getNgayLap(), pn.getTongTien());
-=======
-    public boolean insert(PhieuNhapDTO pn) {
-        return phieuNhapDAL.insert(pn);
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
     }
     
     public boolean update(PhieuNhapDTO pb) {
         return phieuNhapDAL.update(pb);
     }
     
-<<<<<<< HEAD
     public boolean delete(int id) {
-=======
-    public boolean delete(String id) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return phieuNhapDAL.delete(id);
     }
     
@@ -53,11 +44,7 @@ public class PhieuNhapBLL {
         return phieuNhapDAL.getByCondition(condition);
     }
     
-<<<<<<< HEAD
     public PhieuNhapDTO getById(int id) {
-=======
-    public PhieuNhapDTO getById(String id) {
->>>>>>> 334d53b34ae63bc371cd59fac28dbbbb8c81302c
         return phieuNhapDAL.getById(id);
     }
 }

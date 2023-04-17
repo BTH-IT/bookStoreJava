@@ -18,15 +18,15 @@ public class NhanVienBLL {
     public NhanVienBLL() {
     }
 
-    public boolean insert(NhanVienDTO nv) {
-        return nhanVienDAL.insert(nv);
+    public int insert(NhanVienDTO nv) {
+        return nhanVienDAL.insert(nv.getTen(), nv.getNamSinh(), nv.getGioiTinh(), nv.getSoDienThoai(), nv.getLuong(), nv.getSoNgayNghi(), nv.getVaiTro());
     }
 
-    public boolean update(NhanVienDTO nv, String manv) {
-        return nhanVienDAL.update(nv, manv);
+    public boolean update(NhanVienDTO nv) {
+        return nhanVienDAL.update(nv);
     }
 
-    public boolean delete(String manv) {
+    public boolean delete(int manv) {
         return nhanVienDAL.delete(manv);
     }
 
@@ -34,11 +34,15 @@ public class NhanVienBLL {
         return nhanVienDAL.getAll();
     }
 
-    public NhanVienDTO getByNVid(String manv) {
+    public NhanVienDTO getByNVid(int manv) {
         return nhanVienDAL.getById(manv);
     }
 
     public ArrayList<NhanVienDTO> getByCondition(String condition) {
         return nhanVienDAL.getByCondition(condition);
+    }
+    
+    public ArrayList<NhanVienDTO> getEmployeeUnAccount() {
+        return nhanVienDAL.getEmployeeUnAccount();
     }
 }

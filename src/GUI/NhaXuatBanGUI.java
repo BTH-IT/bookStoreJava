@@ -6,7 +6,6 @@ package GUI;
 
 import BLL.NhaXuatBanBLL;
 import DTO.NhaXuatBanDTO;
-import DTO.TacGiaDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,7 +27,6 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
     
     private NhaXuatBanBLL nhaXuatBanBLL = new NhaXuatBanBLL();
     
-    private JTextField maNXB = new JTextField();
     private JTextField tenNXB = new JTextField();
     private JTextField diaChi = new JTextField();
     private JTextField sDT = new JTextField();
@@ -47,12 +45,10 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
      
         setNXBTable();
 
-        NXBTable.getColumnModel().getColumn(4).setCellRenderer(new CurrencyTableCellRenderer());
-       NXBTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
-       NXBTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
-       NXBTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
+        NXBTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
+        NXBTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
 
-       addEventNXBTable();
+        addEventNXBTable();
 
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -62,65 +58,36 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
 
     
     private boolean validateValueAddNXB() {
-        String manxb = maNXBInput.getText();
         String tennxb = tenNXBInput.getText();
         String diachi = diaChiInput.getText();
         String sdt = sDTInput.getText();
         
         
-        if ("".equals(manxb) || "".equals(tennxb) || "".equals(diachi)
+        if ("".equals(tennxb) || "".equals(diachi)
                 || "".equals(sdt) ) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
         
-        
-        
-            ArrayList<NhaXuatBanDTO> NXBList = nhaXuatBanBLL.getAll();
-            
-            for (NhaXuatBanDTO s : NXBList) {
-                if (s.getMaNXB().equals(manxb)) {
-                    JOptionPane.showMessageDialog(this, "Mã NXB đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
-            }
-        
-        
-         if(sdt.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false){
+        if(sdt.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false){
             JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
             return false;
         }       
-        
-        
-        
-        
         
         return true;
     }
     
     
-    private boolean validateValueUpdateNXB(NhaXuatBanDTO nxbcu) {
-        String manxb = maNXB.getText();
+    private boolean validateValueUpdateNXB() {
         String tennxb = tenNXB.getText();
         String diachi = diaChi.getText();
         String sdt = sDT.getText();
         
         
-        if ("".equals(manxb) || "".equals(tennxb) || "".equals(diachi)
+        if ("".equals(tennxb) || "".equals(diachi)
                 || "".equals(sdt) ) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
-        }
-        
-        if (nxbcu.getMaNXB().equals(manxb) == false) {
-            ArrayList<NhaXuatBanDTO> NXBList = nhaXuatBanBLL.getAll();
-            
-            for (NhaXuatBanDTO s : NXBList) {
-                if (s.getMaNXB().equals(manxb)) {
-                    JOptionPane.showMessageDialog(this, "Mã NXB đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
-            }
         }
         
       if(sdt.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false){
@@ -138,7 +105,6 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         
         tenNXB.setFont(font_16_plain);
         diaChi.setFont(font_16_plain);
-        maNXB.setFont(font_16_plain);
         sDT.setFont(font_16_plain);
         
         
@@ -148,9 +114,6 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         JLabel diaChiLabel = new JLabel("Địa chỉ: ");
         diaChiLabel.setFont(font_16_bold);
         
-        JLabel maNXBLabel = new JLabel("Mã NXB: ");
-        maNXBLabel.setFont(font_16_bold);
-        
         JLabel sDTLabel = new JLabel("Số điện thoại: ");
         sDTLabel.setFont(font_16_bold);
         
@@ -159,14 +122,12 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         JPanel containerPanel = new JPanel();
         JPanel tenNXBPanel = new JPanel();
         JPanel diaChiPanel = new JPanel();
-        JPanel maNXBPanel = new JPanel();
         JPanel sDTPanel = new JPanel();
         
 
-        containerPanel.setLayout(new GridLayout(3, 3, 10, 10));
+        containerPanel.setLayout(new GridLayout(3, 1, 10, 10));
         tenNXBPanel.setLayout(new BorderLayout());
         diaChiPanel.setLayout(new BorderLayout());
-        maNXBPanel.setLayout(new BorderLayout());
         sDTPanel.setLayout(new BorderLayout());
         
         
@@ -176,14 +137,10 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         diaChiPanel.add(diaChiLabel, BorderLayout.NORTH);
         diaChiPanel.add(diaChi, BorderLayout.CENTER);
         
-        maNXBPanel.add(maNXBLabel, BorderLayout.NORTH);
-        maNXBPanel.add(maNXB, BorderLayout.CENTER);
-        
         sDTPanel.add(sDTLabel, BorderLayout.NORTH);
         sDTPanel.add(sDT, BorderLayout.CENTER);
         
         
-         containerPanel.add(maNXBPanel);
         containerPanel.add(tenNXBPanel);
         containerPanel.add(diaChiPanel);
         containerPanel.add(sDTPanel);
@@ -201,58 +158,47 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
                 int col = NXBTable.columnAtPoint(evt.getPoint());
 
                 if (row >= 0 && col == 4) {
+                    int manxb = Integer.parseInt(String.valueOf(NXBTable.getValueAt(row, 0)));
                     String tennxb = String.valueOf(NXBTable.getValueAt(row, 1));
                     String diachi = String.valueOf(NXBTable.getValueAt(row, 2));
-                    String manxb = String.valueOf(NXBTable.getValueAt(row, 0));
                     String sdt = String.valueOf(NXBTable.getValueAt(row, 3));
-                    
-                    NhaXuatBanDTO nxbcu = new NhaXuatBanDTO(manxb,tennxb,diachi,sdt);
                     
                     tenNXB.setText(tennxb);
                     diaChi.setText(diachi);
-                    maNXB.setText(manxb);
                     sDT.setText(sdt);
                   
                     int result = JOptionPane.showConfirmDialog(null, popUpUpdateNXB, 
                                 "Mời sửa thông tin NXB " , JOptionPane.OK_CANCEL_OPTION);
                     
                     if (result == JOptionPane.OK_OPTION){
-                        if (validateValueUpdateNXB(nxbcu) == false) return;
+                        if (validateValueUpdateNXB() == false) return;
                         
                         tennxb = tenNXB.getText();
                         diachi = diaChi.getText();
-                        manxb = maNXB.getText();
                         sdt = sDT.getText();
                         
                         NhaXuatBanDTO nxb = new NhaXuatBanDTO(manxb,tennxb,diachi,sdt);
                         
-                        nhaXuatBanBLL.update(nxb, nxbcu.getMaNXB());
+                        nhaXuatBanBLL.update(nxb);
                         
                         updateNXBTable();
                         
                         tenNXB.setText("");
                         diaChi.setText("");
-                       maNXB.setText("");
                         sDT.setText("");
-                        
-                        
-                        
-                        
-                        
                     }
                     
                 }
                 
                 if (row >= 0 && col == 5) {
-                       
-                    String ma = String.valueOf(NXBTable.getValueAt(row, 0));
-                    showComfirmRemove(row, ma);
+                    int manxb = Integer.parseInt(String.valueOf(NXBTable.getValueAt(row, 0)));
+                    showComfirmRemove(row, manxb);
                 }
             }
         });
     }
     
-    private void showComfirmRemove(int row, String manxb) {
+    private void showComfirmRemove(int row, int manxb) {
         DefaultTableModel modelNXB = (DefaultTableModel) NXBTable.getModel();
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
             modelNXB.removeRow(row);
@@ -261,9 +207,9 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
     }
     
      private void setNXBTable() {
+        int manxb;
         String tennxb;
         String diachi;
-        String manxb;
         String sdt;
         
             
@@ -272,9 +218,9 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         modelNXB.setRowCount(0);
 
         for (NhaXuatBanDTO s : NXBList) {
-            tennxb = s.getTenNXB();
+            tennxb = s.getTenNhaXuatBan();
             diachi = s.getDiaChi();
-            manxb = s.getMaNXB();
+            manxb = s.getMaNhaXuatBan();
             sdt = s.getSoDienThoai();
             
 
@@ -307,8 +253,6 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        maNXBInput = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         diaChiInput = new javax.swing.JTextField();
@@ -438,22 +382,13 @@ condition.addActionListener(new java.awt.event.ActionListener() {
 
     jPanel5.setPreferredSize(new java.awt.Dimension(442, 551));
 
+    jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
     jLabel9.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
     jLabel9.setForeground(new java.awt.Color(255, 153, 0));
     jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
     jLabel9.setText("Thêm Nhà Xuất Bản");
     jLabel9.setPreferredSize(new java.awt.Dimension(130, 33));
-
-    jLabel10.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-    jLabel10.setText("Mã nhà xuất bản  :");
-    jLabel10.setPreferredSize(new java.awt.Dimension(213, 25));
-
-    maNXBInput.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-    maNXBInput.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            maNXBInputActionPerformed(evt);
-        }
-    });
 
     jLabel11.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
     jLabel11.setText("Tên nhà xuất bản :");
@@ -525,10 +460,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(maNXBInput))
-                .addGroup(jPanel6Layout.createSequentialGroup()
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(diaChiInput))
@@ -537,14 +468,14 @@ condition.addActionListener(new java.awt.event.ActionListener() {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(sDTInput))
                 .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(tenNXBInput))
+                .addGroup(jPanel6Layout.createSequentialGroup()
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(140, 140, 140)
                     .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 46, Short.MAX_VALUE))
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(tenNXBInput)))
+                    .addGap(0, 46, Short.MAX_VALUE)))
             .addContainerGap())
     );
     jPanel6Layout.setVerticalGroup(
@@ -552,13 +483,7 @@ condition.addActionListener(new java.awt.event.ActionListener() {
         .addGroup(jPanel6Layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(1, 1, 1)
-                    .addComponent(maNXBInput, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGap(23, 23, 23)
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(tenNXBInput, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -696,10 +621,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
         // TODO add your handling code here:
     }//GEN-LAST:event_conditionActionPerformed
 
-    private void maNXBInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maNXBInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_maNXBInputActionPerformed
-
     private void diaChiInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaChiInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_diaChiInputActionPerformed
@@ -717,7 +638,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
             tenNXBInput.setText("");
             diaChiInput.setText("");
-            maNXBInput.setText("");
             sDTInput.setText("");
         }
     }//GEN-LAST:event_resetBtnMouseClicked
@@ -746,15 +666,15 @@ condition.addActionListener(new java.awt.event.ActionListener() {
         
         String tennxb = tenNXBInput.getText();
         String diachi = diaChiInput.getText();
-        String manxb = maNXBInput.getText();
         String sdt = sDTInput.getText();
 
-        NhaXuatBanDTO nxb = new NhaXuatBanDTO(manxb,tennxb,diachi,sdt);
+        NhaXuatBanDTO nxb = new NhaXuatBanDTO(-1,tennxb,diachi,sdt);
 
-        if (nhaXuatBanBLL.insert(nxb)) {
+        int manxb = nhaXuatBanBLL.insert(nxb);
+        
+        if (manxb >= 1) {
             tenNXBInput.setText("");
             diaChiInput.setText("");
-            maNXBInput.setText("");
             sDTInput.setText("");
             
 
@@ -772,17 +692,15 @@ condition.addActionListener(new java.awt.event.ActionListener() {
             String value = inputSearch.getText();
             String tennxb;
             String diachi;
-            String manxb;
+            int manxb;
             String sdt;
             
-            System.out.println(con);
-           
-            ArrayList<NhaXuatBanDTO> NXBList = new ArrayList<NhaXuatBanDTO>();
+            ArrayList<NhaXuatBanDTO> NXBList = new ArrayList<>();
             
             if(con == 0){
-                NXBList = nhaXuatBanBLL.getByCondition("maNXB LIKE '%" + value + "%'");
+                NXBList = nhaXuatBanBLL.getByCondition("maNhaXuatBan LIKE '%" + value + "%'");
             }else{
-                NXBList = nhaXuatBanBLL.getByCondition("tenNXB LIKE '%" + value + "%'");
+                NXBList = nhaXuatBanBLL.getByCondition("tenNhaXuatBan LIKE '%" + value + "%'");
             }
             
             DefaultTableModel modelNXB = (DefaultTableModel) NXBTable.getModel();
@@ -793,9 +711,9 @@ condition.addActionListener(new java.awt.event.ActionListener() {
                 setNXBTable();
             } else {
                 for (NhaXuatBanDTO s : NXBList) {
-                    tennxb = s.getTenNXB();
+                    tennxb = s.getTenNhaXuatBan();
                     diachi = s.getDiaChi();
-                    manxb = s.getMaNXB();
+                    manxb = s.getMaNhaXuatBan();
                     sdt= s.getSoDienThoai();
                     
                     
@@ -832,7 +750,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JTextField diaChiInput;
     private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -845,7 +762,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel logoutBtn;
-    private javax.swing.JTextField maNXBInput;
     private javax.swing.JButton resetBtn;
     private javax.swing.JTextField sDTInput;
     private javax.swing.JTextField tenNXBInput;

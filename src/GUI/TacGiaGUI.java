@@ -5,7 +5,6 @@
 package GUI;
 
 import BLL.TacGiaBLL;
-import DTO.KhachHangDTO;
 import DTO.TacGiaDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,7 +28,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
     
     private TacGiaBLL tacGiaBLL = new TacGiaBLL();
     
-    private JTextField maTG = new JTextField();
     private JTextField tenTG = new JTextField();
     private JComboBox gioiTinh = new JComboBox<String>(new String[] {"Nam","Nữ"});
     private JTextField namSinh = new JTextField();
@@ -42,91 +40,58 @@ public class TacGiaGUI extends javax.swing.JFrame {
     public TacGiaGUI() {
         initComponents();
      
-     Thread th = new ClockLabel(dateTimeLabel);
+        Thread th = new ClockLabel(dateTimeLabel);
         th.start();
      
-     setTGTable();
+        setTGTable();
      
-     TGTable.getColumnModel().getColumn(4).setCellRenderer(new CurrencyTableCellRenderer());
-    TGTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
-    TGTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
-    TGTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
+        TGTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
+        TGTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
     
-    addEventTGTable();
+        addEventTGTable();
      
-     this.setLocationRelativeTo(null);
-     this.setResizable(false);
-     this.setVisible(true);
-     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     private boolean validateValueAddTG() {
-        String matg = maTGInput.getText();
         String tentg = tenTGInput.getText();
         String gt = (String) gioiTinhInput.getSelectedItem();
         String namsinh = namSinhInput.getText();
         
         
-        if ("".equals(matg) || "".equals(tentg) || "".equals(gt)
+        if ("".equals(tentg) || "".equals(gt)
                 || "".equals(namsinh) ) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
-        
-        
-        
-            ArrayList<TacGiaDTO> TGList = tacGiaBLL.getAll();
-            
-            for (TacGiaDTO s : TGList) {
-                if (s.getMaTacGia().equals(matg)) {
-                    JOptionPane.showMessageDialog(this, "Mã tác giả đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
-            }
-        
         
         if (namsinh.matches("[0-9]\\d{1,}") == false) {
             JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
             return false;
         }
         
-        
-        
-        
-        
         return true;
     }
     
-    private boolean validateValueUpdateTG(TacGiaDTO tgcu) {
+    private boolean validateValueUpdateTG() {
         String tentg = tenTG.getText();
         String gt = (String) gioiTinh.getSelectedItem();
-        String matg = maTG.getText();
         String namsinh = namSinh.getText();
         
         
-        if ("".equals(tentg) || "".equals(gt) || "".equals(matg)
+        if ("".equals(tentg) || "".equals(gt)
                 || "".equals(namsinh) ) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
-        
-        if (tgcu.getMaTacGia().equals(matg) == false) {
-            ArrayList<TacGiaDTO> TGList = tacGiaBLL.getAll();
-            
-            for (TacGiaDTO s : TGList) {
-                if (s.getMaTacGia().equals(matg)) {
-                    JOptionPane.showMessageDialog(this, "Mã tác giả đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
-            }
-        }
-        
       
         if (namsinh.matches("[0-9]\\d{1,}") == false) {
             JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
             return false;
         }
-        
         
         return true;
     }
@@ -137,7 +102,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
         
         tenTG.setFont(font_16_plain);
         gioiTinh.setFont(font_16_plain);
-        maTG.setFont(font_16_plain);
         namSinh.setFont(font_16_plain);
         
         
@@ -147,9 +111,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
         JLabel gioiTinhLabel = new JLabel("Giới tính: ");
         gioiTinhLabel.setFont(font_16_bold);
         
-        JLabel maTGLabel = new JLabel("Mã tác giả: ");
-        maTGLabel.setFont(font_16_bold);
-        
         JLabel namSinhLabel = new JLabel("Năm sinh: ");
         namSinhLabel.setFont(font_16_bold);
         
@@ -158,16 +119,13 @@ public class TacGiaGUI extends javax.swing.JFrame {
         JPanel containerPanel = new JPanel();
         JPanel tenTGPanel = new JPanel();
         JPanel gioiTinhPanel = new JPanel();
-        JPanel maTGPanel = new JPanel();
         JPanel namSinhPanel = new JPanel();
         
 
-        containerPanel.setLayout(new GridLayout(3, 3, 10, 10));
+        containerPanel.setLayout(new GridLayout(3, 1, 10, 10));
         tenTGPanel.setLayout(new BorderLayout());
         gioiTinhPanel.setLayout(new BorderLayout());
-        maTGPanel.setLayout(new BorderLayout());
         namSinhPanel.setLayout(new BorderLayout());
-        
         
         tenTGPanel.add(tenTGLabel, BorderLayout.NORTH);
         tenTGPanel.add(tenTG, BorderLayout.CENTER);
@@ -175,19 +133,13 @@ public class TacGiaGUI extends javax.swing.JFrame {
         gioiTinhPanel.add(gioiTinhLabel, BorderLayout.NORTH);
         gioiTinhPanel.add(gioiTinh, BorderLayout.CENTER);
         
-        maTGPanel.add(maTGLabel, BorderLayout.NORTH);
-        maTGPanel.add(maTG, BorderLayout.CENTER);
-        
         namSinhPanel.add(namSinhLabel, BorderLayout.NORTH);
         namSinhPanel.add(namSinh, BorderLayout.CENTER);
         
-        
-         containerPanel.add(maTGPanel);
         containerPanel.add(tenTGPanel);
         containerPanel.add(gioiTinhPanel);
         containerPanel.add(namSinhPanel);
        
-        
         return containerPanel;
     }
     
@@ -200,58 +152,47 @@ public class TacGiaGUI extends javax.swing.JFrame {
                 int col = TGTable.columnAtPoint(evt.getPoint());
 
                 if (row >= 0 && col == 4) {
+                    int matg = Integer.parseInt(String.valueOf(TGTable.getValueAt(row, 0)));
                     String tentg = String.valueOf(TGTable.getValueAt(row, 1));
                     String gt = String.valueOf(TGTable.getValueAt(row, 2));
-                    String matg = String.valueOf(TGTable.getValueAt(row, 0));
                     int namsinh = Integer.parseInt(String.valueOf(TGTable.getValueAt(row, 3)));
                     
-                    TacGiaDTO tgcu = new TacGiaDTO(matg,tentg,gt,namsinh);
                     
                     tenTG.setText(tentg);
                     gioiTinh.setSelectedItem(gt);
-                    maTG.setText(matg);
                     namSinh.setText(namsinh + "");
                   
                     int result = JOptionPane.showConfirmDialog(null, popUpUpdateTG, 
                                 "Mời sửa thông tin tác giả " , JOptionPane.OK_CANCEL_OPTION);
                     
                     if (result == JOptionPane.OK_OPTION){
-                        if (validateValueUpdateTG(tgcu) == false) return;
+                        if (validateValueUpdateTG() == false) return;
                         
                         tentg = tenTG.getText();
                         gt = (String) gioiTinh.getSelectedItem();
-                        matg = maTG.getText();
                         namsinh = Integer.parseInt(namSinh.getText());
                         
                         TacGiaDTO tg = new TacGiaDTO(matg,tentg,gt,namsinh);
                         
-                        tacGiaBLL.update(tg, tgcu.getMaTacGia());
+                        tacGiaBLL.update(tg);
                         
                         updateTGTable();
                         
                         tenTG.setText("");
                         gioiTinh.setSelectedItem("");
-                       maTG.setText("");
                         namSinh.setText("");
-                        
-                        
-                        
-                        
-                        
                     }
-                    
                 }
                 
                 if (row >= 0 && col == 5) {
-                       
-                    String ma = String.valueOf(TGTable.getValueAt(row, 0));
+                    int ma = Integer.parseInt(String.valueOf(TGTable.getValueAt(row, 0)));
                     showComfirmRemove(row, ma);
                 }
             }
         });
     }
     
-    private void showComfirmRemove(int row, String matg) {
+    private void showComfirmRemove(int row, int matg) {
         DefaultTableModel modelTG = (DefaultTableModel) TGTable.getModel();
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
             modelTG.removeRow(row);
@@ -260,9 +201,9 @@ public class TacGiaGUI extends javax.swing.JFrame {
     }
     
     private void setTGTable() {
+        int matg;
         String tentg;
         String gt;
-        String matg;
         int namsinh;
         
             
@@ -306,8 +247,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        maTGInput = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         tenTGInput = new javax.swing.JTextField();
@@ -395,17 +334,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
         jLabel9.setText("Thêm Tác Giả");
         jLabel9.setPreferredSize(new java.awt.Dimension(130, 33));
 
-        jLabel10.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel10.setText("Mã tác giả       :");
-        jLabel10.setPreferredSize(new java.awt.Dimension(213, 25));
-
-        maTGInput.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        maTGInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maTGInputActionPerformed(evt);
-            }
-        });
-
         jLabel11.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         jLabel11.setText("Tên tác giả      :");
         jLabel11.setPreferredSize(new java.awt.Dimension(213, 25));
@@ -464,10 +392,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(maTGInput))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(gioiTinhInput, 0, 197, Short.MAX_VALUE))
@@ -490,11 +414,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(maTGInput, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tenTGInput, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -510,7 +430,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -652,10 +572,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void maTGInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maTGInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_maTGInputActionPerformed
-
     private void tenTGInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenTGInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tenTGInputActionPerformed
@@ -670,18 +586,17 @@ public class TacGiaGUI extends javax.swing.JFrame {
         
         String tentg = tenTGInput.getText();
         String gt = (String) gioiTinhInput.getSelectedItem();
-        String matg = maTGInput.getText();
         int namsinh = Integer.parseInt(namSinhInput.getText());
 
-        TacGiaDTO tg = new TacGiaDTO(matg,tentg,gt,namsinh);
+        TacGiaDTO tg = new TacGiaDTO(-1,tentg,gt,namsinh);
 
-        if (tacGiaBLL.insert(tg)) {
+        int matg = tacGiaBLL.insert(tg);
+        
+        if (matg >= 1) {
             tenTGInput.setText("");
             gioiTinhInput.setSelectedIndex(0);
-            maTGInput.setText("");
             namSinhInput.setText("");
             
-
             DefaultTableModel modelTG = (DefaultTableModel) TGTable.getModel();
             modelTG.addRow(new Object[] { matg,tentg,gt,namsinh, "O", "X" });
 
@@ -693,7 +608,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
             tenTGInput.setText("");
             gioiTinhInput.setSelectedIndex(0);
-            maTGInput.setText("");
             namSinhInput.setText("");
         }
     }//GEN-LAST:event_resetBtnMouseClicked
@@ -718,7 +632,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
             String value = inputSearch.getText();
             String tentg;
             String gt;
-            String matg;
+            int matg;
             int namsinh;
             
             System.out.println(con);
@@ -763,7 +677,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -778,7 +691,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField maTGInput;
     private javax.swing.JTextField namSinhInput;
     private javax.swing.JButton resetBtn;
     private javax.swing.JTextField tenTGInput;

@@ -9,7 +9,6 @@ import javax.swing.JTextField;
 
 import BLL.KhachHangBLL;
 import DTO.KhachHangDTO;
-import DTO.SachDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -42,24 +41,22 @@ public class KhachHangGUI extends javax.swing.JFrame {
       
     
     public KhachHangGUI(){
-     initComponents();
+        initComponents();
      
-     Thread th = new ClockLabel(dateTimeLabel);
+        Thread th = new ClockLabel(dateTimeLabel);
         th.start();
      
-     setKHTable();
+        setKHTable();
      
-     KHTable.getColumnModel().getColumn(4).setCellRenderer(new CurrencyTableCellRenderer());
-    KHTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
-    KHTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
-    KHTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
+        KHTable.getColumn("Xóa").setCellRenderer(new ButtonRenderer());
+        KHTable.getColumn("Sửa").setCellRenderer(new ButtonRenderer());
     
-    addEventKHTable();
+        addEventKHTable();
      
-     this.setLocationRelativeTo(null);
-     this.setResizable(false);
-     this.setVisible(true);
-     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     private boolean validateValueAddKH() {
         String tenKH = tenKHInput.getText();
@@ -76,14 +73,14 @@ public class KhachHangGUI extends javax.swing.JFrame {
         
         
         
-            ArrayList<KhachHangDTO> KHList = khachHangBLL.getAll();
-            
-            for (KhachHangDTO s : KHList) {
-                if (s.getSoDienThoai().equals(sDT)) {
-                    JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
+        ArrayList<KhachHangDTO> KHList = khachHangBLL.getAll();
+
+        for (KhachHangDTO s : KHList) {
+            if (s.getSoDienThoai().equals(sDT)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
+                return false;
             }
+        }
         
         
         if (nSinh.matches("[0-9]\\d{1,}") == false) {
@@ -96,11 +93,9 @@ public class KhachHangGUI extends javax.swing.JFrame {
             return false;
         }       
         
-        
-        
         return true;
     }
-    private boolean validateValueUpdateKH(KhachHangDTO KHCu) {
+    private boolean validateValueUpdateKH() {
         String tenKH = ten.getText();
         String gt = (String) gioiTinh.getSelectedItem();
         String sDT = sdt.getText();
@@ -113,17 +108,14 @@ public class KhachHangGUI extends javax.swing.JFrame {
             return false;
         }
         
-        if (KHCu.getSoDienThoai().equals(sDT) == false) {
-            ArrayList<KhachHangDTO> KHList = khachHangBLL.getAll();
-            
-            for (KhachHangDTO s : KHList) {
-                if (s.getSoDienThoai().equals(sDT)) {
-                    JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
-                    return false;
-                }
+        ArrayList<KhachHangDTO> KHList = khachHangBLL.getAll();
+
+        for (KhachHangDTO s : KHList) {
+            if (s.getSoDienThoai().equals(sDT)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
+                return false;
             }
         }
-        
       
         if (nSinh.matches("[0-9]\\d{1,}") == false) {
             JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
@@ -207,13 +199,12 @@ public class KhachHangGUI extends javax.swing.JFrame {
                 int row = KHTable.rowAtPoint(evt.getPoint());
                 int col = KHTable.columnAtPoint(evt.getPoint());
 
-                if (row >= 0 && col == 4) {
-                    String tenKH = String.valueOf(KHTable.getValueAt(row, 0));
-                    String gt = String.valueOf(KHTable.getValueAt(row, 1));
-                    String sDT = String.valueOf(KHTable.getValueAt(row, 2));
-                    int nSinh = Integer.parseInt(String.valueOf(KHTable.getValueAt(row, 3)));
-                    
-                    KhachHangDTO KHcu = new KhachHangDTO(tenKH,gt,sDT,nSinh);
+                if (row >= 0 && col == 5) {
+                    int maKH = Integer.parseInt(String.valueOf(KHTable.getValueAt(row, 0)));
+                    String tenKH = String.valueOf(KHTable.getValueAt(row, 1));
+                    String gt = String.valueOf(KHTable.getValueAt(row, 2));
+                    String sDT = String.valueOf(KHTable.getValueAt(row, 3));
+                    int nSinh = Integer.parseInt(String.valueOf(KHTable.getValueAt(row, 4)));
                     
                     ten.setText(tenKH);
                     gioiTinh.setSelectedItem(gt);
@@ -224,16 +215,16 @@ public class KhachHangGUI extends javax.swing.JFrame {
                                 "Mời sửa thông tin khách hàng " , JOptionPane.OK_CANCEL_OPTION);
                     
                     if (result == JOptionPane.OK_OPTION){
-                        if (validateValueUpdateKH(KHcu) == false) return;
+                        if (validateValueUpdateKH() == false) return;
                         
                         tenKH = ten.getText();
                         gt = (String) gioiTinh.getSelectedItem();
                         sDT = sdt.getText();
                         nSinh = Integer.parseInt(namSinh.getText());
                         
-                        KhachHangDTO kh = new KhachHangDTO(tenKH,gt,sDT,nSinh);
+                        KhachHangDTO kh = new KhachHangDTO(maKH,tenKH,gt,sDT,nSinh);
                         
-                        khachHangBLL.update(kh, KHcu.getSoDienThoai());
+                        khachHangBLL.update(kh);
                         
                         updateKHTable();
                         
@@ -241,33 +232,27 @@ public class KhachHangGUI extends javax.swing.JFrame {
                         gioiTinh.setSelectedItem("");
                         sdt.setText("");
                         namSinh.setText("");
-                        
-                        
-                        
-                        
-                        
                     }
-                    
                 }
                 
-                if (row >= 0 && col == 5) {
-                       
-                    String sDT = String.valueOf(KHTable.getValueAt(row, 2));
-                    showComfirmRemove(row, sDT);
+                if (row >= 0 && col == 6) {
+                    int maKH = Integer.parseInt(String.valueOf(KHTable.getValueAt(row, 0)));
+                    showComfirmRemove(row, maKH);
                 }
             }
         });
     }
      
-     private void showComfirmRemove(int row, String sDT) {
+     private void showComfirmRemove(int row, int ma) {
         DefaultTableModel modelKH = (DefaultTableModel) KHTable.getModel();
         if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
             modelKH.removeRow(row);
-            khachHangBLL.delete(sDT);
+            khachHangBLL.delete(ma);
         }
     }
     
     private void setKHTable() {
+        int maKH;
         String tenKH;
         String gt;
         String soDienThoai;
@@ -279,13 +264,14 @@ public class KhachHangGUI extends javax.swing.JFrame {
         modelKH.setRowCount(0);
 
         for (KhachHangDTO s : KHList) {
+            maKH = s.getMaKhachHang();
             tenKH = s.getTen();
             gt = s.getGioiTinh();
             soDienThoai = s.getSoDienThoai();
             nSinh = s.getNamSinh();
             System.out.println(s.toString());
 
-            modelKH.addRow(new Object[]{tenKH,gt,soDienThoai,nSinh, "O", "X"});
+            modelKH.addRow(new Object[]{maKH,tenKH,gt,soDienThoai,nSinh, "O", "X"});
         }
     }
     
@@ -414,6 +400,8 @@ public class KhachHangGUI extends javax.swing.JFrame {
         );
 
         jPanel5.setPreferredSize(new java.awt.Dimension(442, 551));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel9.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 153, 0));
@@ -550,7 +538,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(111, 111, 111))
+                .addGap(126, 126, 126))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -601,20 +589,20 @@ public class KhachHangGUI extends javax.swing.JFrame {
         KHTable.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         KHTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tên Khách Hàng ", "Giới Tính", "Số Điện Thoại", "Năm Sinh", "Sửa", "Xóa"
+                "Mã Khách Hàng", "Tên Khách Hàng ", "Giới Tính", "Số Điện Thoại", "Năm Sinh", "Sửa", "Xóa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -640,7 +628,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
             .addComponent(abc, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
 
-        condition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên", "Số điện thoại" }));
+        condition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã khách hàng", "Tên khách hàng", "Số điện thoại" }));
         condition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 conditionActionPerformed(evt);
@@ -761,20 +749,19 @@ public class KhachHangGUI extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             int con =  condition.getSelectedIndex();
             String value = inputSearch.getText();
+            int maKH;
             String tenKH;
             String gt;
             String sDT;
             int nSinh;
             
-            System.out.println(con);
-           
-            ArrayList<KhachHangDTO> KHList = new ArrayList<KhachHangDTO>();
+            ArrayList<KhachHangDTO> KHList = new ArrayList<>();
             
-            if(con == 0){
-                KHList = khachHangBLL.getByCondition("ten LIKE '%" + value + "%'");
-            }else{
-                KHList = khachHangBLL.getByCondition("soDienThoai LIKE '%" + value + "%'");
-            }
+            KHList = switch (con) {
+                case 0 -> khachHangBLL.getByCondition("maKhachHang LIKE '%" + value + "%'");
+                case 1 -> khachHangBLL.getByCondition("tenKhachHang LIKE '%" + value + "%'");
+                default -> khachHangBLL.getByCondition("soDienThoai LIKE '%" + value + "%'");
+            };
             
             DefaultTableModel modelKH = (DefaultTableModel) KHTable.getModel();
             modelKH.setRowCount(0);
@@ -784,13 +771,14 @@ public class KhachHangGUI extends javax.swing.JFrame {
                 setKHTable();
             } else {
                 for (KhachHangDTO s : KHList) {
+                    maKH = s.getMaKhachHang();
                     tenKH = s.getTen();
                     gt = s.getGioiTinh();
                     sDT = s.getSoDienThoai();
                     nSinh= s.getNamSinh();
                     
                     
-                    modelKH.addRow(new Object[]{tenKH,gt,sDT,nSinh, "O", "X"});
+                    modelKH.addRow(new Object[]{maKH,tenKH,gt,sDT,nSinh, "O", "X"});
                 }
             }
         }
@@ -814,9 +802,11 @@ public class KhachHangGUI extends javax.swing.JFrame {
         String sDT = sdtInput.getText();
         int nSinh = Integer.parseInt(namSinhInput.getText());
 
-        KhachHangDTO kh = new KhachHangDTO(tenKH, gt, sDT, nSinh);
-
-        if (khachHangBLL.insert(kh)) {
+        KhachHangDTO kh = new KhachHangDTO(-1, tenKH, gt, sDT, nSinh);
+        
+        int maKH = khachHangBLL.insert(kh);
+        
+        if (maKH >= 0) {
             tenKHInput.setText("");
             genderInput.setSelectedIndex(0);
             sdtInput.setText("");
@@ -824,7 +814,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
             
 
             DefaultTableModel modelKH = (DefaultTableModel) KHTable.getModel();
-            modelKH.addRow(new Object[] { tenKH,gt,sDT,nSinh, "O", "X" });
+            modelKH.addRow(new Object[] { maKH,tenKH,gt,sDT,nSinh, "O", "X" });
 
             JOptionPane.showMessageDialog(rootPane, "Thêm sách thành công");
         }

@@ -1,141 +1,152 @@
+    /*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DAL;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+/**
+ *
+ * @author Hung
+ */
+
+import DTO.NhanVienDTO;
 import java.util.ArrayList;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DTO.NhanVienDTO;
-
-public class NhanVienDAL implements DALInterface<NhanVienDTO> {
+public class NhanVienDAL implements DALInterface<NhanVienDTO>{
+    
     public static NhanVienDAL getInstance() {
         return new NhanVienDAL();
     }
 
-    @Override
-    public boolean insert(NhanVienDTO t) {
+    public int insert(String tenNhanVien, int namSinh, String gioiTinh, String soDienThoai, long luong, int soNgayNghi, String vaiTro) {
         boolean result = false;
-
-        // Bước 1: tạo kết nối với sql
+        int auto_id = -1;
+        //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
                 String sql = "INSERT into nhanvien "
-                        + "(maNhanVien ,ten, gioiTinh, namSinh, soDienThoai, mucLuong, soNgayDaNghi, vaiTro) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+                        + "(tenNhanVien, namSinh, gioiTinh, soDienThoai, luong, soNgayNghi, vaiTro) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-                stmt.setString(1, t.getMaNhanVien());
-                stmt.setString(2, t.getTen());
-                stmt.setString(3, t.getGioiTinh());
-                stmt.setInt(4, t.getNamSinh());
-                stmt.setString(5, t.getSoDienThoai());
-                stmt.setLong(6, t.getMucLuong());
-                stmt.setInt(7, t.getSoNgayDaNghi());
-                stmt.setString(8, t.getVaiTro());
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+                stmt.setString(1, tenNhanVien);
+                stmt.setInt(2, namSinh);
+                stmt.setString(3, gioiTinh);
+                stmt.setString(4, soDienThoai);
+                stmt.setLong(5, luong);
+                stmt.setInt(6, soNgayNghi);
+                stmt.setString(7, vaiTro);
 
-                result = stmt.executeUpdate() >= 1;
+                result = stmt.executeUpdate()>=1;
+                
+                if (result) {
+                    ResultSet rs = stmt.getGeneratedKeys();
+                    rs.next();
+                    auto_id = rs.getInt(1);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
         }
+        
+        return auto_id;
+    }
 
-        return result;
-    };
-
-    public boolean update(NhanVienDTO t, String maNhanVien) {
+    @Override
+    public boolean update(NhanVienDTO t) {
         boolean result = false;
-        // Bước 1: tạo kết nối với sql
+        //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
-
+        
         if (connect != null) {
             try {
                 String sql = "UPDATE nhanvien SET "
-                        + "maNhanVien=?, ten=?, gioiTinh=?, namSinh=?, soDienThoai=?, mucLuong=?, soNgayDaNghi=?, vaiTro=? "
+                        + "tenNhanVien=?, namSinh=?, gioiTinh=?, soDienThoai=?, luong=?, soNgayNghi=?, vaiTro=? "
                         + "WHERE maNhanVien=?";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-                stmt.setString(1, t.getMaNhanVien());
-                stmt.setString(2, t.getTen());
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setString(1, t.getTen());
+                stmt.setInt(2, t.getNamSinh());
                 stmt.setString(3, t.getGioiTinh());
-                stmt.setInt(4, t.getNamSinh());
-                stmt.setString(5, t.getSoDienThoai());
-                stmt.setLong(6, t.getMucLuong());
-                stmt.setInt(7, t.getSoNgayDaNghi());
-                stmt.setString(8, t.getVaiTro());
-                stmt.setString(9, maNhanVien);
+                stmt.setString(4, t.getSoDienThoai());
+                stmt.setLong(5, t.getLuong());
+                stmt.setInt(6, t.getSoNgayNghi());
+                stmt.setString(7, t.getVaiTro());
+                stmt.setInt(8, t.getMaNhanVien());
 
-                result = stmt.executeUpdate() >= 1;
+                result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
                 Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
         }
-
-        return result;
-    };
-
-    public boolean delete(String maNhanVien) {
-        boolean result = false;
-        // Bước 1: tạo kết nối với sql
-        Connection connect = ConnectDatabase.openConnection();
-        if (connect != null) {
-            try {
-                String sql = "DELETE FROM nhanvien "
-                        + "WHERE maNhanVien=?";
-
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
-                stmt.setString(1, maNhanVien);
-
-                result = stmt.executeUpdate() >= 1;
-            } catch (SQLException ex) {
-                Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                ConnectDatabase.closeConnection(connect);
-            }
-        }
-
+        
         return result;
     }
 
+    @Override
+    public boolean delete(int id) {
+        boolean result = false;
+        //Bước 1: tạo kết nối với sql
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            try {
+                String sql = "UPDATE nhanvien SET hienThi=0 "
+                        + "WHERE maNhanVien=?";
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setInt(1, id); 
+
+                result = stmt.executeUpdate()>=1;
+            } catch (SQLException ex) {
+                Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
     public ArrayList<NhanVienDTO> getAll() {
         ArrayList<NhanVienDTO> result = new ArrayList<>();
-
+        
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
-
+            
             try {
-                String sql = "SELECT * FROM nhanvien";
+                String sql = "SELECT * FROM nhanvien WHERE hienThi=1";
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql);  
 
                 ResultSet rs = stmt.executeQuery();
-
-                // Bước 3: lấy dữ liệu
-                while (rs.next()) {
-                    String maNhanVien = rs.getString("maNhanvien");
-                    String ten = rs.getString("ten");
-                    String gioiTinh = rs.getString("gioiTinh");
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String tenNhanVien = rs.getString("tenNhanVien");
                     int namSinh = rs.getInt("namSinh");
                     String soDienThoai = rs.getString("soDienThoai");
-                    Long mucLuong = rs.getLong("mucLuong");
-                    int soNgayDaNghi = rs.getInt("soNgayDaNghi");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    long luong = rs.getLong("luong");
+                    int soNgayNghi = rs.getInt("soNgayNghi");
                     String vaiTro = rs.getString("vaiTro");
-
-                    NhanVienDTO s = new NhanVienDTO(maNhanVien, ten, namSinh, gioiTinh, soDienThoai, mucLuong,
-                            soNgayDaNghi, vaiTro);
-
-                    result.add(s);
+                    
+                    NhanVienDTO nv = new NhanVienDTO(maNhanVien, tenNhanVien, namSinh, gioiTinh, soDienThoai, luong, soNgayNghi, vaiTro);
+                 
+                    result.add(nv);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,37 +154,36 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
                 ConnectDatabase.closeConnection(connect);
             }
         }
-
+        
         return result;
-    };
+    }
 
-    public NhanVienDTO getById(String maNhanVien) {
+    @Override
+    public NhanVienDTO getById(int id) {
         NhanVienDTO result = null;
-
+        
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "SELECT * FROM nhanvien WHERE soDienThoai=\'" + maNhanVien + "\'";
+                String sql = "SELECT * FROM nhanvien WHERE hienThi=1 AND maNhanVien=" + id;
 
-                // Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql);
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
 
                 ResultSet rs = stmt.executeQuery();
-
-                // Bước 3: lấy dữ liệu
-                while (rs.next()) {
-
-                    String ten = rs.getString("ten");
-                    String gioiTinh = rs.getString("gioiTinh");
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String tenNhanVien = rs.getString("tenNhanVien");
                     int namSinh = rs.getInt("namSinh");
                     String soDienThoai = rs.getString("soDienThoai");
-                    Long mucLuong = rs.getLong("mucLuong");
-                    int soNgayDaNghi = rs.getInt("soNgayDaNghi");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    long luong = rs.getLong("luong");
+                    int soNgayNghi = rs.getInt("soNgayNghi");
                     String vaiTro = rs.getString("vaiTro");
-
-                    result = new NhanVienDTO(maNhanVien, ten, namSinh, gioiTinh, soDienThoai, mucLuong, soNgayDaNghi,
-                            vaiTro);
-
+                    
+                    result = new NhanVienDTO(maNhanVien, tenNhanVien, namSinh, gioiTinh, soDienThoai, luong, soNgayNghi, vaiTro);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,18 +191,59 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
                 ConnectDatabase.closeConnection(connect);
             }
         }
-
+        
         return result;
-    };
+    }
 
+    @Override
     public ArrayList<NhanVienDTO> getByCondition(String condition) {
+        ArrayList<NhanVienDTO> result = new ArrayList<>();
+        
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            
+            try {
+                String sql = "SELECT * FROM nhanvien WHERE hienThi=1 AND " + condition;
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql);  
+
+                ResultSet rs = stmt.executeQuery();
+                
+                //Bước 3: lấy dữ liệu
+                while(rs.next()) {
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String tenNhanVien = rs.getString("tenNhanVien");
+                    int namSinh = rs.getInt("namSinh");
+                    String soDienThoai = rs.getString("soDienThoai");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    long luong = rs.getLong("luong");
+                    int soNgayNghi = rs.getInt("soNgayNghi");
+                    String vaiTro = rs.getString("vaiTro");
+                    
+                    NhanVienDTO nv = new NhanVienDTO(maNhanVien, tenNhanVien, namSinh, gioiTinh, soDienThoai, luong, soNgayNghi, vaiTro);
+                 
+                    result.add(nv);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
+        }
+        
+        return result;
+    }
+    
+    public ArrayList<NhanVienDTO> getEmployeeUnAccount() {
         ArrayList<NhanVienDTO> result = new ArrayList<>();
 
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
 
             try {
-                String sql = "SELECT * FROM nhanvien WHERE " + condition;
+                String sql = "SELECT * FROM nhanvien "
+                            + "WHERE maNhanVien NOT IN (SELECT maNhanVien FROM taikhoan)";
 
                 // Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);
@@ -201,8 +252,8 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
 
                 // Bước 3: lấy dữ liệu
                 while (rs.next()) {
-                    String maNhanVien = rs.getString("maNhanvien");
-                    String ten = rs.getString("ten");
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String ten = rs.getString("tenNhanVien");
                     String gioiTinh = rs.getString("gioiTinh");
                     int namSinh = rs.getInt("namSinh");
                     String soDienThoai = rs.getString("soDienThoai");
@@ -212,8 +263,8 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
 
                     NhanVienDTO s = new NhanVienDTO(maNhanVien, ten, namSinh, gioiTinh, soDienThoai, mucLuong,
                             soNgayDaNghi, vaiTro);
-                    result.add(s);
 
+                    result.add(s);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(NhanVienDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,7 +276,8 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO> {
         return result;
     };
 
-    public boolean update(NhanVienDTO t) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public boolean insert(NhanVienDTO t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -6,77 +6,77 @@ package DAL;
 
 /**
  *
- * @author Hung
+ * @author Admin
  */
 
-import DTO.NhaXuatBanDTO;
+import DTO.TaiKhoanDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
+public class TaiKhoanDAL implements DALInterface<TaiKhoanDTO>{
     
-    public static NhaXuatBanDAL getInstance() {
-        return new NhaXuatBanDAL();
+    public static TaiKhoanDAL getInstance() {
+        return new TaiKhoanDAL();
     }
 
-    public int insert(String tenNhaXuatBan, String diaChi, String soDienThoai) {
+    
+    public boolean insert(int maNhanVien, String tenDangNhap, String matKhau) {
         boolean result = false;
-        int auto_id = -1;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "INSERT into nhaxuatban "
-                        + "(tenNhaXuatBan, diaChi, soDienThoai) "
+                String sql = "INSERT into taikhoan "
+                        + "(maNhanVien, tenDangNhap, matKhau) "
                         + "VALUES (?, ?, ?)";
 
                 //Bước 2: tạo đối tượng preparedStatement
-                PreparedStatement stmt = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
-                stmt.setString(1, tenNhaXuatBan);
-                stmt.setString(2, diaChi);
-                stmt.setString(3, soDienThoai);
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setInt(1, maNhanVien);
+                stmt.setString(2, tenDangNhap);
+                stmt.setString(3, matKhau);
+                
+               
 
                 result = stmt.executeUpdate()>=1;
                 
-                if (result) {
-                    ResultSet rs = stmt.getGeneratedKeys();
-                    rs.next();
-                    auto_id = rs.getInt(1);
-                }
+               
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
         }
         
-        return auto_id;
+        return result;
     }
 
     @Override
-    public boolean update(NhaXuatBanDTO t) {
+    public boolean update(TaiKhoanDTO t) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
         
         if (connect != null) {
             try {
-                String sql = "UPDATE nhaxuatban SET "
-                        + "tenNhaXuatBan=?, diaChi=?, soDienThoai=? "
-                        + "WHERE maNhaXuatBan=?";
+                String sql = "UPDATE taikhoan SET "
+                        + "tenDangNhap=?, matKhau=?"
+                        + "WHERE maNhanVien=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setString(1, t.getTenNhaXuatBan());
-                stmt.setString(2, t.getDiaChi());
-                stmt.setString(3, t.getSoDienThoai());
-                stmt.setInt(4, t.getMaNhaXuatBan());
+                
+                stmt.setString(1, t.getTenDangNhap());
+                stmt.setString(2, t.getMatKhau());
+                stmt.setInt(3, t.getMaNhanVien());
+
+                
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
@@ -92,8 +92,8 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "UPDATE nhaxuatban SET hienThi=0"
-                        + "WHERE maNhaXuatBan=?";
+                String sql = "UPDATE taikhoan SET hienThi = 0 "
+                        + "WHERE maNhanVien=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -101,7 +101,7 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
@@ -111,14 +111,14 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
     }
 
     @Override
-    public ArrayList<NhaXuatBanDTO> getAll() {
-        ArrayList<NhaXuatBanDTO> result = new ArrayList<>();
+    public ArrayList<TaiKhoanDTO> getAll() {
+        ArrayList<TaiKhoanDTO> result = new ArrayList<>();
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM nhaxuatban WHERE hienThi=1";
+                String sql = "SELECT * FROM taikhoan WHERE hienThi=1";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -127,17 +127,17 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    int maNhaXuatBan = rs.getInt("maNhaXuatBan");
-                    String tenNhaXuatBan = rs.getString("tenNhaXuatBan");
-                    String diaChi = rs.getString("diaChi");
-                    String soDienThoai = rs.getString("soDienThoai");
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String tenDangNhap = rs.getString("tenDangNhap");
+                    String matKhau = rs.getString("matKhau");
                     
-                    NhaXuatBanDTO nxb = new NhaXuatBanDTO(maNhaXuatBan, tenNhaXuatBan, diaChi, soDienThoai);
+                    
+                    TaiKhoanDTO s = new TaiKhoanDTO(maNhanVien,tenDangNhap, matKhau);
                  
-                    result.add(nxb);
+                    result.add(s);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
@@ -146,14 +146,15 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
         return result;
     }
 
+    
     @Override
-    public NhaXuatBanDTO getById(int id) {
-        NhaXuatBanDTO result = null;
+    public TaiKhoanDTO getById(int id) {
+        TaiKhoanDTO result = null;
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             try {
-                String sql = "SELECT * FROM nhaxuatban WHERE hienThi=1 AND maNhaXuatBan=" + id;
+                String sql = "SELECT * FROM taikhoan WHERE hienThi = 1 and maNhanVien=" + id ;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
@@ -162,15 +163,16 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    int maNhaXuatBan = rs.getInt("maNhaXuatBan");
-                    String tenNhaXuatBan = rs.getString("tenNhaXuatBan");
-                    String diaChi = rs.getString("diaChi");
-                    String soDienThoai = rs.getString("soDienThoai");
+                    int maNhanVien = rs.getInt("maNhanVien");
+                    String tenDangNhap = rs.getString("tenDangNhap");
+                  
+                    String matKhau = rs.getString("matKhau");
                     
-                    result = new NhaXuatBanDTO(maNhaXuatBan, tenNhaXuatBan, diaChi, soDienThoai);
+                    
+                    result = new TaiKhoanDTO(maNhanVien, tenDangNhap, matKhau);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
@@ -180,14 +182,14 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
     }
 
     @Override
-    public ArrayList<NhaXuatBanDTO> getByCondition(String condition) {
-        ArrayList<NhaXuatBanDTO> result = new ArrayList<>();
+    public ArrayList<TaiKhoanDTO> getByCondition(String condition) {
+        ArrayList<TaiKhoanDTO> result = new ArrayList<>();
         
         Connection connect = ConnectDatabase.openConnection();
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM nhaxuatban WHERE hienThi=1 AND " + condition;
+                String sql = "SELECT * FROM taikhoan WHERE hienThi = 1 and " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
@@ -196,17 +198,19 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
                 
                 //Bước 3: lấy dữ liệu
                 while(rs.next()) {
-                    int maNhaXuatBan = rs.getInt("maNhaXuatBan");
-                    String tenNhaXuatBan = rs.getString("tenNhaXuatBan");
-                    String diaChi = rs.getString("diaChi");
-                    String soDienThoai = rs.getString("soDienThoai");
+                    int maNhanVien = rs.getInt("maNhanVien");
                     
-                    NhaXuatBanDTO nxb = new NhaXuatBanDTO(maNhaXuatBan, tenNhaXuatBan, diaChi, soDienThoai);
+                    String tenDangNhap = rs.getString("tenDangNhap");
+                   
+                    String matKhau = rs.getString("matKhau");
+                    
+                    
+                    TaiKhoanDTO s = new TaiKhoanDTO(maNhanVien, tenDangNhap, matKhau);
                  
-                    result.add(nxb);
+                    result.add(s);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(NhaXuatBanDAL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TaiKhoanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 ConnectDatabase.closeConnection(connect);
             }
@@ -216,7 +220,8 @@ public class NhaXuatBanDAL implements DALInterface<NhaXuatBanDTO>{
     }
 
     @Override
-    public boolean insert(NhaXuatBanDTO t) {
+    public boolean insert(TaiKhoanDTO t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+ 
 }
