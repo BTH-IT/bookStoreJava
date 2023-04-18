@@ -9,6 +9,7 @@ import BLL.KhachHangBLL;
 import BLL.KhuyenMaiBLL;
 import BLL.NhanVienBLL;
 import BLL.PhieuBanBLL;
+import BLL.PrintPDF;
 import BLL.SachBLL;
 import DTO.ChiTietPhieuBanDTO;
 import DTO.KhachHangDTO;
@@ -18,7 +19,6 @@ import DTO.PhieuBanDTO;
 import DTO.SachDTO;
 import DTO.TaiKhoanDTO;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -29,7 +29,6 @@ import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -542,7 +541,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                 .addGap(140, 140, 140))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -550,19 +549,19 @@ public final class SellBookGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalPay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(totalPay))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(employeeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(employeeName))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customerPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(customerPhone))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(customerName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -814,7 +813,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
-        NhanVienDTO nv = new NhanVienBLL().getById(tk.getMaNhanVien());
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
             
         switch (nv.getVaiTro()) {
             case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
@@ -866,6 +865,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_inputBookIdKeyPressed
 
+    
     private void payBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payBtnMouseClicked
         if (buyList.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Chưa chọn sách nào cả!!!");
@@ -897,23 +897,30 @@ public final class SellBookGUI extends javax.swing.JFrame {
         
         if (maPhieuBan >= 0) {
             ChiTietPhieuBanDTO ctpb;
-        
+            
             for (Object[] buy : buyList) {
                 ma = Integer.parseInt(String.valueOf(Array.get(buy, 0)));
                 soLuongMua = Integer.parseInt(Array.get(buy, 3).toString());
                 s = sachBLL.getById(ma);
                 s.setSoLuongConLai(s.getSoLuongConLai() - soLuongMua);
                 sachBLL.update(s);
-
+                
                 ctpb = new ChiTietPhieuBanDTO(maPhieuBan, ma, soLuongMua, s.getGiaBan());
-
+                
                 chiTietPhieuBanBLL.insert(ctpb);
             }
-
+            
+            int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Thanh toán thành công, bạn có muốn IN HÓA ĐƠN?", "Thành công",
+                        JOptionPane.YES_NO_OPTION);
+            
+            if(reply == JOptionPane.OK_OPTION) {
+                new PrintPDF().writeHoaDon(maPhieuBan);
+            }
+            
             for (int i = 0; i < modelBuy.getRowCount(); i++) {
                 modelBuy.removeRow(i);
             }
-
             customerName.setText("");
             customerPhone.setText("");
             totalPay.setText("0 VNĐ");
@@ -970,22 +977,22 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
     private void inputCustomerIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputCustomerIdFocusGained
         inputCustomerId.setText("");
-        inputCustomerId.setForeground(new Color(51, 51, 51));
+        inputCustomerId.setForeground(new java.awt.Color(51, 51, 51));
     }//GEN-LAST:event_inputCustomerIdFocusGained
 
     private void inputCustomerIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputCustomerIdFocusLost
         inputCustomerId.setText("Nhập số điện thoại");
-        inputCustomerId.setForeground(new Color(102, 102, 102));
+        inputCustomerId.setForeground(new java.awt.Color(102, 102, 102));
     }//GEN-LAST:event_inputCustomerIdFocusLost
 
     private void inputBookIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputBookIdFocusGained
         inputBookId.setText("");
-        inputBookId.setForeground(new Color(51, 51, 51));
+        inputBookId.setForeground(new java.awt.Color(51, 51, 51));
     }//GEN-LAST:event_inputBookIdFocusGained
 
     private void inputBookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputBookIdFocusLost
         inputBookId.setText("Nhập thông tin sách");
-        inputBookId.setForeground(new Color(102, 102, 102));
+        inputBookId.setForeground(new java.awt.Color(102, 102, 102));
     }//GEN-LAST:event_inputBookIdFocusLost
 
     private void saleCbxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saleCbxActionPerformed

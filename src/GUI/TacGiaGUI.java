@@ -695,7 +695,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
 
         try {
             XSSFWorkbook workbook = new XSSFWorkbook();
-            XSSFSheet sheet = workbook.createSheet("nhaxuatban");
+            XSSFSheet sheet = workbook.createSheet("tacgia");
 
             XSSFRow row = null;
             XSSFCell cell = null;

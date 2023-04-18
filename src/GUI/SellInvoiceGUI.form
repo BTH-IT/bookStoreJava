@@ -68,6 +68,8 @@
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="infoUser" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="print" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="exportExcel" min="-2" pref="44" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="logoutBtn" min="-2" pref="44" max="-2" attributes="0"/>
@@ -80,6 +82,7 @@
               <Component id="logoutBtn" alignment="0" pref="77" max="32767" attributes="0"/>
               <Component id="infoUser" alignment="0" max="32767" attributes="0"/>
               <Component id="exportExcel" alignment="1" max="32767" attributes="0"/>
+              <Component id="print" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -123,6 +126,19 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="exportExcelMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="print">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/GUI/pdf.png"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="printMouseClicked"/>
           </Events>
         </Component>
       </SubComponents>
@@ -446,12 +462,12 @@
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="8" rowCount="0">
-                        <Column editable="false" title="M&#xe3; Phi&#x1ebf;u B&#xe1;n" type="java.lang.Integer"/>
-                        <Column editable="false" title="M&#xe3; Kh&#xe1;ch H&#xe0;ng" type="java.lang.Integer"/>
+                        <Column editable="false" title="M&#xe3; Phi&#x1ebf;u B&#xe1;n" type="java.lang.String"/>
+                        <Column editable="false" title="M&#xe3; Kh&#xe1;ch H&#xe0;ng" type="java.lang.String"/>
                         <Column editable="false" title="M&#xe3; Nh&#xe2;n Vi&#xea;n" type="java.lang.Integer"/>
-                        <Column editable="false" title="M&#xe3; Khuy&#x1ebf;n M&#xe3;i" type="java.lang.Integer"/>
                         <Column editable="false" title="Ng&#xe0;y L&#x1ead;p" type="java.lang.String"/>
                         <Column editable="false" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Double"/>
+                        <Column editable="false" title="M&#xe3; Khuy&#x1ebf;n M&#xe3;i" type="java.lang.String"/>
                         <Column editable="false" title="S&#x1eed;a" type="java.lang.Object"/>
                         <Column editable="false" title="X&#xf3;a" type="java.lang.Object"/>
                       </Table>

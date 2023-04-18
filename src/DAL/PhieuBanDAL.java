@@ -173,7 +173,7 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                     double tongTien = rs.getDouble("tongTien");
                     int maKhuyenMai = rs.getInt("maKhuyenMai");
                     
-                    PhieuBanDTO pb = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai);
+                    result = new PhieuBanDTO(maPhieuBan, maKhachHang, maNhanVien, ngayLap, tongTien, maKhuyenMai);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(PhieuBanDAL.class.getName()).log(Level.SEVERE, null, ex);

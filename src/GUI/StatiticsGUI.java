@@ -608,7 +608,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
-        NhanVienDTO nv = new NhanVienBLL().getById(tk.getMaNhanVien());
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
             
         switch (nv.getVaiTro()) {
             case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
@@ -830,6 +830,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/thongke.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }
