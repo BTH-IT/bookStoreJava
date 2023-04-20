@@ -4,7 +4,9 @@
  */
 package GUI;
 
+import BLL.NhanVienBLL;
 import BLL.TacGiaBLL;
+import DTO.NhanVienDTO;
 import DTO.TacGiaDTO;
 import DTO.TaiKhoanDTO;
 import java.awt.BorderLayout;
@@ -324,6 +326,11 @@ public class AuthorGUI extends javax.swing.JFrame {
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/back.png"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         dateTimeLabel.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         dateTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -352,6 +359,8 @@ public class AuthorGUI extends javax.swing.JFrame {
         );
 
         jPanel5.setPreferredSize(new java.awt.Dimension(442, 551));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel9.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 153, 0));
@@ -586,11 +595,11 @@ public class AuthorGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -756,6 +765,17 @@ public class AuthorGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_exportExcel1MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        this.dispose();
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+            
+        switch (nv.getVaiTro()) {
+            case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
+            case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
+            case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
+        }
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TGTable;
