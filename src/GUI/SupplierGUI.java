@@ -6,6 +6,7 @@ package GUI;
 
 import BLL.NhaCungCapBLL;
 import DTO.NhaCungCapDTO;
+import DTO.TaiKhoanDTO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -26,7 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Admin
  */
 public class SupplierGUI extends javax.swing.JFrame {
-    
+    private TaiKhoanDTO tk;
     private NhaCungCapBLL nhaCungCapBLL = new NhaCungCapBLL();
     
     private JTextField tenNCC = new JTextField();
@@ -39,8 +40,10 @@ public class SupplierGUI extends javax.swing.JFrame {
     /**
      * Creates new form NhaXuatBanGUI
      */
-    public SupplierGUI() {
+    public SupplierGUI(TaiKhoanDTO tk) {
         initComponents();
+        
+        this.tk = tk;
         
         Thread th = new ClockLabel(dateTimeLabel);
         th.start();
@@ -794,14 +797,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
             e.printStackTrace();
         }
     }//GEN-LAST:event_exportExcelMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        new SupplierGUI();
-    }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel Footer;

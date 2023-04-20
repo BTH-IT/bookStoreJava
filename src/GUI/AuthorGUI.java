@@ -32,7 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author Admin
  */
-public class TacGiaGUI extends javax.swing.JFrame {
+public class AuthorGUI extends javax.swing.JFrame {
     
     private TacGiaBLL tacGiaBLL = new TacGiaBLL();
     
@@ -45,7 +45,7 @@ public class TacGiaGUI extends javax.swing.JFrame {
     /**
      * Creates new form TacGiaGUI
      */
-    public TacGiaGUI() {
+    public AuthorGUI() {
         initComponents();
      
         Thread th = new ClockLabel(dateTimeLabel);
@@ -758,7 +758,6 @@ public class TacGiaGUI extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JComboBox<String> condition;
     private javax.swing.JLabel dateTimeLabel;
-    private javax.swing.JLabel exportExcel;
     private javax.swing.JLabel exportExcel1;
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;

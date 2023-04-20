@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-public class ManegerMenuGUI extends javax.swing.JFrame {
+public class ManagerMenuGUI extends javax.swing.JFrame {
     private TaiKhoanDTO tk ;
     int width = 169;
     int height = 516;
-    public ManegerMenuGUI(TaiKhoanDTO tk) {
+    public ManagerMenuGUI(TaiKhoanDTO tk) {
         this.tk = tk;
         initComponents();
         jLabel3.setVisible(true);
@@ -48,7 +48,7 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                     Thread.sleep((long) 0.9);
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ManegerMenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ManagerMenuGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }).start();
@@ -64,7 +64,7 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                     Thread.sleep((long) 0.5);
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ManegerMenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ManagerMenuGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }).start();
@@ -603,13 +603,13 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManegerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManegerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManegerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManegerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
        

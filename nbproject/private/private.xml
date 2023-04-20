@@ -3,7 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/LAP_TRINH_JAVA/Do_an/bookStoreJava/src/GUI/LoginGUI.java</file>
+=======
+            <file>file:/C:/Users/Hung/Documents/NetBeansProjects/bookStoreJava/src/BLL/PrintPDF.java</file>
+            <file>file:/C:/Users/Hung/Documents/NetBeansProjects/bookStoreJava/src/GUI/TypeGUI.java</file>
+            <file>file:/C:/Users/Hung/Documents/NetBeansProjects/bookStoreJava/src/test/test.java</file>
+            <file>file:/C:/Users/Hung/Documents/NetBeansProjects/bookStoreJava/src/GUI/StatiticsGUI.java</file>
+>>>>>>> b2a230612f66a482f5457afaaf79ad6a35535381
         </group>
     </open-files>
 </project-private>

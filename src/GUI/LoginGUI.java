@@ -213,7 +213,7 @@ public class LoginGUI extends javax.swing.JFrame {
                 this.dispose();
                 switch (nv.getVaiTro()) {
                     case "Quản lý":     
-                        new ManegerMenuGUI(tk);
+                        new ManagerMenuGUI(tk);
                         break;
                     case "Nhân viên bán hàng":
                         new SellEmployeeMenuGUI(tk);

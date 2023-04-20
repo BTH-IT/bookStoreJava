@@ -404,7 +404,7 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
 
     private void kButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton3MouseClicked
         this.dispose();
-        new Supplier(tk);
+        new SupplierGUI(tk);
     }//GEN-LAST:event_kButton3MouseClicked
 
     /**
