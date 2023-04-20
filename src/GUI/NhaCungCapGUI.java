@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-//import org.apache.poi.ss.usermodel.CellType;
-//import org.apache.poi.xssf.usermodel.XSSFCell;
-//import org.apache.poi.xssf.usermodel.XSSFRow;
-//import org.apache.poi.xssf.usermodel.XSSFSheet;
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -358,10 +358,11 @@ condition.addActionListener(new java.awt.event.ActionListener() {
         jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel7Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel14)
-                .addComponent(inputSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(condition))
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(condition)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(inputSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
@@ -732,66 +733,66 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     }//GEN-LAST:event_inputSearchFocusLost
 
     private void exportExcelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportExcelMouseClicked
-//        ArrayList<NhaCungCapDTO> nccList = nhaCungCapBLL.getAll();
-//
-//        try {
-//            XSSFWorkbook workbook = new XSSFWorkbook();
-//            XSSFSheet sheet = workbook.createSheet("nhacungcap");
-//
-//            XSSFRow row = null;
-//            XSSFCell cell = null;
-//
-//            row = sheet.createRow(0);
-//
-//            cell = row.createCell(0, CellType.STRING);
-//            cell.setCellValue("STT");
-//
-//            cell = row.createCell(1, CellType.STRING);
-//            cell.setCellValue("Mã nhà cung cấp ");
-//
-//            cell = row.createCell(2, CellType.STRING);
-//            cell.setCellValue("Tên nhà cung cấp");
-//
-//            cell = row.createCell(3, CellType.STRING);
-//            cell.setCellValue("Địa chỉ");
-//
-//            cell = row.createCell(4, CellType.STRING);
-//            cell.setCellValue("Số điện thoại");
-//
-//            int i = 1;
-//            for (NhaCungCapDTO ncc : nccList) {
-//                row = sheet.createRow(0 + i);
-//
-//                cell = row.createCell(0, CellType.NUMERIC);
-//                cell.setCellValue(i);
-//
-//                cell = row.createCell(1, CellType.NUMERIC);
-//                cell.setCellValue(ncc.getMaNhaCungCap());
-//
-//                cell = row.createCell(2, CellType.STRING);
-//                cell.setCellValue(ncc.getTenNhaCungCap());
-//
-//                cell = row.createCell(3, CellType.STRING);
-//                cell.setCellValue(ncc.getDiaChi());
-//
-//                cell = row.createCell(4, CellType.STRING);
-//                cell.setCellValue(ncc.getSoDienThoai());
-//
-//                i++;
-//            }
-//
-//            File f = new File("D://nhacungcap.xlsx");
-//            try {
-//                FileOutputStream fis = new FileOutputStream(f);
-//
-//                workbook.write(fis);
-//                fis.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        ArrayList<NhaCungCapDTO> nccList = nhaCungCapBLL.getAll();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("nhacungcap");
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
+
+            row = sheet.createRow(0);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Mã nhà cung cấp ");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Tên nhà cung cấp");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Địa chỉ");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Số điện thoại");
+
+            int i = 1;
+            for (NhaCungCapDTO ncc : nccList) {
+                row = sheet.createRow(0 + i);
+
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i);
+
+                cell = row.createCell(1, CellType.NUMERIC);
+                cell.setCellValue(ncc.getMaNhaCungCap());
+
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(ncc.getTenNhaCungCap());
+
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(ncc.getDiaChi());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(ncc.getSoDienThoai());
+
+                i++;
+            }
+
+            File f = new File("D://nhacungcap.xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+
+                workbook.write(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_exportExcelMouseClicked
 
     /**
