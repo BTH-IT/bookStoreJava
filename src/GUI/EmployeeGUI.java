@@ -35,7 +35,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author Admin
  */
-public class NhanVienGUI extends javax.swing.JFrame {
+public class EmployeeGUI extends javax.swing.JFrame {
     private NhanVienBLL nhanVienBLL = new NhanVienBLL();
 
     private JTextField tenNV = new JTextField();
@@ -51,7 +51,7 @@ public class NhanVienGUI extends javax.swing.JFrame {
         /**
          * Creates new form NhanVienGUI
          */
-    public NhanVienGUI() {
+    public EmployeeGUI() {
         initComponents();
 
         setNVTable();

@@ -83,6 +83,8 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 totalImportBook += soLuong;
             }
             
+            totalImport += tongTien;
+            
             modelImportBookTable.addRow(new Object[]{maPhieuNhap, maNhanVien, maNhaCungCap, ngayLap, tongTien});
         }
         
@@ -121,6 +123,8 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 
                 totalSellBook += soLuong;
             }
+            
+            totalSell += tongTien;
         }
         
         totalSellBookLabel.setText(totalSellBook + " sách");
@@ -139,11 +143,9 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         infoUser.setText(tk.getTenDangNhap());
         
         
-        importBookTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
-        importBookTable.getColumnModel().getColumn(6).setCellRenderer(new CurrencyTableCellRenderer());
+        importBookTable.getColumnModel().getColumn(4).setCellRenderer(new CurrencyTableCellRenderer());
         
         sellBookTable.getColumnModel().getColumn(5).setCellRenderer(new CurrencyTableCellRenderer());
-        sellBookTable.getColumnModel().getColumn(6).setCellRenderer(new CurrencyTableCellRenderer());
         
         setImportBookTable();
         
@@ -608,7 +610,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
-        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+        NhanVienDTO nv = new NhanVienBLL().getById(tk.getMaNhanVien());
             
         switch (nv.getVaiTro()) {
             case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
@@ -628,7 +630,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         java.sql.Date sqlDateTo = new java.sql.Date(dateTo.getTime());
         
         DefaultTableModel modelImportBookTable = (DefaultTableModel) importBookTable.getModel();
-        PNList = phieuNhapBLL.getByCondition("ngayLap between '" + sqlDateFrom + "' AND '" + sqlDateTo +"'");
+        PNList = phieuNhapBLL.getByCondition("ngayLap between '" + sqlDateFrom.toString() + "' AND '" + sqlDateTo.toString() +"'");
         modelImportBookTable.setRowCount(0);
         
         setImportBookTable();
@@ -645,15 +647,15 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         java.sql.Date sqlDateTo = new java.sql.Date(dateTo.getTime());
         
         DefaultTableModel modelImportBookTable = (DefaultTableModel) importBookTable.getModel();
-        PNList = phieuNhapBLL.getByCondition("ngayLap between '" + sqlDateFrom + "' AND '" + sqlDateTo +"'");
+        PNList = phieuNhapBLL.getByCondition("ngayLap between '" + sqlDateFrom.toString() + "' AND '" + sqlDateTo.toString() +"'");
         modelImportBookTable.setRowCount(0);
         
         setImportBookTable();
     }//GEN-LAST:event_importToPropertyChange
 
     private void sellFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_sellFromPropertyChange
-        Date dateFrom = importFrom.getDate();
-        Date dateTo = importTo.getDate();
+        Date dateFrom = sellFrom.getDate();
+        Date dateTo = sellTo.getDate();
         if (dateFrom == null || dateTo == null) return;
         
         if (dateFrom.compareTo(dateTo) > 0) return;
@@ -662,15 +664,16 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         java.sql.Date sqlDateTo = new java.sql.Date(dateTo.getTime());
         
         DefaultTableModel modelSellBookTable = (DefaultTableModel) sellBookTable.getModel();
-        PBList = phieuBanBLL.getByCondition("ngayLap between '" + sqlDateFrom + "' AND '" + sqlDateTo +"'");
+        PBList = phieuBanBLL.getByCondition("ngayLap between '" + sqlDateFrom.toString() + "' AND '" + sqlDateTo.toString() +"'");
         modelSellBookTable.setRowCount(0);
         
         setSellBookTable();
     }//GEN-LAST:event_sellFromPropertyChange
 
     private void sellToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_sellToPropertyChange
-        Date dateFrom = importFrom.getDate();
-        Date dateTo = importTo.getDate();
+        Date dateFrom = sellFrom.getDate();
+        Date dateTo = sellTo.getDate();
+        
         if (dateFrom == null || dateTo == null) return;
         
         if (dateTo.compareTo(dateFrom) < 0) return;
@@ -679,7 +682,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
         java.sql.Date sqlDateTo = new java.sql.Date(dateTo.getTime());
         
         DefaultTableModel modelSellBookTable = (DefaultTableModel) sellBookTable.getModel();
-        PBList = phieuBanBLL.getByCondition("ngayLap between '" + sqlDateFrom + "' AND '" + sqlDateTo +"'");
+        PBList = phieuBanBLL.getByCondition("ngayLap between '" + sqlDateFrom.toString() + "' AND '" + sqlDateTo.toString() +"'");
         modelSellBookTable.setRowCount(0);
         
         setSellBookTable();

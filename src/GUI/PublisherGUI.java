@@ -31,7 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author Admin
  */
-public class NhaXuatBanGUI extends javax.swing.JFrame {
+public class PublisherGUI extends javax.swing.JFrame {
     
     private NhaXuatBanBLL nhaXuatBanBLL = new NhaXuatBanBLL();
     
@@ -45,7 +45,7 @@ public class NhaXuatBanGUI extends javax.swing.JFrame {
     /**
      * Creates new form NhaXuatBanGUI
      */
-    public NhaXuatBanGUI() {
+    public PublisherGUI() {
         initComponents();
         
         Thread th = new ClockLabel(dateTimeLabel);

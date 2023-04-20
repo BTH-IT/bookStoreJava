@@ -33,7 +33,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author Tan
  */
-public class KhachHangGUI extends javax.swing.JFrame {
+public class CustomerGUI extends javax.swing.JFrame {
     /**
      * Creates new form KhachHangGUI
      */
@@ -48,7 +48,7 @@ public class KhachHangGUI extends javax.swing.JFrame {
 
       
     
-    public KhachHangGUI(){
+    public CustomerGUI(){
         initComponents();
      
         Thread th = new ClockLabel(dateTimeLabel);
