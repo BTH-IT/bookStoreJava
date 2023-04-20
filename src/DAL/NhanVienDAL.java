@@ -257,8 +257,8 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO>{
                     String gioiTinh = rs.getString("gioiTinh");
                     int namSinh = rs.getInt("namSinh");
                     String soDienThoai = rs.getString("soDienThoai");
-                    Long mucLuong = rs.getLong("mucLuong");
-                    int soNgayDaNghi = rs.getInt("soNgayDaNghi");
+                    Long mucLuong = rs.getLong("luong");
+                    int soNgayDaNghi = rs.getInt("soNgayNghi");
                     String vaiTro = rs.getString("vaiTro");
 
                     NhanVienDTO s = new NhanVienDTO(maNhanVien, ten, namSinh, gioiTinh, soDienThoai, mucLuong,

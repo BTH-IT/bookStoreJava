@@ -12,7 +12,7 @@ import javax.swing.*;
 public class ManagerMenuGUI extends javax.swing.JFrame {
     private TaiKhoanDTO tk ;
     int width = 169;
-    int height = 516;
+    int height = 700;
     public ManagerMenuGUI(TaiKhoanDTO tk) {
         this.tk = tk;
         initComponents();
@@ -94,6 +94,8 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
         kButton10 = new com.k33ptoo.components.KButton();
         kButton11 = new com.k33ptoo.components.KButton();
         sach_btn1 = new com.k33ptoo.components.KButton();
+        sach_btn2 = new com.k33ptoo.components.KButton();
+        sach_btn3 = new com.k33ptoo.components.KButton();
         jLabel6 = new javax.swing.JLabel();
         kGradientPanel1 = new keeptoo.KGradientPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -136,7 +138,7 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
         Menu.setBackground(new java.awt.Color(255, 255, 51));
         Menu.setEnabled(false);
         Menu.setOpaque(false);
-        Menu.setPreferredSize(new java.awt.Dimension(169, 516));
+        Menu.setPreferredSize(new java.awt.Dimension(169, 700));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/closemenuicon.png"))); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -345,6 +347,52 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
             }
         });
 
+        sach_btn2.setBorder(null);
+        sach_btn2.setText("Tài Khoản");
+        sach_btn2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        sach_btn2.setkBorderRadius(30);
+        sach_btn2.setkEndColor(new java.awt.Color(255, 255, 153));
+        sach_btn2.setkForeGround(new java.awt.Color(0, 0, 0));
+        sach_btn2.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        sach_btn2.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        sach_btn2.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        sach_btn2.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        sach_btn2.setkPressedColor(new java.awt.Color(20, 61, 89));
+        sach_btn2.setkStartColor(new java.awt.Color(204, 102, 0));
+        sach_btn2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sach_btn2MouseClicked(evt);
+            }
+        });
+        sach_btn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sach_btn2ActionPerformed(evt);
+            }
+        });
+
+        sach_btn3.setBorder(null);
+        sach_btn3.setText("Nhà Xuất Bản");
+        sach_btn3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        sach_btn3.setkBorderRadius(30);
+        sach_btn3.setkEndColor(new java.awt.Color(255, 255, 153));
+        sach_btn3.setkForeGround(new java.awt.Color(0, 0, 0));
+        sach_btn3.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        sach_btn3.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        sach_btn3.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        sach_btn3.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        sach_btn3.setkPressedColor(new java.awt.Color(20, 61, 89));
+        sach_btn3.setkStartColor(new java.awt.Color(204, 102, 0));
+        sach_btn3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sach_btn3MouseClicked(evt);
+            }
+        });
+        sach_btn3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sach_btn3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
@@ -357,7 +405,7 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
             .addGroup(MenuLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sach_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,8 +414,10 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
                     .addComponent(kButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sach_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(sach_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sach_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,8 +444,13 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
                 .addComponent(kButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sach_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sach_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
         );
 
         jLabel6.setFont(new java.awt.Font("Snap ITC", 3, 36)); // NOI18N
@@ -621,6 +676,24 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void sach_btn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sach_btn2MouseClicked
+        this.dispose();
+        new AccountGUI(tk);
+    }//GEN-LAST:event_sach_btn2MouseClicked
+
+    private void sach_btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sach_btn2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sach_btn2ActionPerformed
+
+    private void sach_btn3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sach_btn3MouseClicked
+        this.dispose();
+        new PublisherGUI(tk);
+    }//GEN-LAST:event_sach_btn3MouseClicked
+
+    private void sach_btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sach_btn3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sach_btn3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Menu;
     private javax.swing.JLabel jLabel1;
@@ -647,6 +720,8 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
     private keeptoo.KGradientPanel kGradientPanel2;
     private com.k33ptoo.components.KButton sach_btn;
     private com.k33ptoo.components.KButton sach_btn1;
+    private com.k33ptoo.components.KButton sach_btn2;
+    private com.k33ptoo.components.KButton sach_btn3;
     // End of variables declaration//GEN-END:variables
 
     
