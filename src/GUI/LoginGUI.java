@@ -62,6 +62,7 @@ public class LoginGUI extends javax.swing.JFrame {
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 153, 0));
         kGradientPanel1.setkGradientFocus(300);
         kGradientPanel1.setkStartColor(new java.awt.Color(255, 255, 153));
+        kGradientPanel1.setkTransparentControls(false);
         kGradientPanel1.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jLabel_Test.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
