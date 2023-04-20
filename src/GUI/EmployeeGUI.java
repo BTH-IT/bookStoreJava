@@ -6,6 +6,7 @@ package GUI;
 
 import BLL.NhanVienBLL;
 import DTO.NhanVienDTO;
+import DTO.TaiKhoanDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -36,6 +37,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Admin
  */
 public class EmployeeGUI extends javax.swing.JFrame {
+    private TaiKhoanDTO tk;
     private NhanVienBLL nhanVienBLL = new NhanVienBLL();
 
     private JTextField tenNV = new JTextField();
@@ -51,9 +53,12 @@ public class EmployeeGUI extends javax.swing.JFrame {
         /**
          * Creates new form NhanVienGUI
          */
-    public EmployeeGUI() {
+    public EmployeeGUI(TaiKhoanDTO tk) {
         initComponents();
-
+        this.tk = tk;
+        
+        username.setText(tk.getTenDangNhap());
+        
         setNVTable();
         Thread th = new ClockLabel(dateTimeLabel);
         th.start();
@@ -378,7 +383,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         exportExcel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -416,9 +421,8 @@ public class EmployeeGUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setPreferredSize(new java.awt.Dimension(219, 65));
 
-        jLabel1.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nhân Viên");
+        username.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        username.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
 
@@ -437,7 +441,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(username)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
@@ -449,7 +453,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(exportExcel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -459,6 +463,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/back.png"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         dateTimeLabel.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         dateTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1003,6 +1012,17 @@ public class EmployeeGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exportExcelMouseClicked
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        this.dispose();
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+            
+        switch (nv.getVaiTro()) {
+            case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
+            case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
+            case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
+        }
+    }//GEN-LAST:event_jLabel7MouseClicked
+
         private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
                 // TODO add your handling code here:
         }// GEN-LAST:event_jTextField1ActionPerformed
@@ -1099,7 +1119,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private javax.swing.JLabel exportExcel;
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1124,6 +1143,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private javax.swing.JTextField sDTInput;
     private javax.swing.JTextField soNgayDaNghiInput;
     private javax.swing.JTextField tenNVInput;
+    private javax.swing.JLabel username;
     private javax.swing.JComboBox<String> vaiTroInput;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,7 +5,9 @@
 package GUI;
 
 import BLL.NhaCungCapBLL;
+import BLL.NhanVienBLL;
 import DTO.NhaCungCapDTO;
+import DTO.NhanVienDTO;
 import DTO.TaiKhoanDTO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -44,6 +46,8 @@ public class SupplierGUI extends javax.swing.JFrame {
         initComponents();
         
         this.tk = tk;
+        
+        username.setText(tk.getTenDangNhap());
         
         Thread th = new ClockLabel(dateTimeLabel);
         th.start();
@@ -250,7 +254,7 @@ public class SupplierGUI extends javax.swing.JFrame {
         resetBtn = new javax.swing.JButton();
         tenNCCInput = new javax.swing.JTextField();
         Header = new keeptoo.KGradientPanel();
-        jLabel1 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
         exportExcel = new javax.swing.JLabel();
         Footer = new keeptoo.KGradientPanel();
@@ -509,9 +513,8 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     Header.setkEndColor(new java.awt.Color(255, 153, 0));
     Header.setkStartColor(new java.awt.Color(255, 255, 153));
 
-    jLabel1.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel1.setText("Nhà Cung Cấp");
+    username.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+    username.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
     logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
     logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -534,8 +537,8 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     HeaderLayout.setHorizontalGroup(
         HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(HeaderLayout.createSequentialGroup()
-            .addGap(73, 73, 73)
-            .addComponent(jLabel1)
+            .addGap(20, 20, 20)
+            .addComponent(username)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(44, 44, 44)
@@ -545,12 +548,12 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     HeaderLayout.setVerticalGroup(
         HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(HeaderLayout.createSequentialGroup()
-            .addGap(16, 16, 16)
+            .addGap(0, 0, 0)
             .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 0, Short.MAX_VALUE))
     );
 
     Footer.setkEndColor(new java.awt.Color(255, 153, 0));
@@ -649,7 +652,14 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     }//GEN-LAST:event_resetBtnActionPerformed
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
-        // TODO add your handling code here:
+        this.dispose();
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+            
+        switch (nv.getVaiTro()) {
+            case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
+            case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
+            case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
+        }
         
     }//GEN-LAST:event_backBtnMouseClicked
 
@@ -810,7 +820,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JTextField diaChiInput;
     private javax.swing.JLabel exportExcel;
     private javax.swing.JTextField inputSearch;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -824,5 +833,6 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JButton resetBtn;
     private javax.swing.JTextField soDienThoaiInput;
     private javax.swing.JTextField tenNCCInput;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

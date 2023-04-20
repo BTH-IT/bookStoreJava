@@ -8,6 +8,7 @@ import DTO.TaiKhoanDTO;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -19,13 +20,16 @@ public class LoginGUI extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Đăng nhập");
         txMatKhau.setEchoChar('*');
-        this.setBounds(300, 100, 1000, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        showPass.setOpaque(false);
         scaleImage();
-        setVisible(true);
     }
 
     public void scaleImage(){
-        ImageIcon icon1 = new ImageIcon("D:\\LAP_TRINH_JAVA\\Do_an\\bookStoreJava\\src\\GUI\\loginlogo.png");
+        ImageIcon icon1 = new ImageIcon(getClass().getResource("loginlogo.png"));
         Image img = icon1.getImage();
         Image imgScale = img.getScaledInstance(jLable_logo.getWidth(), jLable_logo.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon scaleIcon = new ImageIcon(imgScale);
@@ -74,9 +78,9 @@ public class LoginGUI extends javax.swing.JFrame {
         label_user.setText("Tài Khoản");
 
         txTenDangNhap.setOpaque(true);
-        txTenDangNhap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txTenDangNhapActionPerformed(evt);
+        txTenDangNhap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txTenDangNhapKeyPressed(evt);
             }
         });
 
@@ -85,10 +89,15 @@ public class LoginGUI extends javax.swing.JFrame {
                 txMatKhauComponentMoved(evt);
             }
         });
+        txMatKhau.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txMatKhauKeyPressed(evt);
+            }
+        });
 
+        Login_button.setBorder(null);
         Login_button.setForeground(new java.awt.Color(102, 102, 102));
         Login_button.setText("Đăng Nhập");
-        Login_button.setToolTipText("");
         Login_button.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
         Login_button.setkBackGroundColor(new java.awt.Color(0, 0, 0));
         Login_button.setkBorderRadius(25);
@@ -115,6 +124,7 @@ public class LoginGUI extends javax.swing.JFrame {
         showPass.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
         showPass.setForeground(new java.awt.Color(20, 61, 89));
         showPass.setText("Hiện mật khẩu");
+        showPass.setBorder(null);
         showPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showPassActionPerformed(evt);
@@ -187,21 +197,9 @@ public class LoginGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txTenDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txTenDangNhapActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txTenDangNhapActionPerformed
-
-    private void Login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_buttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Login_buttonActionPerformed
-
-    private void txMatKhauComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_txMatKhauComponentMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txMatKhauComponentMoved
-
-    private void Login_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login_buttonMouseClicked
+    private void login() {
         String tentk = txTenDangNhap.getText();
-        String mk = txMatKhau.getText();
+        String mk = String.valueOf(txMatKhau.getPassword());
         TaiKhoanBLL qltk = new TaiKhoanBLL();
         TaiKhoanDTO tk = qltk.getTaiKhoan(tentk);
 
@@ -212,15 +210,9 @@ public class LoginGUI extends javax.swing.JFrame {
             if (tk.getMatKhau().equals(mk)) {
                 this.dispose();
                 switch (nv.getVaiTro()) {
-                    case "Quản lý":     
-                        new ManagerMenuGUI(tk);
-                        break;
-                    case "Nhân viên bán hàng":
-                        new SellEmployeeMenuGUI(tk);
-                        break;
-                    case "Nhân viên nhập hàng":
-                        new ImportEmployeeMenuGUI(tk);
-                        break;
+                    case "Quản lý" -> new ManagerMenuGUI(tk);
+                    case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk);
+                    case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk);
                 }
                 
 
@@ -233,6 +225,17 @@ public class LoginGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Sai tên đăng nhập!");
             txTenDangNhap.requestFocus();
         }
+    }
+    private void Login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_buttonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Login_buttonActionPerformed
+
+    private void txMatKhauComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_txMatKhauComponentMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txMatKhauComponentMoved
+
+    private void Login_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login_buttonMouseClicked
+        login();
     }//GEN-LAST:event_Login_buttonMouseClicked
 
     private void showPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassActionPerformed
@@ -246,38 +249,17 @@ public class LoginGUI extends javax.swing.JFrame {
        isShowPass = false;
     }//GEN-LAST:event_showPassActionPerformed
 
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void txTenDangNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txTenDangNhapKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_txTenDangNhapKeyPressed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginGUI().setVisible(true);
-            }
-        });
-    }
+    private void txMatKhauKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txMatKhauKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
+    }//GEN-LAST:event_txMatKhauKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.k33ptoo.components.KButton Login_button;

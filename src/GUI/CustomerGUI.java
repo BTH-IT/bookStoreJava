@@ -8,7 +8,10 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import BLL.KhachHangBLL;
+import BLL.NhanVienBLL;
 import DTO.KhachHangDTO;
+import DTO.NhanVienDTO;
+import DTO.TaiKhoanDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -38,6 +41,8 @@ public class CustomerGUI extends javax.swing.JFrame {
      * Creates new form KhachHangGUI
      */
     
+    private TaiKhoanDTO tk;
+    
     private KhachHangBLL khachHangBLL = new KhachHangBLL();
     
     private JTextField ten = new JTextField();
@@ -48,8 +53,12 @@ public class CustomerGUI extends javax.swing.JFrame {
 
       
     
-    public CustomerGUI(){
+    public CustomerGUI(TaiKhoanDTO tk){
         initComponents();
+        
+        this.tk = tk;
+        
+        username.setText(tk.getTenDangNhap());
      
         Thread th = new ClockLabel(dateTimeLabel);
         th.start();
@@ -306,7 +315,7 @@ public class CustomerGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         logoutBtn = new javax.swing.JLabel();
         exportExcel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -340,9 +349,8 @@ public class CustomerGUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setPreferredSize(new java.awt.Dimension(219, 65));
 
-        jLabel1.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Khách Hàng");
+        username.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        username.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
         logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -366,7 +374,7 @@ public class CustomerGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(username)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
@@ -377,7 +385,7 @@ public class CustomerGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(logoutBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                     .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -720,7 +728,14 @@ public class CustomerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
-        // TODO add your handling code here:
+        this.dispose();
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+            
+        switch (nv.getVaiTro()) {
+            case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
+            case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
+            case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
+        }
 
     }//GEN-LAST:event_backBtnMouseClicked
 
@@ -949,7 +964,6 @@ public class CustomerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel exportExcel;
     private javax.swing.JComboBox<String> genderInput;
     private javax.swing.JTextField inputSearch;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -967,5 +981,6 @@ public class CustomerGUI extends javax.swing.JFrame {
     private javax.swing.JButton resetBtn;
     private javax.swing.JTextField sdtInput;
     private javax.swing.JTextField tenKHInput;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

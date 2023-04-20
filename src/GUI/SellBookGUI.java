@@ -414,6 +414,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
+        bookCbbox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bán Hàng");
@@ -746,7 +747,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -754,6 +755,8 @@ public final class SellBookGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 83, Short.MAX_VALUE))
         );
+
+        bookCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sách", "Tên sách"}));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -763,20 +766,23 @@ public final class SellBookGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputBookId, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(inputBookId, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bookCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(inputBookId, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputBookId)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bookCbbox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -840,15 +846,25 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
     private void inputBookIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBookIdKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int searchType = bookCbbox.getSelectedIndex();
             String value = inputBookId.getText();
             int maSach;
             String tenSach;
             int soLuongConLai;
             long giaBan;
             
-            ArrayList<SachDTO> bookList = sachBLL.getByCondition("tenSach LIKE '%" + value + "%'");
+            ArrayList<SachDTO> bookList = null;
             DefaultTableModel modelBook = (DefaultTableModel) bookTable.getModel();
             modelBook.setRowCount(0);
+            
+            switch (searchType) {
+                case 0 -> {
+                    bookList= sachBLL.getByCondition("maSach LIKE '%" + value + "%'");
+                }
+                case 1 -> {
+                    bookList= sachBLL.getByCondition("tenSach LIKE '%" + value + "%'");
+                }
+            }
 
             if (bookList.isEmpty()) {
                 JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
@@ -1015,6 +1031,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addCustomerBtn;
     private javax.swing.JLabel backBtn;
+    private javax.swing.JComboBox<String> bookCbbox;
     private javax.swing.JTable bookTable;
     private javax.swing.JTable buyTable;
     private javax.swing.JLabel customerName;

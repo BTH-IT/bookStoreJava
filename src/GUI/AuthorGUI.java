@@ -6,6 +6,7 @@ package GUI;
 
 import BLL.TacGiaBLL;
 import DTO.TacGiaDTO;
+import DTO.TaiKhoanDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +34,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Admin
  */
 public class AuthorGUI extends javax.swing.JFrame {
-    
+    private TaiKhoanDTO tk;
     private TacGiaBLL tacGiaBLL = new TacGiaBLL();
     
     private JTextField tenTG = new JTextField();
@@ -45,8 +46,12 @@ public class AuthorGUI extends javax.swing.JFrame {
     /**
      * Creates new form TacGiaGUI
      */
-    public AuthorGUI() {
+    public AuthorGUI(TaiKhoanDTO tk) {
         initComponents();
+        
+        this.tk = tk;
+        
+        username.setText(tk.getTenDangNhap());
      
         Thread th = new ClockLabel(dateTimeLabel);
         th.start();
@@ -247,7 +252,7 @@ public class AuthorGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         exportExcel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -277,9 +282,8 @@ public class AuthorGUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setPreferredSize(new java.awt.Dimension(219, 65));
 
-        jLabel1.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Tác Giả");
+        username.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        username.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/logout.png"))); // NOI18N
 
@@ -298,7 +302,7 @@ public class AuthorGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(username)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(exportExcel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
@@ -309,7 +313,7 @@ public class AuthorGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                     .addComponent(exportExcel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -761,7 +765,6 @@ public class AuthorGUI extends javax.swing.JFrame {
     private javax.swing.JLabel exportExcel1;
     private javax.swing.JComboBox<String> gioiTinhInput;
     private javax.swing.JTextField inputSearch;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -779,5 +782,6 @@ public class AuthorGUI extends javax.swing.JFrame {
     private javax.swing.JTextField namSinhInput;
     private javax.swing.JButton resetBtn;
     private javax.swing.JTextField tenTGInput;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }
