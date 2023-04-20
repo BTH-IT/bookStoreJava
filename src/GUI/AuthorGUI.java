@@ -676,7 +676,7 @@ public class AuthorGUI extends javax.swing.JFrame {
             if(con == 0){
                 TGList = tacGiaBLL.getByCondition("maTacGia LIKE '%" + value + "%'");
             }else{
-                TGList = tacGiaBLL.getByCondition("ten LIKE '%" + value + "%'");
+                TGList = tacGiaBLL.getByCondition("tenTacGia LIKE '%" + value + "%'");
             }
             
             DefaultTableModel modelTG = (DefaultTableModel) TGTable.getModel();

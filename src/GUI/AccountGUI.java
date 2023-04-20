@@ -669,9 +669,6 @@ public final class AccountGUI extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String value = inputAccountName.getText();
             int dk = luaChonInput.getSelectedIndex();
-            int maNhanVien;
-            String tenDangNhap;
-            String matKhau;
             
             
             ArrayList<TaiKhoanDTO> accountList = TaiKhoanBLL.getByCondition(dk == 0 ? "maNhanVien" : "tenDangNhap" ,value );

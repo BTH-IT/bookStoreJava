@@ -253,16 +253,16 @@ public class NhanVienDAL implements DALInterface<NhanVienDTO>{
                 // Bước 3: lấy dữ liệu
                 while (rs.next()) {
                     int maNhanVien = rs.getInt("maNhanVien");
-                    String ten = rs.getString("tenNhanVien");
-                    String gioiTinh = rs.getString("gioiTinh");
+                    String tenNhanVien = rs.getString("tenNhanVien");
                     int namSinh = rs.getInt("namSinh");
                     String soDienThoai = rs.getString("soDienThoai");
-                    Long mucLuong = rs.getLong("mucLuong");
-                    int soNgayDaNghi = rs.getInt("soNgayDaNghi");
+                    String gioiTinh = rs.getString("gioiTinh");
+                    long luong = rs.getLong("luong");
+                    int soNgayNghi = rs.getInt("soNgayNghi");
                     String vaiTro = rs.getString("vaiTro");
 
-                    NhanVienDTO s = new NhanVienDTO(maNhanVien, ten, namSinh, gioiTinh, soDienThoai, mucLuong,
-                            soNgayDaNghi, vaiTro);
+                    NhanVienDTO s = new NhanVienDTO(maNhanVien, tenNhanVien, namSinh, gioiTinh, soDienThoai, luong,
+                            soNgayNghi, vaiTro);
 
                     result.add(s);
                 }
