@@ -8,6 +8,7 @@ import BLL.ChiTietPhieuNhapBLL;
 import BLL.NhaCungCapBLL;
 import BLL.NhanVienBLL;
 import BLL.PhieuNhapBLL;
+import BLL.PrintPDF;
 import BLL.SachBLL;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.NhaCungCapDTO;
@@ -502,6 +503,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         infoUser = new javax.swing.JLabel();
         exportExcel = new javax.swing.JLabel();
         logoutBtn1 = new javax.swing.JLabel();
+        print = new javax.swing.JLabel();
         footer = new javax.swing.JPanel();
         dateTimeLabel = new javax.swing.JLabel();
         backBtn = new javax.swing.JLabel();
@@ -552,6 +554,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             }
         });
 
+        print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/pdf.png"))); // NOI18N
+        print.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        print.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                printMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -560,6 +570,8 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(print)
+                .addGap(35, 35, 35)
                 .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90))
             .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,6 +584,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(print, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(logoutBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
         );
@@ -939,6 +952,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/phieunhapvachitietphieunhap.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1094,6 +1108,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_logoutBtn1MouseClicked
 
+    private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
+        if (PNTable.getSelectedRow() != -1) {
+            new PrintPDF().writePhieuNhap(Integer.parseInt(String.valueOf(PNTable.getValueAt(PNTable.getSelectedRow(), 0))));
+        } else {
+            JOptionPane.showMessageDialog(null, "Chưa chọn hóa đơn nào để in");
+        }
+    }//GEN-LAST:event_printMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CTPNTable;
     private javax.swing.JTable PNTable;
@@ -1118,6 +1140,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel logoutBtn1;
+    private javax.swing.JLabel print;
     private javax.swing.JComboBox<String> searchCbbox;
     // End of variables declaration//GEN-END:variables
 }

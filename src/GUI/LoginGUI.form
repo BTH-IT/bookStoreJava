@@ -156,7 +156,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txTenDangNhap">
           <Properties>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
@@ -164,9 +163,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txMatKhau">
-          <Properties>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
-          </Properties>
           <Events>
             <EventHandler event="componentMoved" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="txMatKhauComponentMoved"/>
           </Events>
@@ -212,6 +208,7 @@
             </Property>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Login_buttonMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Login_buttonActionPerformed"/>
           </Events>
         </Component>
@@ -224,7 +221,6 @@
               <Color blue="59" green="3d" red="14" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Hi&#x1ec7;n m&#x1ead;t kh&#x1ea9;u"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showPassActionPerformed"/>

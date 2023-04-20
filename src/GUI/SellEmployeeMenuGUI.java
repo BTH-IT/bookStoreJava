@@ -1,15 +1,18 @@
 
 package GUI;
 
+import DTO.TaiKhoanDTO;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public class SellEmployeeMenuGUI extends javax.swing.JFrame {
+    private TaiKhoanDTO tk ;
     int width = 169;
     int height = 516;
-    public SellEmployeeMenuGUI() {
+    public SellEmployeeMenuGUI(TaiKhoanDTO tk) {
+        this.tk = tk;
         initComponents();
         jLabel3.setVisible(true);
         setBounds(350, 150, 1000, 600);
@@ -142,6 +145,11 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
         kButton1.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton1.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton1.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton1MouseClicked(evt);
+            }
+        });
         kButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton1ActionPerformed(evt);
@@ -159,8 +167,13 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
         kButton6.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton6.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton6.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton6MouseClicked(evt);
+            }
+        });
 
-        kButton8.setText("Hóa Đơn");
+        kButton8.setText("Phiếu Bán ");
         kButton8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         kButton8.setkBorderRadius(30);
         kButton8.setkEndColor(new java.awt.Color(255, 255, 153));
@@ -171,6 +184,11 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
         kButton8.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton8.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton8.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton8MouseClicked(evt);
+            }
+        });
         kButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton8ActionPerformed(evt);
@@ -363,6 +381,21 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
         openMenu();
     }//GEN-LAST:event_jLabel3MouseClicked
 
+    private void kButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton1MouseClicked
+        this.dispose();
+        new SellBookGUI(tk);
+    }//GEN-LAST:event_kButton1MouseClicked
+
+    private void kButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton6MouseClicked
+        this.dispose();
+        new CustomerGUI(tk);
+    }//GEN-LAST:event_kButton6MouseClicked
+
+    private void kButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton8MouseClicked
+        this.dispose();
+        new SellInvoiceGUI(tk);
+    }//GEN-LAST:event_kButton8MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -389,14 +422,8 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SellEmployeeMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SellEmployeeMenuGUI();
-            }
-        });
+ 
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

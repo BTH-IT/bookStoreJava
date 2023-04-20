@@ -80,7 +80,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="logoutBtn" alignment="0" pref="65" max="32767" attributes="0"/>
               <Component id="infoUser" alignment="0" max="32767" attributes="0"/>
-              <Component id="exportExcel" alignment="0" max="32767" attributes="0"/>
+              <Component id="exportExcel" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

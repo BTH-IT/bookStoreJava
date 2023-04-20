@@ -23,12 +23,12 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -230,7 +230,7 @@ public final class BookGUI extends javax.swing.JFrame {
     }
     
     private void setJComboBox() {
-        ArrayList<TheLoaiDTO> theLoaiList = theLoaiBLL.getAll();
+        ArrayList<TheLoaiDTO> theLoaiList = theLoaiBLL.getAllSach();
         ArrayList<TacGiaDTO> tacGiaList = tacGiaBLL.getAll();
         ArrayList<NhaXuatBanDTO> nhaXuatBanList = nhaXuatBanBLL.getAll();
         
@@ -248,8 +248,8 @@ public final class BookGUI extends javax.swing.JFrame {
         maNhaXuatBanInput.setSelectedIndex(0);
         
         for (TheLoaiDTO tl : theLoaiList) {
-            typeId.addItem(tl.getMaTheLoai());
-            maTheLoaiInput.addItem(String.valueOf(tl.getMaTheLoai()));
+            typeId.addItem(tl.getMaTL());
+            maTheLoaiInput.addItem(String.valueOf(tl.getMaTL()));
         }
         
         for (TacGiaDTO tg : tacGiaList) {
@@ -479,7 +479,7 @@ public final class BookGUI extends javax.swing.JFrame {
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(exportExcel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         footer.setBackground(new java.awt.Color(255, 204, 102));
@@ -1010,7 +1010,7 @@ public final class BookGUI extends javax.swing.JFrame {
 
             cell = row.createCell(8, CellType.STRING);
             cell.setCellValue("Giá nhập");
-            
+
             cell = row.createCell(9, CellType.STRING);
             cell.setCellValue("Năm xuất bản");
 
@@ -1044,7 +1044,7 @@ public final class BookGUI extends javax.swing.JFrame {
 
                 cell = row.createCell(8, CellType.NUMERIC);
                 cell.setCellValue(s.getGiaNhap());
-                
+
                 cell = row.createCell(9, CellType.NUMERIC);
                 cell.setCellValue(s.getNamXuatBan());
 
@@ -1057,6 +1057,7 @@ public final class BookGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/sach.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }

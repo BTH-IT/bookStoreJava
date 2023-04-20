@@ -28,7 +28,16 @@ public class TaiKhoanBLL {
     public TaiKhoanDTO getById(int id){ 
         return TaiKhoanDAL.getById(id);
     }
-
+    
+    public TaiKhoanDTO getTaiKhoan(String tentk) {
+        for (TaiKhoanDTO tk : this.getAllSach()) {
+            if (tk.getTenDangNhap().equals(tentk)) {
+                return tk;
+            }
+        }
+        return null;
+    }
+    
     public ArrayList<TaiKhoanDTO> getByCondition(String condition, String value){ 
         return TaiKhoanDAL.getByCondition(condition + " LIKE '%" + value + "%'");
     }

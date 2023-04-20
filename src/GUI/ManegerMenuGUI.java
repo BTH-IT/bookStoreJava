@@ -1,15 +1,18 @@
 
 package GUI;
 
+import DTO.TaiKhoanDTO;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public class ManegerMenuGUI extends javax.swing.JFrame {
+    private TaiKhoanDTO tk ;
     int width = 169;
     int height = 516;
-    public ManegerMenuGUI() {
+    public ManegerMenuGUI(TaiKhoanDTO tk) {
+        this.tk = tk;
         initComponents();
         jLabel3.setVisible(true);
         setBounds(350, 150, 1000, 600);
@@ -77,7 +80,7 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         Menu = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        kButton3 = new com.k33ptoo.components.KButton();
+        sach_btn = new com.k33ptoo.components.KButton();
         kButton4 = new com.k33ptoo.components.KButton();
         kButton5 = new com.k33ptoo.components.KButton();
         kButton6 = new com.k33ptoo.components.KButton();
@@ -85,6 +88,8 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton8 = new com.k33ptoo.components.KButton();
         kButton9 = new com.k33ptoo.components.KButton();
         kButton10 = new com.k33ptoo.components.KButton();
+        kButton11 = new com.k33ptoo.components.KButton();
+        sach_btn1 = new com.k33ptoo.components.KButton();
         jLabel6 = new javax.swing.JLabel();
         kGradientPanel1 = new keeptoo.KGradientPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -136,17 +141,22 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Menu");
 
-        kButton3.setText("Sách");
-        kButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        kButton3.setkBorderRadius(30);
-        kButton3.setkEndColor(new java.awt.Color(255, 255, 153));
-        kButton3.setkForeGround(new java.awt.Color(0, 0, 0));
-        kButton3.setkHoverEndColor(new java.awt.Color(20, 61, 89));
-        kButton3.setkHoverForeGround(new java.awt.Color(244, 180, 26));
-        kButton3.setkHoverStartColor(new java.awt.Color(20, 61, 89));
-        kButton3.setkIndicatorColor(new java.awt.Color(20, 61, 89));
-        kButton3.setkPressedColor(new java.awt.Color(20, 61, 89));
-        kButton3.setkStartColor(new java.awt.Color(204, 102, 0));
+        sach_btn.setText("Sách");
+        sach_btn.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        sach_btn.setkBorderRadius(30);
+        sach_btn.setkEndColor(new java.awt.Color(255, 255, 153));
+        sach_btn.setkForeGround(new java.awt.Color(0, 0, 0));
+        sach_btn.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        sach_btn.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        sach_btn.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        sach_btn.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        sach_btn.setkPressedColor(new java.awt.Color(20, 61, 89));
+        sach_btn.setkStartColor(new java.awt.Color(204, 102, 0));
+        sach_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sach_btnMouseClicked(evt);
+            }
+        });
 
         kButton4.setText("Tác Giả");
         kButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -159,6 +169,11 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton4.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton4.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton4.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton4MouseClicked(evt);
+            }
+        });
 
         kButton5.setText("Thể Loại");
         kButton5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -171,6 +186,11 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton5.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton5.setkPressedColor(new java.awt.Color(204, 204, 204));
         kButton5.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton5MouseClicked(evt);
+            }
+        });
 
         kButton6.setText("Khách Hàng");
         kButton6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -183,6 +203,11 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton6.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton6.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton6.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton6MouseClicked(evt);
+            }
+        });
 
         kButton7.setText("Nhân Viên");
         kButton7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -195,8 +220,13 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton7.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton7.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton7.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton7MouseClicked(evt);
+            }
+        });
 
-        kButton8.setText("Hóa Đơn");
+        kButton8.setText("Thống Kê");
         kButton8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         kButton8.setkBorderRadius(30);
         kButton8.setkEndColor(new java.awt.Color(255, 255, 153));
@@ -207,6 +237,11 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton8.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton8.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton8.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton8MouseClicked(evt);
+            }
+        });
         kButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton8ActionPerformed(evt);
@@ -224,8 +259,13 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton9.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton9.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton9.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton9MouseClicked(evt);
+            }
+        });
 
-        kButton10.setText("Thống kê");
+        kButton10.setText("Phiếu Nhập");
         kButton10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         kButton10.setkBorderRadius(30);
         kButton10.setkEndColor(new java.awt.Color(255, 255, 153));
@@ -236,9 +276,53 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         kButton10.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton10.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton10.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton10MouseClicked(evt);
+            }
+        });
         kButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton10ActionPerformed(evt);
+            }
+        });
+
+        kButton11.setText("Phiếu Bán");
+        kButton11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        kButton11.setkBorderRadius(30);
+        kButton11.setkEndColor(new java.awt.Color(255, 255, 153));
+        kButton11.setkForeGround(new java.awt.Color(0, 0, 0));
+        kButton11.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        kButton11.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        kButton11.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        kButton11.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        kButton11.setkPressedColor(new java.awt.Color(20, 61, 89));
+        kButton11.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton11MouseClicked(evt);
+            }
+        });
+        kButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton11ActionPerformed(evt);
+            }
+        });
+
+        sach_btn1.setText("Khuyến Mãi");
+        sach_btn1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        sach_btn1.setkBorderRadius(30);
+        sach_btn1.setkEndColor(new java.awt.Color(255, 255, 153));
+        sach_btn1.setkForeGround(new java.awt.Color(0, 0, 0));
+        sach_btn1.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        sach_btn1.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        sach_btn1.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        sach_btn1.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        sach_btn1.setkPressedColor(new java.awt.Color(20, 61, 89));
+        sach_btn1.setkStartColor(new java.awt.Color(204, 102, 0));
+        sach_btn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sach_btn1MouseClicked(evt);
             }
         });
 
@@ -247,8 +331,15 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(MenuLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,13 +347,8 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                     .addComponent(kButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(kButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(sach_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,7 +358,7 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addComponent(kButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sach_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -287,7 +373,10 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
                 .addComponent(kButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jLabel6.setFont(new java.awt.Font("Snap ITC", 3, 36)); // NOI18N
@@ -443,6 +532,60 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
         openMenu();
     }//GEN-LAST:event_jLabel3MouseClicked
 
+    private void kButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kButton11ActionPerformed
+
+    private void sach_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sach_btnMouseClicked
+        this.dispose();
+        new BookGUI(tk);
+    }//GEN-LAST:event_sach_btnMouseClicked
+
+    private void kButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton4MouseClicked
+        this.dispose();
+        new AuthorGUI(tk);
+    }//GEN-LAST:event_kButton4MouseClicked
+
+    private void kButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton5MouseClicked
+        this.dispose();
+        new TypeGUI(tk);
+    }//GEN-LAST:event_kButton5MouseClicked
+
+    private void kButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton6MouseClicked
+        this.dispose();
+        new CustomerGUI(tk);
+    }//GEN-LAST:event_kButton6MouseClicked
+
+    private void kButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton7MouseClicked
+        this.dispose();
+        new EmployeeGUI(tk);
+    }//GEN-LAST:event_kButton7MouseClicked
+
+    private void kButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton8MouseClicked
+        this.dispose();
+        new StatiticsGUI(tk);
+    }//GEN-LAST:event_kButton8MouseClicked
+
+    private void kButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton9MouseClicked
+        this.dispose();
+        new Supplier(tk);
+    }//GEN-LAST:event_kButton9MouseClicked
+
+    private void kButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton10MouseClicked
+        this.dispose();
+        new ImportInvoiceGUI(tk);
+    }//GEN-LAST:event_kButton10MouseClicked
+
+    private void kButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton11MouseClicked
+        this.dispose();
+        new SellInvoiceGUI(tk);
+    }//GEN-LAST:event_kButton11MouseClicked
+
+    private void sach_btn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sach_btn1MouseClicked
+        this.dispose();
+        new SaleGUI(tk);
+    }//GEN-LAST:event_sach_btn1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -469,14 +612,8 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ManegerMenuGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
+       
         
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ManegerMenuGUI();
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -494,7 +631,7 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private com.k33ptoo.components.KButton kButton10;
-    private com.k33ptoo.components.KButton kButton3;
+    private com.k33ptoo.components.KButton kButton11;
     private com.k33ptoo.components.KButton kButton4;
     private com.k33ptoo.components.KButton kButton5;
     private com.k33ptoo.components.KButton kButton6;
@@ -503,6 +640,8 @@ public class ManegerMenuGUI extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton kButton9;
     private keeptoo.KGradientPanel kGradientPanel1;
     private keeptoo.KGradientPanel kGradientPanel2;
+    private com.k33ptoo.components.KButton sach_btn;
+    private com.k33ptoo.components.KButton sach_btn1;
     // End of variables declaration//GEN-END:variables
 
     

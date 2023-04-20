@@ -7,6 +7,7 @@ package GUI;
 import BLL.ChiTietPhieuNhapBLL;
 import BLL.NhanVienBLL;
 import BLL.PhieuNhapBLL;
+import BLL.PrintPDF;
 import BLL.SachBLL;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.NhanVienDTO;
@@ -432,7 +433,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(supplierCbx, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(supplierCbx, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -440,7 +441,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(employeeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(employeeName, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -642,7 +643,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
 
     private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
         this.dispose();
-        NhanVienDTO nv = new NhanVienBLL().getById(tk.getMaNhanVien());
+        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
             
         switch (nv.getVaiTro()) {
             case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
@@ -719,6 +720,14 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                 ctpn = new ChiTietPhieuNhapDTO(pn.getMaPhieuNhap(), ma, soLuongMua, s.getGiaNhap());
 
                 chiTietPhieuNhapBLL.insert(ctpn);
+            }
+            
+            int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Thanh toán thành công, bạn có muốn IN PHIẾU NHẬP?", "Thành công",
+                        JOptionPane.YES_NO_OPTION);
+            
+            if(reply == JOptionPane.OK_OPTION) {
+                new PrintPDF().writePhieuNhap(maPhieuNhap);
             }
 
             for (int i = 0; i < modelBuy.getRowCount(); i++) {

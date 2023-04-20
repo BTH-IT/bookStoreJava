@@ -1,15 +1,18 @@
 
 package GUI;
 
+import DTO.TaiKhoanDTO;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
+    private TaiKhoanDTO tk ;
     int width = 169;
     int height = 516;
-    public ImportEmployeeMenuGUI() {
+    public ImportEmployeeMenuGUI(TaiKhoanDTO tk) {
+        this.tk = tk;
         initComponents();
         jLabel3.setVisible(true);
         setBounds(350, 150, 1000, 600);
@@ -79,6 +82,7 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         kButton1 = new com.k33ptoo.components.KButton();
         kButton2 = new com.k33ptoo.components.KButton();
+        kButton3 = new com.k33ptoo.components.KButton();
         jLabel6 = new javax.swing.JLabel();
         kGradientPanel1 = new keeptoo.KGradientPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -141,6 +145,11 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
         kButton1.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton1.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton1.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton1MouseClicked(evt);
+            }
+        });
         kButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton1ActionPerformed(evt);
@@ -158,9 +167,36 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
         kButton2.setkIndicatorColor(new java.awt.Color(20, 61, 89));
         kButton2.setkPressedColor(new java.awt.Color(20, 61, 89));
         kButton2.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton2MouseClicked(evt);
+            }
+        });
         kButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton2ActionPerformed(evt);
+            }
+        });
+
+        kButton3.setText("Nhà Cung Cấp");
+        kButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        kButton3.setkBorderRadius(30);
+        kButton3.setkEndColor(new java.awt.Color(255, 255, 153));
+        kButton3.setkForeGround(new java.awt.Color(0, 0, 0));
+        kButton3.setkHoverEndColor(new java.awt.Color(20, 61, 89));
+        kButton3.setkHoverForeGround(new java.awt.Color(244, 180, 26));
+        kButton3.setkHoverStartColor(new java.awt.Color(20, 61, 89));
+        kButton3.setkIndicatorColor(new java.awt.Color(20, 61, 89));
+        kButton3.setkPressedColor(new java.awt.Color(20, 61, 89));
+        kButton3.setkStartColor(new java.awt.Color(204, 102, 0));
+        kButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kButton3MouseClicked(evt);
+            }
+        });
+        kButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton3ActionPerformed(evt);
             }
         });
 
@@ -179,6 +215,10 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(kButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +231,9 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
                 .addComponent(kButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(kButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setFont(new java.awt.Font("Snap ITC", 3, 36)); // NOI18N
@@ -346,6 +388,25 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
         closeMenu();
     }//GEN-LAST:event_jLabel4MouseClicked
 
+    private void kButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kButton3ActionPerformed
+
+    private void kButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton1MouseClicked
+        this.dispose();
+        new ImportBookGUI(tk);
+    }//GEN-LAST:event_kButton1MouseClicked
+
+    private void kButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton2MouseClicked
+        this.dispose();
+        new ImportInvoiceGUI(tk);
+    }//GEN-LAST:event_kButton2MouseClicked
+
+    private void kButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton3MouseClicked
+        this.dispose();
+        new Supplier(tk);
+    }//GEN-LAST:event_kButton3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -374,12 +435,7 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
         
         
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ImportEmployeeMenuGUI();
-            }
-        });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -398,6 +454,7 @@ public class ImportEmployeeMenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private com.k33ptoo.components.KButton kButton1;
     private com.k33ptoo.components.KButton kButton2;
+    private com.k33ptoo.components.KButton kButton3;
     private keeptoo.KGradientPanel kGradientPanel1;
     private keeptoo.KGradientPanel kGradientPanel2;
     // End of variables declaration//GEN-END:variables

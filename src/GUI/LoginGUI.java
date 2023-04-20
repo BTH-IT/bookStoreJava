@@ -1,16 +1,24 @@
 
 package GUI;
 
+import BLL.NhanVienBLL;
+import BLL.TaiKhoanBLL;
+import DTO.NhanVienDTO;
+import DTO.TaiKhoanDTO;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class LoginGUI extends javax.swing.JFrame {
+    
+    private boolean isShowPass = false;
 
     public LoginGUI() {
         initComponents();
         this.setTitle("Đăng nhập");
+        txMatKhau.setEchoChar('*');
         this.setBounds(300, 100, 1000, 600);
         scaleImage();
         setVisible(true);
@@ -65,7 +73,6 @@ public class LoginGUI extends javax.swing.JFrame {
         label_user.setForeground(new java.awt.Color(20, 61, 89));
         label_user.setText("Tài Khoản");
 
-        txTenDangNhap.setToolTipText("");
         txTenDangNhap.setOpaque(true);
         txTenDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,7 +80,6 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
-        txMatKhau.setToolTipText("");
         txMatKhau.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentMoved(java.awt.event.ComponentEvent evt) {
                 txMatKhauComponentMoved(evt);
@@ -95,6 +101,11 @@ public class LoginGUI extends javax.swing.JFrame {
         Login_button.setkIndicatorThickness(40);
         Login_button.setkPressedColor(new java.awt.Color(20, 61, 89));
         Login_button.setkStartColor(new java.awt.Color(204, 102, 0));
+        Login_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Login_buttonMouseClicked(evt);
+            }
+        });
         Login_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Login_buttonActionPerformed(evt);
@@ -104,7 +115,6 @@ public class LoginGUI extends javax.swing.JFrame {
         showPass.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
         showPass.setForeground(new java.awt.Color(20, 61, 89));
         showPass.setText("Hiện mật khẩu");
-        showPass.setToolTipText("");
         showPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showPassActionPerformed(evt);
@@ -185,19 +195,56 @@ public class LoginGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Login_buttonActionPerformed
 
-    private void showPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassActionPerformed
-        showPass.addItemListener(new ItemListener(){
-        public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() == 1)
-                txMatKhau.setEchoChar((char)0);
-        else
-                txMatKhau.setEchoChar('*'); //
-        } });
-    }//GEN-LAST:event_showPassActionPerformed
-
     private void txMatKhauComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_txMatKhauComponentMoved
         // TODO add your handling code here:
     }//GEN-LAST:event_txMatKhauComponentMoved
+
+    private void Login_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login_buttonMouseClicked
+        String tentk = txTenDangNhap.getText();
+        String mk = txMatKhau.getText();
+        TaiKhoanBLL qltk = new TaiKhoanBLL();
+        TaiKhoanDTO tk = qltk.getTaiKhoan(tentk);
+
+        if (tk != null) {
+            // check xem nhân viên của tài khoản này có bị khóa (Ẩn) hay không
+            NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
+            // check password
+            if (tk.getMatKhau().equals(mk)) {
+                this.dispose();
+                switch (nv.getVaiTro()) {
+                    case "Quản lý":     
+                        new ManegerMenuGUI(tk);
+                        break;
+                    case "Nhân viên bán hàng":
+                        new SellEmployeeMenuGUI(tk);
+                        break;
+                    case "Nhân viên nhập hàng":
+                        new ImportEmployeeMenuGUI(tk);
+                        break;
+                }
+                
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai mật khẩu!");
+                txMatKhau.requestFocus();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Sai tên đăng nhập!");
+            txTenDangNhap.requestFocus();
+        }
+    }//GEN-LAST:event_Login_buttonMouseClicked
+
+    private void showPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassActionPerformed
+        if (!isShowPass) {
+            txMatKhau.setEchoChar((char)0);
+            isShowPass = true;
+            return;
+       }
+       
+       txMatKhau.setEchoChar('*');
+       isShowPass = false;
+    }//GEN-LAST:event_showPassActionPerformed
 
     
     public static void main(String args[]) {
