@@ -580,8 +580,7 @@ condition.addActionListener(new java.awt.event.ActionListener() {
             .addGap(30, 30, 30)
             .addComponent(backBtn)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(91, 91, 91))
+            .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
     );
     FooterLayout.setVerticalGroup(
         FooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
