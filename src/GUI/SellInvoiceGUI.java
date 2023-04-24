@@ -289,11 +289,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     }
     
     private boolean validateValueUpdatePB() {
-        String maKhachHang = (String) maKhachHangPB.getSelectedItem();
-        String maNhanVien = (String) maNhanVienPB.getSelectedItem();
-        String maKhuyenMai = (String) maKhuyenMaiPB.getSelectedItem();
+        String maKhachHang = String.valueOf(maKhachHangPB.getSelectedItem());
+        String maNhanVien = String.valueOf(maNhanVienPB.getSelectedItem());
         
-        if ("".equals(maKhachHang) || "".equals(maNhanVien) || "".equals(maKhuyenMai)) {
+        if ("".equals(maKhachHang) || "".equals(maNhanVien)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
@@ -375,7 +374,11 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                             maNhanVien = Integer.parseInt(String.valueOf(maNhanVienPB.getSelectedItem()));
                             utilDate = ngayLapPB.getDate();
                             sqlDate = new java.sql.Date(utilDate.getTime());
-                            int maKhuyenMaiMoi = Integer.parseInt(String.valueOf(maKhuyenMaiPB.getSelectedItem()));
+                            int maKhuyenMaiMoi = 0;
+                            
+                            if (!"".equals(String.valueOf(maKhuyenMaiPB.getSelectedItem()))) {
+                                maKhuyenMaiMoi = Integer.parseInt(String.valueOf(maKhuyenMaiPB.getSelectedItem()));
+                            }
                             
                             double tongTienBanDau = tongTien + (tongTien * maKhuyenMaiCu / 100);
                             double tongTienMoi = tongTienBanDau - (tongTienBanDau * maKhuyenMaiMoi / 100);
@@ -403,7 +406,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     }
     
     private boolean validateValueUpdateCTPB() {
-        String maSach = (String) maSachCTPB_update.getSelectedItem();
+        String maSach = String.valueOf(maSachCTPB_update.getSelectedItem());
         String soLuong = soLuongCTPB_update.getText();
         
         if ("".equals(maSach) || "".equals(soLuong)) {
@@ -454,7 +457,6 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     int maPhieuBan =  Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 0)));
                     int maSach = Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 1)));
                     int soLuong = Integer.parseInt(String.valueOf(CTPBTable.getValueAt(row, 2)));
-                    long donGia = Long.parseLong(String.valueOf(CTPBTable.getValueAt(row, 3)));
 
                     maPhieuBanCTPB_update.setSelectedItem(maPhieuBan);
                     maSachCTPB_update.setSelectedItem(maSach);
@@ -466,34 +468,65 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     if (result == JOptionPane.OK_OPTION) {
                         if (validateValueUpdateCTPB() == false) return;
                         
+                        int maPhieuBanMoi = Integer.parseInt(String.valueOf(maPhieuBanCTPB_update.getSelectedItem()));
+                        int maSachMoi = Integer.parseInt(String.valueOf(maSachCTPB_update.getSelectedItem()));
+                        int soLuongMoi = Integer.parseInt(soLuongCTPB_update.getText());
+                        ChiTietPhieuBanDTO ctpb = new ChiTietPhieuBanDTO();
                         
-                        maPhieuBan = Integer.parseInt(String.valueOf(maPhieuBanCTPB_update.getSelectedItem()));
-                        maSach = Integer.parseInt(String.valueOf(maSachCTPB_update.getSelectedItem()));
-                        soLuong = Integer.parseInt(soLuongCTPB_update.getText());
-                        donGia = sachBLL.getById(maSach).getGiaBan();
+                        SachDTO sMoi = sachBLL.getById(maSachMoi);
+                        SachDTO sCu = sachBLL.getById(maSach);
                         
-                        ChiTietPhieuBanDTO ctpb = new ChiTietPhieuBanDTO(maPhieuBan, maSach, soLuong, donGia);
+                        if (maPhieuBanMoi != maPhieuBan) {
+                            ctpb.setMaPhieuBan(maPhieuBanMoi);
+                        } else {
+                            ctpb.setMaPhieuBan(maPhieuBan);
+                        }
                         
-                        chiTietPhieuBanBLL.update(ctpb);
+                        if (maSachMoi != maSach) {
+                            if (sMoi.getSoLuongConLai() - soLuongMoi < 0) {
+                                JOptionPane.showMessageDialog(rootPane, "Sách có mã " + maSachMoi + " chỉ còn lại " + sMoi.getSoLuongConLai() + " sách");
+                                return;
+                            }
+                            ctpb.setMaSach(maSachMoi);
+                            ctpb.setDonGia(sMoi.getGiaBan());
+                            sCu.setSoLuongConLai(sCu.getSoLuongConLai() + soLuong);
+                            sMoi.setSoLuongConLai(sMoi.getSoLuongConLai() - soLuongMoi);
+                            sachBLL.update(sMoi);
+                        } else {
+                            ctpb.setMaSach(maSach);
+                            ctpb.setDonGia(sCu.getGiaBan());
+                            sCu.setSoLuongConLai(sCu.getSoLuongConLai() + soLuong - soLuongMoi);
+                            sachBLL.update(sCu);
+                        }
+                        
+                        ctpb.setSoLuong(soLuongMoi);
+                        
+                        chiTietPhieuBanBLL.update(ctpb, maPhieuBan, maSach);
                         
                         updateCTPBTable();
                         
                         double tongTien = 0;
                         
-                        ArrayList<ChiTietPhieuBanDTO> ctpnList = chiTietPhieuBanBLL.getByPBId(maPhieuBan);
+                        ArrayList<ChiTietPhieuBanDTO> ctpnList = chiTietPhieuBanBLL.getByPBId(maPhieuBanMoi);
                         for (ChiTietPhieuBanDTO ct : ctpnList) {
-                            tongTien += ct.getDonGia();
+                            tongTien += ct.getDonGia() * ct.getSoLuong();
                         }
                         
-                        PhieuBanDTO pb = phieuBanBLL.getById(maPhieuBan);
+                        PhieuBanDTO pb = phieuBanBLL.getById(maPhieuBanMoi);
                         
                         int maKhuyenMai = pb.getMaKhuyenMai();
                         KhuyenMaiDTO km = khuyenMaiBLL.getById(maKhuyenMai);
                         
-                        tongTien = tongTien - (tongTien * km.getPhanTram() / 100);
+                        int phanTram = 0;
+                        
+                        if (km != null) {
+                            phanTram = km.getPhanTram();
+                        }
+                        
+                        tongTien = tongTien - (tongTien * phanTram / 100);
                         pb.setTongTien(tongTien);
                         phieuBanBLL.update(pb);
-                        
+
                         updatePBTable();
                         
                         maPhieuBanCTPB_update.setSelectedItem("");
@@ -1006,29 +1039,38 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private void inputCTPBIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputCTPBIdKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String value = inputCTPBId.getText();
-            if ("".equals(value)) return;
-            
-            int maPhieuBan;
-            int maSach;
-            int soLuong;
-            long donGia;
-
-            ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(Integer.parseInt(value));
-            DefaultTableModel modelCTPB = (DefaultTableModel) CTPBTable.getModel();
-            modelCTPB.setRowCount(0);
-            
-            if (ctpbList.isEmpty()) {
+            if ("".equals(value)) {
                 JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
                 setCTPBTable();
-            } else {
-                for (ChiTietPhieuBanDTO ctpb : ctpbList) {
-                    maPhieuBan = ctpb.getMaPhieuBan();
-                    maSach = ctpb.getMaSach();
-                    soLuong = ctpb.getSoLuong();
-                    donGia = ctpb.getDonGia();
-                    
-                    modelCTPB.addRow(new Object[]{maPhieuBan, maSach, soLuong, donGia, "O", "X"});
+                return;
+            }
+            
+            try {
+                int maPhieuBan;
+                int maSach;
+                int soLuong;
+                long donGia;
+
+                ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(Integer.parseInt(value));
+                DefaultTableModel modelCTPB = (DefaultTableModel) CTPBTable.getModel();
+                modelCTPB.setRowCount(0);
+
+                if (ctpbList.isEmpty()) {
+                    JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                    setCTPBTable();
+                } else {
+                    for (ChiTietPhieuBanDTO ctpb : ctpbList) {
+                        maPhieuBan = ctpb.getMaPhieuBan();
+                        maSach = ctpb.getMaSach();
+                        soLuong = ctpb.getSoLuong();
+                        donGia = ctpb.getDonGia();
+
+                        modelCTPB.addRow(new Object[]{maPhieuBan, maSach, soLuong, donGia, "O", "X"});
+                    }
                 }
+            } catch (HeadlessException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                setCTPBTable();
             }
         }
     }//GEN-LAST:event_inputCTPBIdKeyPressed
@@ -1166,6 +1208,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
         if (PBTable.getSelectedRow() != -1) {
             new PrintPDF().writeHoaDon(Integer.parseInt(String.valueOf(PBTable.getValueAt(PBTable.getSelectedRow(), 0))));
+            JOptionPane.showMessageDialog(null, "In hóa đơn thành công");
         } else {
             JOptionPane.showMessageDialog(null, "Chưa chọn hóa đơn nào để in");
         }

@@ -65,14 +65,16 @@ public class PhieuNhapDAL implements DALInterface<PhieuNhapDTO>{
         if (connect != null) {
             try {
                 String sql = "UPDATE phieunhap SET "
-                        + "maNhanVien=?, ngayLap=? "
+                        + "maNhanVien=?, maNhaCungCap=?, ngayLap=?, tongTien=? "
                         + "WHERE maPhieuNhap=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
                 stmt.setInt(1, t.getMaNhanVien());
-                stmt.setDate(2, t.getNgayLap());
-                stmt.setInt(3, t.getMaPhieuNhap());
+                stmt.setInt(2, t.getMaNhaCungCap());
+                stmt.setDate(3, t.getNgayLap());
+                stmt.setDouble(4, t.getTongTien());
+                stmt.setInt(5, t.getMaPhieuNhap());
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {

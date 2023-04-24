@@ -19,16 +19,16 @@ public class ChiTietPhieuNhapBLL {
         
     }
     
-    public boolean insert(ChiTietPhieuNhapDTO ctpb) {
-        return chiTietPhieuNhapDAL.insert(ctpb);
+    public boolean insert(ChiTietPhieuNhapDTO ctpn) {
+        return chiTietPhieuNhapDAL.insert(ctpn);
     }
     
-    public boolean update(ChiTietPhieuNhapDTO ctpb) {
-        return chiTietPhieuNhapDAL.update(ctpb);
+    public boolean update(ChiTietPhieuNhapDTO ctpn, int maPhieuNhapCu, int maSachCu) {
+        return chiTietPhieuNhapDAL.update(ctpn, maPhieuNhapCu, maSachCu);
     }
     
-    public boolean delete(int maPhieuBan, int maSach) {
-        return chiTietPhieuNhapDAL.delete(maPhieuBan, maSach);
+    public boolean delete(int maPhieuNhap, int maSach) {
+        return chiTietPhieuNhapDAL.delete(maPhieuNhap, maSach);
     }
     
     public ArrayList<ChiTietPhieuNhapDTO> getAll() {

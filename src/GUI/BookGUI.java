@@ -167,8 +167,8 @@ public final class BookGUI extends javax.swing.JFrame {
         if (value == null) return -1;
         
         try {
-            num = Integer.parseInt(value);
-            if (num >= 0) {
+            num = Long.parseLong(value);
+            if (num > 0) {
                 return num;
             } else {
                 JOptionPane.showMessageDialog(this, name + " là một số không âm");
@@ -189,12 +189,12 @@ public final class BookGUI extends javax.swing.JFrame {
     
     private boolean validateValueUpdateBook() {
         String tenSach = name.getText();
-        String maTheLoai = (String) typeId.getSelectedItem();
-        String maTacGia = (String) authorId.getSelectedItem();
-        String maNhaXuatBan = (String) publisherId.getSelectedItem();
+        String maTheLoai = String.valueOf(typeId.getSelectedItem());
+        String maTacGia = String.valueOf(authorId.getSelectedItem());
+        String maNhaXuatBan = String.valueOf(publisherId.getSelectedItem());
         String soLuongConLai = remain.getText();
-        String giaBan = remain.getText();
-        String giaNhap = sellPrice.getText();
+        String giaBan = sellPrice.getText();
+        String giaNhap = importPrice.getText();
         String namXuatBan = publishYear.getText();
         
         if ("".equals(tenSach) || "".equals(maTheLoai)
@@ -211,12 +211,12 @@ public final class BookGUI extends javax.swing.JFrame {
             return false;
         }
         
-        long giaBanLong = checkInputNumberValue(soLuongConLai, "Giá bán");
+        long giaBanLong = checkInputNumberValue(giaBan, "Giá bán");
         if (giaBanLong < 0) {
             return false;
         }
         
-        long giaNhapLong = checkInputNumberValue(soLuongConLai, "Giá nhập");
+        long giaNhapLong = checkInputNumberValue(giaNhap, "Giá nhập");
         if (giaNhapLong < 0) {
             return false;
         }
@@ -460,9 +460,9 @@ public final class BookGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kGradientPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(backBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 943, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         kGradientPanel2Layout.setVerticalGroup(
             kGradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -624,7 +624,7 @@ public final class BookGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -698,7 +698,9 @@ public final class BookGUI extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         bookCbbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sách", "Tên sách", "Mã thể loại", "Mã tác giả", "Mã nhà xuất bản" }));
@@ -783,10 +785,8 @@ public final class BookGUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -904,9 +904,9 @@ public final class BookGUI extends javax.swing.JFrame {
 
     private boolean validateValueAddBook() {
         String tenSach = tenSachInput.getText();
-        String maTheLoai = (String) maTheLoaiInput.getSelectedItem();
-        String maTacGia = (String) maTacGiaInput.getSelectedItem();
-        String maNhaXuatBan = (String) maNhaXuatBanInput.getSelectedItem();
+        String maTheLoai = String.valueOf(maTheLoaiInput.getSelectedItem());
+        String maTacGia = String.valueOf(maTacGiaInput.getSelectedItem());
+        String maNhaXuatBan = String.valueOf(maNhaXuatBanInput.getSelectedItem());
         String soLuongConLai = soLuongConLaiInput.getText();
         String giaBan = giaBanInput.getText();
         String giaNhap = giaNhapInput.getText();

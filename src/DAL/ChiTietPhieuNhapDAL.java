@@ -53,8 +53,7 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         return result;
     }
 
-    @Override
-    public boolean update(ChiTietPhieuNhapDTO t) {
+    public boolean update(ChiTietPhieuNhapDTO t, int maPhieuNhapCu, int maSachCu) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
@@ -62,15 +61,17 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
         if (connect != null) {
             try {
                 String sql = "UPDATE chitietphieunhap SET "
-                        + "soLuong=?, donGia=? "
+                        + "maPhieuNhap=?, maSach=?, soLuong=?, donGia=? "
                         + "WHERE maPhieuNhap=? AND maSach=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
-                stmt.setInt(1, t.getSoLuong());
-                stmt.setLong(2, t.getDonGia());
-                stmt.setInt(3, t.getMaPhieuNhap());
-                stmt.setInt(4, t.getMaSach());
+                stmt.setInt(1, t.getMaPhieuNhap());
+                stmt.setInt(2, t.getMaSach());
+                stmt.setInt(3, t.getSoLuong());
+                stmt.setLong(4, t.getDonGia());
+                stmt.setInt(5, maPhieuNhapCu);
+                stmt.setInt(6, maSachCu);
                 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -96,6 +97,30 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
                 PreparedStatement stmt = connect.prepareStatement(sql); 
                 stmt.setInt(1, maPhieuNhap);
                 stmt.setInt(2, maSach);
+
+                result = stmt.executeUpdate()>=1;
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietPhieuNhapDAL.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                ConnectDatabase.closeConnection(connect);
+            }
+        }
+        
+        return result;
+    }
+    
+    public boolean deleteAll(int maPhieuNhap) {
+        boolean result = false;
+        //Bước 1: tạo kết nối với sql
+        Connection connect = ConnectDatabase.openConnection();
+        if (connect != null) {
+            try {
+                String sql = "UPDATE chitietphieunhap SET hienThi=0 "
+                        + "WHERE maPhieuNhap=?";
+
+                //Bước 2: tạo đối tượng preparedStatement
+                PreparedStatement stmt = connect.prepareStatement(sql); 
+                stmt.setInt(1, maPhieuNhap);
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -221,6 +246,11 @@ public class ChiTietPhieuNhapDAL implements DALInterface<ChiTietPhieuNhapDTO>{
 
     @Override
     public ChiTietPhieuNhapDTO getById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean update(ChiTietPhieuNhapDTO t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

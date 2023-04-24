@@ -44,10 +44,7 @@ public final class AccountGUI extends javax.swing.JFrame {
     private TaiKhoanDTO tk;
     
     private TaiKhoanBLL TaiKhoanBLL = new TaiKhoanBLL();
-//    private TacGiaBLL tacGiaBLL = new TacGiaBLL();
-//    private NhaXuatBanBLL nhaXuatBanBLL = new NhaXuatBanBLL();
     
-    private JComboBox id = new JComboBox<String>();
     private JTextField username = new JTextField();
     private JTextField pass = new JTextField();
     private JPanel popUpUpdateAccount = getPopUpUpdateAccount();
@@ -57,13 +54,9 @@ public final class AccountGUI extends javax.swing.JFrame {
         Font font_16_plain = new Font("Monospaced", Font.PLAIN, 16);
         Font font_16_bold = new Font("Monospaced", Font.BOLD, 16);
         
-        id.setFont(font_16_plain);
         pass.setFont(font_16_plain);
         username.setFont(font_16_plain);
         
-        
-        JLabel idLabel = new JLabel("Mã Nhân Viên: ");
-        idLabel.setFont(font_16_bold);
         
         JLabel usernameLabel = new JLabel("Tên đăng nhập: ");
         usernameLabel.setFont(font_16_bold);
@@ -72,18 +65,13 @@ public final class AccountGUI extends javax.swing.JFrame {
         passLabel.setFont(font_16_bold);
         
         JPanel containerPanel = new JPanel();
-        JPanel idPanel = new JPanel();
         JPanel usernamePanel = new JPanel();
         JPanel passPanel = new JPanel();
         
 
-        containerPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        idPanel.setLayout(new BorderLayout());
+        containerPanel.setLayout(new GridLayout(2, 1, 10, 10));
         usernamePanel.setLayout(new BorderLayout());
         passPanel.setLayout(new BorderLayout());
-        
-        idPanel.add(idLabel, BorderLayout.NORTH);
-        idPanel.add(id, BorderLayout.CENTER);
         
         usernamePanel.add(usernameLabel, BorderLayout.NORTH);
         usernamePanel.add(username, BorderLayout.CENTER);
@@ -91,7 +79,6 @@ public final class AccountGUI extends javax.swing.JFrame {
         passPanel.add(passLabel, BorderLayout.NORTH);
         passPanel.add(pass, BorderLayout.CENTER);
         
-        containerPanel.add(idPanel);
         containerPanel.add(usernamePanel);
         containerPanel.add(passPanel);
         
@@ -116,14 +103,23 @@ public final class AccountGUI extends javax.swing.JFrame {
     }
     
     private boolean validateValueUpdateAccount() {
-        String maNhanVien = String.valueOf(id.getSelectedItem());
         String matKhau = pass.getText();
         String tenDangNhap = username.getText();
         
         
-        if ("".equals(tenDangNhap) || "".equals(matKhau) || "".equals(maNhanVien)) {
+        if ("".equals(tenDangNhap) || "".equals(matKhau)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
+        }
+        
+        
+        ArrayList<TaiKhoanDTO> tkList = TaiKhoanBLL.getAllSach();
+        
+        for (TaiKhoanDTO t : tkList) {
+            if (tenDangNhap.equals(t.getTenDangNhap())) {
+                JOptionPane.showMessageDialog(this, "Tên đăng nhập đã có trong hệ thống");
+                return false;
+            }
         }
         
         return true;
@@ -163,10 +159,8 @@ public final class AccountGUI extends javax.swing.JFrame {
                     String matKhau = String.valueOf(accountTable.getValueAt(row, 1));
                     String tenDangNhap = String.valueOf(accountTable.getValueAt(row, 2));
                     
-                    id.setSelectedItem(maNhanVien);
                     username.setText(tenDangNhap);
                     pass.setText(matKhau);
-                    
                     
                     int result = JOptionPane.showConfirmDialog(null, popUpUpdateAccount, 
                                 "Mời sửa Tài Khoản " + maNhanVien, JOptionPane.OK_CANCEL_OPTION);
@@ -174,10 +168,8 @@ public final class AccountGUI extends javax.swing.JFrame {
                     if (result == JOptionPane.OK_OPTION) {
                         if (validateValueUpdateAccount() == false) return;
                         
-                        maNhanVien = Integer.parseInt(String.valueOf(id.getSelectedItem()));
                         tenDangNhap  = username.getText();
                         matKhau  = pass.getText();
-                        
                         
                         TaiKhoanDTO s = new TaiKhoanDTO(maNhanVien, tenDangNhap, matKhau);
                         
@@ -185,7 +177,6 @@ public final class AccountGUI extends javax.swing.JFrame {
                         
                         updateAccountTable();
                         
-                        id.setSelectedItem("");
                         username.setText("");
                         pass.setText("");
                         
@@ -204,17 +195,12 @@ public final class AccountGUI extends javax.swing.JFrame {
     private void setJComboBox() {
         ArrayList<NhanVienDTO> nhanVienList = new NhanVienBLL().getEmployeeUnAccount();
         
-        
-        id.addItem("");
         maNhanVienInput.addItem("");
-        
-       
         
         maNhanVienInput.setSelectedIndex(0);
         
         
         for (NhanVienDTO nv : nhanVienList) {
-            id.addItem(nv.getMaNhanVien());
             maNhanVienInput.addItem(nv.getMaNhanVien() + "");
         }
 
@@ -238,6 +224,7 @@ public final class AccountGUI extends javax.swing.JFrame {
         
         setJComboBox();
         
+        this.setTitle("Tài khoản");
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setVisible(true);
@@ -293,7 +280,7 @@ public final class AccountGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 153, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Tài Khoản");
+        jLabel1.setText("Thêm tài khoản");
 
         jLabel2.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         jLabel2.setText("Mã Nhân Viên       :");
@@ -332,10 +319,6 @@ public final class AccountGUI extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(37, 37, 37))
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -357,6 +340,7 @@ public final class AccountGUI extends javax.swing.JFrame {
                             .addComponent(tenDangNhapInput)
                             .addComponent(matKhauInput))))
                 .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -379,7 +363,7 @@ public final class AccountGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -387,13 +371,15 @@ public final class AccountGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -455,14 +441,12 @@ public final class AccountGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(jScrollPane3)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -485,7 +469,7 @@ public final class AccountGUI extends javax.swing.JFrame {
                 .addComponent(inputAccountName, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(luaChonInput, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -532,7 +516,7 @@ public final class AccountGUI extends javax.swing.JFrame {
             kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addComponent(infoUser, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 800, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(exportExcel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -569,8 +553,8 @@ public final class AccountGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kGradientPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(backBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 728, Short.MAX_VALUE)
-                .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dateTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         kGradientPanel2Layout.setVerticalGroup(
             kGradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,26 +567,19 @@ public final class AccountGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(kGradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)))
-                .addGap(0, 0, 0))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(kGradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -664,6 +641,7 @@ public final class AccountGUI extends javax.swing.JFrame {
             maNhanVienInput.setSelectedIndex(0);
             tenDangNhapInput.setText("");
             matKhauInput.setText("");
+            setJComboBox();
             
             
             DefaultTableModel modelAccount = (DefaultTableModel) accountTable.getModel();
@@ -763,6 +741,7 @@ public final class AccountGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/taikhoan.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }

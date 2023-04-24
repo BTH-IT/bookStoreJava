@@ -224,8 +224,8 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         maNhaCungCapPNPanel.setLayout(new BorderLayout());
         ngayLapPNPanel.setLayout(new BorderLayout());
 
-        maNhanVienPNPanel.add(maNhaCungCapPNLabel, BorderLayout.NORTH);
-        maNhanVienPNPanel.add(maNhaCungCapPN, BorderLayout.CENTER);
+        maNhanVienPNPanel.add(maNhanVienPNLabel, BorderLayout.NORTH);
+        maNhanVienPNPanel.add(maNhanVienPN, BorderLayout.CENTER);
         
         maNhaCungCapPNPanel.add(maNhaCungCapPNLabel, BorderLayout.NORTH);
         maNhaCungCapPNPanel.add(maNhaCungCapPN, BorderLayout.CENTER);
@@ -234,6 +234,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         ngayLapPNPanel.add(ngayLapPN, BorderLayout.CENTER);
         
         containerPanel.add(maNhanVienPNPanel);
+        containerPanel.add(maNhaCungCapPNPanel);
         containerPanel.add(ngayLapPNPanel);
         
         return containerPanel;
@@ -258,8 +259,8 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     }
     
     private boolean validateValueUpdatePN() {
-        String maNhanVien = (String) maNhanVienPN.getSelectedItem();
-        String maNhaCungCap = (String) maNhanVienPN.getSelectedItem();
+        String maNhanVien = String.valueOf(maNhanVienPN.getSelectedItem());
+        String maNhaCungCap = String.valueOf(maNhaCungCapPN.getSelectedItem());
         
         if ("".equals(maNhanVien) || "".equals(maNhaCungCap)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
@@ -316,7 +317,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 int row = PNTable.rowAtPoint(evt.getPoint());
                 int col = PNTable.columnAtPoint(evt.getPoint());
 
-                if (row >= 0 && col == 4) {
+                if (row >= 0 && col == 5) {
                     try {
                         int maPhieuNhap =  Integer.parseInt(String.valueOf(PNTable.getValueAt(row, 0)));
                         int maNhanVien = Integer.parseInt(String.valueOf(PNTable.getValueAt(row, 1)));
@@ -328,6 +329,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                         
                         maNhanVienPN.setSelectedItem(maNhanVien);
+                        maNhaCungCapPN.setSelectedItem(maNhaCungCap);
                         ngayLapPN.setDate(utilDate);
                         
                         int result = JOptionPane.showConfirmDialog(null, popUpUpdatePN,
@@ -347,6 +349,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                             updatePNTable();
                             
                             maNhanVienPN.setSelectedItem("");
+                            maNhaCungCapPN.setSelectedItem("");
                             ngayLapPN.setDate(null);
                         }
                     } catch (ParseException ex) {
@@ -354,7 +357,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                     }
                 }
                 
-                if (row >= 0 && col == 5) {
+                if (row >= 0 && col == 6) {
                     showComfirmRemovePN(row);
                 }
             }
@@ -362,10 +365,11 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     }
     
     private boolean validateValueUpdateCTPN() {
-        String maSach = (String) maSachCTPN_update.getSelectedItem();
+        String maSach = String.valueOf(maSachCTPN_update.getSelectedItem());
         String soLuong = soLuongCTPN_update.getText();
+        String maPhieuNhap = String.valueOf(maPhieuNhapCTPN_update.getSelectedItem());
         
-        if ("".equals(maSach) || "".equals(soLuong)) {
+        if ("".equals(maSach) || "".equals(soLuong) || "".equals(maPhieuNhap)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
@@ -425,15 +429,23 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                     if (result == JOptionPane.OK_OPTION) {
                         if (validateValueUpdateCTPN() == false) return;
                         
+                        SachDTO sCu = sachBLL.getById(maSach);
+                        sCu.setSoLuongConLai(sCu.getSoLuongConLai() - soLuong);
                         
-                        maPhieuNhap = Integer.parseInt(String.valueOf(maPhieuNhapCTPN_update.getSelectedItem()));
-                        maSach = Integer.parseInt(String.valueOf(maSachCTPN_update.getSelectedItem()));
+                        int maPhieuNhapMoi = Integer.parseInt(String.valueOf(maPhieuNhapCTPN_update.getSelectedItem()));
+                        int maSachMoi = Integer.parseInt(String.valueOf(maSachCTPN_update.getSelectedItem()));
+                        SachDTO sMoi = sachBLL.getById(maSachMoi);
                         soLuong = Integer.parseInt(soLuongCTPN_update.getText());
-                        donGia = sachBLL.getById(maSach).getGiaBan();
+                        donGia = sMoi.getGiaNhap();
                         
-                        ChiTietPhieuNhapDTO ctpn = new ChiTietPhieuNhapDTO(maPhieuNhap, maSach, soLuong, donGia);
+                        sMoi.setSoLuongConLai(sMoi.getSoLuongConLai() + soLuong);
                         
-                        chiTietPhieuNhapBLL.update(ctpn);
+                        sachBLL.update(sMoi);
+                        sachBLL.update(sCu);
+                        
+                        ChiTietPhieuNhapDTO ctpn = new ChiTietPhieuNhapDTO(maPhieuNhapMoi, maSachMoi, soLuong, donGia);
+                        
+                        chiTietPhieuNhapBLL.update(ctpn, maPhieuNhap, maSach);
                         
                         updateCTPNTable();
                         
@@ -441,7 +453,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                         
                         ArrayList<ChiTietPhieuNhapDTO> ctpnList = chiTietPhieuNhapBLL.getByPNId(maPhieuNhap);
                         for (ChiTietPhieuNhapDTO ct : ctpnList) {
-                            tongTien += ct.getDonGia();
+                            tongTien += ct.getDonGia() * ct.getSoLuong();
                         }
                         
                         PhieuNhapDTO pn = phieuNhapBLL.getById(maPhieuNhap);
@@ -591,7 +603,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -608,10 +620,9 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputCTPNId, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputCTPNId, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(addCTPBBtn)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(addCTPBBtn))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -681,7 +692,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -709,12 +720,12 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputPNId, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(searchCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputPNId, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchCbbox, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addPBBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -770,7 +781,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         kGradientPanel1Layout.setHorizontalGroup(
             kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(28, 28, 28)
                 .addComponent(infoUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(exportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -783,13 +794,9 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         kGradientPanel1Layout.setVerticalGroup(
             kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logoutBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(print, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(exportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(print, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+            .addComponent(logoutBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         kGradientPanel2.setkEndColor(new java.awt.Color(255, 153, 0));
@@ -828,14 +835,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(kGradientPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(kGradientPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0))
+                        .addGap(30, 30, 30)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -996,6 +1003,9 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
                 case 0 -> {
                     PNList = phieuNhapBLL.getByCondition("maPhieuNhap LIKE '%" + value + "%'");
                 }
+                case 1 -> {
+                    PNList = phieuNhapBLL.getByCondition("maNhaCungCap LIKE '%" + value + "%'");
+                }
                 case 2 -> {
                     PNList = phieuNhapBLL.getByCondition("maNhanVien LIKE '%" + value + "%'");
                     break;
@@ -1021,8 +1031,10 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
 
     private boolean validateValueAddCTPN() {
         String soLuong = soLuongCTPN_add.getText();
+        String maPhieuNhap = String.valueOf(maPhieuNhapCTPN_add.getSelectedItem());
+        String maSach = String.valueOf(String.valueOf(maSachCTPN_add.getSelectedItem()));
         
-        if ("".equals(soLuong)) {
+        if ("".equals(soLuong) || "".equals(maPhieuNhap) || "".equals(maSach)) {
             JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
             return false;
         }
@@ -1041,7 +1053,7 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
             int maPhieuNhap = Integer.parseInt(String.valueOf(maPhieuNhapCTPN_add.getSelectedItem()));
             int maSach = Integer.parseInt(String.valueOf(maSachCTPN_add.getSelectedItem()));
             int soLuong = Integer.parseInt(soLuongCTPN_add.getText());
-            long donGia = sachBLL.getById(maSach).getGiaBan();
+            long donGia = sachBLL.getById(maSach).getGiaNhap();
             
             
             ChiTietPhieuNhapDTO ctpn = new ChiTietPhieuNhapDTO(maPhieuNhap, maSach, soLuong, donGia);
@@ -1068,29 +1080,37 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     private void inputCTPNIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputCTPNIdKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String value = inputCTPNId.getText();
-            if ("".equals(value)) return;
-            
-            int maPhieuNhap;
-            int maSach;
-            int soLuong;
-            long donGia;
-
-            ArrayList<ChiTietPhieuNhapDTO> ctpnList = chiTietPhieuNhapBLL.getByPNId(Integer.parseInt(value));
-            DefaultTableModel modelCTPN = (DefaultTableModel) CTPNTable.getModel();
-            modelCTPN.setRowCount(0);
-            
-            if (ctpnList.isEmpty()) {
+            if ("".equals(value)) {
                 JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
                 setCTPNTable();
-            } else {
-                for (ChiTietPhieuNhapDTO ctpn : ctpnList) {
-                    maPhieuNhap = ctpn.getMaPhieuNhap();
-                    maSach = ctpn.getMaSach();
-                    soLuong = ctpn.getSoLuong();
-                    donGia = ctpn.getDonGia();
-                    
-                    modelCTPN.addRow(new Object[]{maPhieuNhap, maSach, soLuong, donGia, "O"});
+            }
+            
+            try {
+                int maPhieuNhap;
+                int maSach;
+                int soLuong;
+                long donGia;
+
+                ArrayList<ChiTietPhieuNhapDTO> ctpnList = chiTietPhieuNhapBLL.getByPNId(Integer.parseInt(value));
+                DefaultTableModel modelCTPN = (DefaultTableModel) CTPNTable.getModel();
+                modelCTPN.setRowCount(0);
+
+                if (ctpnList.isEmpty()) {
+                    JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                    setCTPNTable();
+                } else {
+                    for (ChiTietPhieuNhapDTO ctpn : ctpnList) {
+                        maPhieuNhap = ctpn.getMaPhieuNhap();
+                        maSach = ctpn.getMaSach();
+                        soLuong = ctpn.getSoLuong();
+                        donGia = ctpn.getDonGia();
+
+                        modelCTPN.addRow(new Object[]{maPhieuNhap, maSach, soLuong, donGia, "O"});
+                    }
                 }
+            } catch (HeadlessException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                setCTPNTable();
             }
         }
     }//GEN-LAST:event_inputCTPNIdKeyPressed
@@ -1111,12 +1131,14 @@ public final class ImportInvoiceGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_addPBBtnMouseClicked
 
     private void logoutBtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtn1MouseClicked
-        // TODO add your handling code here:
+        this.dispose();
+        new LoginGUI();
     }//GEN-LAST:event_logoutBtn1MouseClicked
 
     private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
         if (PNTable.getSelectedRow() != -1) {
             new PrintPDF().writePhieuNhap(Integer.parseInt(String.valueOf(PNTable.getValueAt(PNTable.getSelectedRow(), 0))));
+            JOptionPane.showMessageDialog(null, "In hóa đơn thành công");
         } else {
             JOptionPane.showMessageDialog(null, "Chưa chọn hóa đơn nào để in");
         }

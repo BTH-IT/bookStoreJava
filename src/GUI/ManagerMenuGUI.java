@@ -667,13 +667,7 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         this.dispose();
-        NhanVienDTO nv = new NhanVienBLL().getByNVid(tk.getMaNhanVien());
-            
-        switch (nv.getVaiTro()) {
-            case "Quản lý" -> new ManagerMenuGUI(tk).setVisible(true);
-            case "Nhân viên bán hàng" -> new SellEmployeeMenuGUI(tk).setVisible(true);
-            case "Nhân viên nhập hàng" -> new ImportEmployeeMenuGUI(tk).setVisible(true);
-        }
+        new LoginGUI();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void sach_btn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sach_btn2MouseClicked

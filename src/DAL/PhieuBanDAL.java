@@ -66,7 +66,7 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
         if (connect != null) {
             try {
                 String sql = "UPDATE phieuban SET "
-                        + "maKhachHang=?, maNhanVien=?, ngayLap=? "
+                        + "maKhachHang=?, maNhanVien=?, ngayLap=?, tongTien=?, maKhuyenMai=? "
                         + "WHERE maPhieuBan=?";
 
                 //Bước 2: tạo đối tượng preparedStatement
@@ -74,7 +74,9 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                 stmt.setInt(1, t.getMaKhachHang());
                 stmt.setInt(2, t.getMaNhanVien());
                 stmt.setDate(3, t.getNgayLap());
-                stmt.setInt(4, t.getMaPhieuBan());
+                stmt.setDouble(4, t.getTongTien());
+                stmt.setInt(5, t.getMaKhuyenMai());
+                stmt.setInt(6, t.getMaPhieuBan());
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {

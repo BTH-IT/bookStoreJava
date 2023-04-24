@@ -50,7 +50,7 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
         return result;
     }
 
-    public boolean update(ChiTietPhieuBanDTO t, String maPhieuBan, String maSach) {
+    public boolean update(ChiTietPhieuBanDTO t, int maPhieuBanCu, int maSachCu) {
         boolean result = false;
         //Bước 1: tạo kết nối với sql
         Connection connect = ConnectDatabase.openConnection();
@@ -67,8 +67,8 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
                 stmt.setInt(2, t.getMaSach());
                 stmt.setInt(3, t.getSoLuong());
                 stmt.setLong(4, t.getDonGia());
-                stmt.setString(5, maPhieuBan);
-                stmt.setString(6, maSach);
+                stmt.setInt(5, maPhieuBanCu);
+                stmt.setInt(6, maSachCu);
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -213,17 +213,17 @@ public class ChiTietPhieuBanDAL implements DALInterface<ChiTietPhieuBanDTO>{
     }
 
     @Override
-    public boolean update(ChiTietPhieuBanDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public boolean delete(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChiTietPhieuBanDTO getById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean update(ChiTietPhieuBanDTO t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

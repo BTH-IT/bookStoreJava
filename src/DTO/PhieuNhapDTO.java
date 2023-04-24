@@ -9,11 +9,13 @@ public class PhieuNhapDTO extends Phieu {
     public PhieuNhapDTO(int maPhieuNhap, int maNhanVien, int maNhaCungCap, Date ngayLap, double tongTien) {
         super(maNhanVien, ngayLap, tongTien);
         this.maPhieuNhap = maPhieuNhap;
+        this.maNhaCungCap = maNhaCungCap;
     }
 
     public PhieuNhapDTO() {
         super();
         this.maPhieuNhap = 0;
+        this.maNhaCungCap = 0;
     }
 
     public int getMaPhieuNhap() {

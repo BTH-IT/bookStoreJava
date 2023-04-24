@@ -54,12 +54,13 @@ public class NhaCungCapDAL implements DALInterface<NhaCungCapDTO>{
             try {
                 String sql = "UPDATE nhacungcap SET "
                         + "tenNhaCungCap=? , diaChi=? ,soDienThoai = ? "
-                        + "WHERE tenNhaCungCap=?";
+                        + "WHERE maNhaCungCap=?";
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql); 
                 stmt.setString(1, t.getTenNhaCungCap());
                 stmt.setString(2, t.getDiaChi());
                 stmt.setString(3, t.getSoDienThoai());
+                stmt.setInt(4, t.getMaNhaCungCap());
 
                 result = stmt.executeUpdate()>=1;
             } catch (SQLException ex) {
@@ -171,7 +172,7 @@ public class NhaCungCapDAL implements DALInterface<NhaCungCapDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM nhacungcap WHERE hienThi=1 AMD " + condition;
+                String sql = "SELECT * FROM nhacungcap WHERE hienThi=1 AND " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  

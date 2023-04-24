@@ -23,8 +23,8 @@ public class ChiTietPhieuBanBLL {
         return chiTietPhieuBanDAL.insert(ctpb);
     }
     
-    public boolean update(ChiTietPhieuBanDTO ctpb) {
-        return chiTietPhieuBanDAL.update(ctpb);
+    public boolean update(ChiTietPhieuBanDTO ctpb, int maPhieuBanCu, int maSachCu) {
+        return chiTietPhieuBanDAL.update(ctpb, maPhieuBanCu, maSachCu);
     }
     
     public boolean delete(int maPhieuBan, int maSach) {
