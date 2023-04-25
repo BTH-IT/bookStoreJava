@@ -765,6 +765,7 @@ public class AuthorGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/tacgia.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }

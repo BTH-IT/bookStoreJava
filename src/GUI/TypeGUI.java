@@ -668,6 +668,7 @@ public final class TypeGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/theloai.xlsx");
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -664,7 +664,8 @@ condition.addActionListener(new java.awt.event.ActionListener() {
     }//GEN-LAST:event_backBtnMouseClicked
 
     private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
-        // TODO add your handling code here:
+        this.dispose();
+        new LoginGUI();
     }//GEN-LAST:event_logoutBtnMouseClicked
 
     private void tenNCCInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenNCCInputActionPerformed

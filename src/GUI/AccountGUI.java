@@ -156,8 +156,8 @@ public final class AccountGUI extends javax.swing.JFrame {
 
                 if (row >= 0 && col == 3) {
                     int maNhanVien = Integer.parseInt(String.valueOf(accountTable.getValueAt(row, 0)));
-                    String matKhau = String.valueOf(accountTable.getValueAt(row, 1));
-                    String tenDangNhap = String.valueOf(accountTable.getValueAt(row, 2));
+                    String tenDangNhap = String.valueOf(accountTable.getValueAt(row, 1));
+                    String matKhau = String.valueOf(accountTable.getValueAt(row, 2));
                     
                     username.setText(tenDangNhap);
                     pass.setText(matKhau);

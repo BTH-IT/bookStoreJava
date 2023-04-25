@@ -207,7 +207,7 @@ public class SachDAL implements DALInterface<SachDTO>{
         if (connect != null) {
             
             try {
-                String sql = "SELECT * FROM sach WHERE hienThi=1 AMD " + condition;
+                String sql = "SELECT * FROM sach WHERE hienThi=1 AND " + condition;
 
                 //Bước 2: tạo đối tượng preparedStatement
                 PreparedStatement stmt = connect.prepareStatement(sql);  
