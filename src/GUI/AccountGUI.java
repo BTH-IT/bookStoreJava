@@ -19,11 +19,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.CellType;
@@ -67,7 +69,6 @@ public final class AccountGUI extends javax.swing.JFrame {
         JPanel containerPanel = new JPanel();
         JPanel usernamePanel = new JPanel();
         JPanel passPanel = new JPanel();
-        
 
         containerPanel.setLayout(new GridLayout(2, 1, 10, 10));
         usernamePanel.setLayout(new BorderLayout());
@@ -194,14 +195,14 @@ public final class AccountGUI extends javax.swing.JFrame {
     
     private void setJComboBox() {
         ArrayList<NhanVienDTO> nhanVienList = new NhanVienBLL().getEmployeeUnAccount();
-        
         maNhanVienInput.addItem("");
         
         maNhanVienInput.setSelectedIndex(0);
         
         
+        
         for (NhanVienDTO nv : nhanVienList) {
-            maNhanVienInput.addItem(nv.getMaNhanVien() + "");
+            maNhanVienInput.addItem(nv.getMaNhanVien() + " - " + nv.getTen());
         }
 
     }
@@ -230,7 +231,6 @@ public final class AccountGUI extends javax.swing.JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -249,7 +249,7 @@ public final class AccountGUI extends javax.swing.JFrame {
         resetBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         tenDangNhapInput = new javax.swing.JTextField();
-        maNhanVienInput = new javax.swing.JComboBox<String>();
+        maNhanVienInput = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         matKhauInput = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
@@ -296,7 +296,7 @@ public final class AccountGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);

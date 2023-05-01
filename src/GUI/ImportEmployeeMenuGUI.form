@@ -354,10 +354,10 @@
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Snap ITC" size="36" style="3"/>
+              <Font name="#9Slide03 Ample" size="36" style="3"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="BookStore"/>
+            <Property name="text" type="java.lang.String" value="C&#x1eed;a H&#xe0;ng S&#xe1;ch"/>
           </Properties>
         </Component>
         <Container class="keeptoo.KGradientPanel" name="kGradientPanel1">

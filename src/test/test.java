@@ -32,6 +32,8 @@ public class test {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.put("OptionPane.cancelButtonText", "Hủy");
+                    UIManager.put("OptionPane.okButtonText", "Đồng ý");
                     new LoginGUI();
                     break;
                 }

@@ -836,7 +836,7 @@ public final class StatiticsGUI extends javax.swing.JFrame {
                 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/thongke.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/thongke.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

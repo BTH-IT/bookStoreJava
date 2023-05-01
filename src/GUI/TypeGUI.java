@@ -98,7 +98,7 @@ public final class TypeGUI extends javax.swing.JFrame {
     
     private void showComfirmRemove(int row, int maTheLoai) {
         DefaultTableModel modelType = (DefaultTableModel) typeTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelType.removeRow(row);
             TheLoaiBLL.delete(maTheLoai);
         }
@@ -110,7 +110,7 @@ public final class TypeGUI extends javax.swing.JFrame {
         
         
         if ( "".equals(tenTheLoai)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -274,7 +274,7 @@ public final class TypeGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -545,7 +545,7 @@ public final class TypeGUI extends javax.swing.JFrame {
     
     
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetBtnMouseClicked
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Question", 2) == JOptionPane.OK_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Thông báo", 2) == JOptionPane.OK_OPTION) {
             
             tenSachInput.setText("");
             
@@ -558,7 +558,7 @@ public final class TypeGUI extends javax.swing.JFrame {
         
         
         if ("".equals(tenTheLoai)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -583,7 +583,7 @@ public final class TypeGUI extends javax.swing.JFrame {
             DefaultTableModel modelType = (DefaultTableModel) typeTable.getModel();
             modelType.addRow(new Object[]{maTL, tenTheLoai, "O", "X"});
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm Thể Loại thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm Thể Loại thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
@@ -603,7 +603,7 @@ public final class TypeGUI extends javax.swing.JFrame {
             });
             
             if (List.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setTypeTable();
             } 
          
@@ -668,7 +668,7 @@ public final class TypeGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/theloai.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/theloai.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

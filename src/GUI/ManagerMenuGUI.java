@@ -417,7 +417,7 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
                     .addComponent(sach_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sach_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sach_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,9 +453,9 @@ public class ManagerMenuGUI extends javax.swing.JFrame {
                 .addGap(10, 10, 10))
         );
 
-        jLabel6.setFont(new java.awt.Font("Snap ITC", 3, 36)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("#9Slide03 AmpleSoft", 3, 36)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("BookStore");
+        jLabel6.setText("Cửa Hàng Sách");
 
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 255, 153));
         kGradientPanel1.setkGradientFocus(2000);

@@ -240,9 +240,9 @@ public class SellEmployeeMenuGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel6.setFont(new java.awt.Font("Snap ITC", 3, 36)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("#9Slide03 AmpleSoft", 3, 36)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("BookStore");
+        jLabel6.setText("Cửa Hàng Sách");
 
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 255, 153));
         kGradientPanel1.setkGradientFocus(2000);

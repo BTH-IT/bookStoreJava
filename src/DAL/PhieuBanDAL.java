@@ -104,6 +104,17 @@ public class PhieuBanDAL implements DALInterface<PhieuBanDTO>{
                 stmt.setInt(1, id); 
 
                 result = stmt.executeUpdate()>=1;
+                
+                if (result) {
+                    sql = "UPDATE chitietphieuban SET hienThi=0 "
+                          + "WHERE maPhieuBan=?";
+
+                    //Bước 2: tạo đối tượng preparedStatement
+                    stmt = connect.prepareStatement(sql); 
+                    stmt.setInt(1, id);
+                    
+                    result = stmt.executeUpdate()>=1;
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(PhieuBanDAL.class.getName()).log(Level.SEVERE, null, ex);
             } finally {

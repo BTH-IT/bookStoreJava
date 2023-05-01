@@ -118,17 +118,17 @@ public final class SaleGUI extends javax.swing.JFrame {
             if (num >= 0) {
                 return num;
             } else {
-                JOptionPane.showMessageDialog(this, name + " là một số không âm");
+                JOptionPane.showMessageDialog(this, name + " là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương");
+            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return -1;
     }
     
     private void showComfirmRemove(int row, int maKhuyenMai) {
         DefaultTableModel modelSale = (DefaultTableModel) saleTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelSale.removeRow(row);
             khuyenMaiBLL.delete(maKhuyenMai);
         }
@@ -142,7 +142,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         
         if ( "".equals(tenKhuyenMai)
             || "".equals(phanTram) || "".equals(ngayBatDauText) || "".equals(ngayKetThucText)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -156,7 +156,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         java.util.Date ngayKetThucDate = ngayKetThuc.getDate();
         
         if (ngayKetThucDate.compareTo(ngayBatDauDate) < 0) {
-            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải lớn hơn ngày kết thúc");
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải lớn hơn ngày kết thúc","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -328,7 +328,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -659,7 +659,7 @@ public final class SaleGUI extends javax.swing.JFrame {
             
 
             if (saleList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setSaleTable();
             } else {
                 for (KhuyenMaiDTO tl : saleList) {
@@ -688,10 +688,10 @@ public final class SaleGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inputSaleSearchFocusLost
 
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetBtnMouseClicked
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Question", 2) == JOptionPane.OK_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Thông báo", 2) == JOptionPane.OK_OPTION) {
             saleNameInput.setText("");
             percentInput.setText("");
-            ngayKetThucInput.setDateFormatString("");
+            ngayBatDauInput.setDateFormatString("");
             ngayKetThucInput.setDateFormatString("");
         }
     }//GEN-LAST:event_resetBtnMouseClicked
@@ -704,7 +704,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         String ngayKetThucText = ngayKetThucInput.getDateFormatString();
         
         if ("".equals(tenKhuyenMai) || "".equals(phanTram) || "".equals(ngayBatDauText) || "".equals(ngayKetThucText)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -717,7 +717,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         java.util.Date ngayKetThucDate = ngayKetThucInput.getDate();
         
         if (ngayKetThucDate.compareTo(ngayBatDauDate) < 0) {
-            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải lớn hơn ngày kết thúc");
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải lớn hơn ngày kết thúc","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -730,7 +730,7 @@ public final class SaleGUI extends javax.swing.JFrame {
         String tenKhuyenMai = saleNameInput.getText();
         int phanTram = Integer.parseInt(percentInput.getText());
         java.util.Date dateFrom = ngayBatDauInput.getDate();
-        java.util.Date dateTo = ngayBatDauInput.getDate();
+        java.util.Date dateTo = ngayKetThucInput.getDate();
         java.sql.Date sqlDateFrom = new java.sql.Date(dateFrom.getTime());
         java.sql.Date sqlDateTo = new java.sql.Date(dateTo.getTime());
         
@@ -747,7 +747,7 @@ public final class SaleGUI extends javax.swing.JFrame {
             DefaultTableModel modelSale = (DefaultTableModel) saleTable.getModel();
             modelSale.addRow(new Object[]{maKhuyenMai, tenKhuyenMai, phanTram, sqlDateFrom, sqlDateTo, "O", "X"});
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm khuyến mãi thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm khuyến mãi thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
@@ -816,7 +816,7 @@ public final class SaleGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/khuyenmai.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/khuyenmai.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

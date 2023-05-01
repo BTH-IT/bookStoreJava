@@ -15,10 +15,9 @@ import java.util.Locale;
 public class PriceFormatter {
 
     public static String format(double num) {
-        BigDecimal nghin = new BigDecimal(num * 1000);
         Locale vietnam = new Locale("vi", "VN");
         NumberFormat fmoney = NumberFormat.getCurrencyInstance(vietnam);
 
-        return fmoney.format(nghin);
+        return fmoney.format(num);
     }
 }

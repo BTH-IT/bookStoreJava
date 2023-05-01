@@ -280,10 +280,10 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             if (num > 0) {
                 return num;
             } else {
-                JOptionPane.showMessageDialog(this, name + " là một số không âm");
+                JOptionPane.showMessageDialog(this, name + " là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương");
+            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return -1;
     }
@@ -293,7 +293,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         String maNhanVien = String.valueOf(maNhanVienPB.getSelectedItem());
         
         if ("".equals(maKhachHang) || "".equals(maNhanVien)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -301,19 +301,27 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     }
     
     private void updatePBTable() {
-        DefaultTableModel modelPB = (DefaultTableModel) PBTable.getModel();
-        modelPB.setRowCount(0);
+        removeRowTable(PBTable);
         
         setPBTable();
     }
     
+    private void removeRowTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int rowCount = model.getRowCount();
+        //Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+    }
+    
     private void showComfirmRemovePB(int row) {
         DefaultTableModel modelPB = (DefaultTableModel) PBTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             int ma = Integer.parseInt(String.valueOf(modelPB.getValueAt(row, 0)));
             modelPB.removeRow(row);
             phieuBanBLL.delete(ma);
-            setCTPBTable();
+            updateCTPBTable();
         }
     }
     
@@ -401,6 +409,22 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 if (row >= 0 && col == 7) {
                     showComfirmRemovePB(row);
                 }
+                
+                if (row >= 0 && col != 6 && col != 7) {
+                    int maPhieuBan =  Integer.parseInt(String.valueOf(PBTable.getValueAt(row, 0)));
+                    
+                    ArrayList<ChiTietPhieuBanDTO> ctpbList = chiTietPhieuBanBLL.getByPBId(maPhieuBan);
+                    removeRowTable(CTPBTable);
+                    DefaultTableModel modelCTPB = (DefaultTableModel) CTPBTable.getModel();
+                    for (ChiTietPhieuBanDTO ctpb : ctpbList) {
+                        maPhieuBan = ctpb.getMaPhieuBan();
+                        int maSach = ctpb.getMaSach();
+                        int soLuong = ctpb.getSoLuong();
+                        long donGia = ctpb.getDonGia();
+
+                        modelCTPB.addRow(new Object[]{maPhieuBan, maSach, soLuong, donGia, "O"});
+                    }
+                }
             }
         });
     }
@@ -410,7 +434,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         String soLuong = soLuongCTPB_update.getText();
         
         if ("".equals(maSach) || "".equals(soLuong)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -419,8 +443,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     }
     
     private void updateCTPBTable() {
-        DefaultTableModel modelCPTB = (DefaultTableModel) CTPBTable.getModel();
-        modelCPTB.setRowCount(0);
+        removeRowTable(CTPBTable);
         
         setCTPBTable();
     }
@@ -440,7 +463,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             soLuong = ctpb.getSoLuong();
             donGia = ctpb.getDonGia();
             
-            modelCTPB.addRow(new Object[]{maPhieuBan, maSach, soLuong, donGia, "O", "X"});
+            modelCTPB.addRow(new Object[]{maPhieuBan, maSach, soLuong, donGia, "O"});
         }
         
         
@@ -484,7 +507,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                         
                         if (maSachMoi != maSach) {
                             if (sMoi.getSoLuongConLai() - soLuongMoi < 0) {
-                                JOptionPane.showMessageDialog(rootPane, "Sách có mã " + maSachMoi + " chỉ còn lại " + sMoi.getSoLuongConLai() + " sách");
+                                JOptionPane.showMessageDialog(rootPane, "Sách có mã " + maSachMoi + " chỉ còn lại " + sMoi.getSoLuongConLai() + " sách","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                                 return;
                             }
                             ctpb.setMaSach(maSachMoi);
@@ -973,7 +996,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
             }
 
             if (PBList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setPBTable();
             } else {
                 for (PhieuBanDTO pb : PBList) {
@@ -994,7 +1017,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         String soLuong = soLuongCTPB_add.getText();
         
         if ("".equals(maSach) || "".equals(soLuong) || "".equals(maPhieuBan)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -1040,7 +1063,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String value = inputCTPBId.getText();
             if ("".equals(value)) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setCTPBTable();
                 return;
             }
@@ -1056,7 +1079,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 modelCTPB.setRowCount(0);
 
                 if (ctpbList.isEmpty()) {
-                    JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                    JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     setCTPBTable();
                 } else {
                     for (ChiTietPhieuBanDTO ctpb : ctpbList) {
@@ -1069,7 +1092,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                     }
                 }
             } catch (HeadlessException | NumberFormatException e) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setCTPBTable();
             }
         }
@@ -1196,7 +1219,7 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
                 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/phieunhapvachitietphieunhap.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/phieunhapvachitietphieunhap.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1208,9 +1231,9 @@ public final class SellInvoiceGUI extends javax.swing.JFrame {
     private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
         if (PBTable.getSelectedRow() != -1) {
             new PrintPDF().writeHoaDon(Integer.parseInt(String.valueOf(PBTable.getValueAt(PBTable.getSelectedRow(), 0))));
-            JOptionPane.showMessageDialog(null, "In hóa đơn thành công");
+            JOptionPane.showMessageDialog(null, "In hóa đơn thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Chưa chọn hóa đơn nào để in");
+            JOptionPane.showMessageDialog(null, "Chưa chọn hóa đơn nào để in","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_printMouseClicked
 

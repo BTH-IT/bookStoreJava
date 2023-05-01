@@ -97,7 +97,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
     
     private void showComfirmRemove(int row, int maNhaXuatBan) {
         DefaultTableModel modelPublisher = (DefaultTableModel) publisherTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelPublisher.removeRow(row);
             nhaXuatBanBLL.delete(maNhaXuatBan);
         }
@@ -110,12 +110,12 @@ public final class PublisherGUI extends javax.swing.JFrame {
         
         if ("".equals(tenNhaXuatBan) || "".equals(diaChi)
                 || "".equals(soDienThoai)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
         if (soDienThoai.matches("^[0-9]{10}$") == false) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -283,7 +283,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -593,7 +593,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
             }
 
             if (publisherList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setPublisherTable();
             } else {
                 for (NhaXuatBanDTO s : publisherList) {
@@ -621,7 +621,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inputPublisherNameFocusLost
 
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetBtnMouseClicked
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Question", 2) == JOptionPane.OK_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Thông báo", 2) == JOptionPane.OK_OPTION) {
             tenNhaXuatBanInput.setText("");
             diaChiInput.setText("");
             soDienThoaiInput.setText("");
@@ -635,12 +635,12 @@ public final class PublisherGUI extends javax.swing.JFrame {
         
         if ("".equals(tenNhaXuatBan) || "".equals(diaChi)
                 || "".equals(soDienThoai)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
         if (soDienThoai.matches("^[0-9]{10}$") == false) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -666,7 +666,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
             DefaultTableModel modelPublisher = (DefaultTableModel) publisherTable.getModel();
             modelPublisher.addRow(new Object[]{maNhaXuatBan, tenNhaXuatBan, diaChi, soDienThoai, "O", "X"});
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm nhà xuất bản thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm nhà xuất bản thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
@@ -725,7 +725,7 @@ public final class PublisherGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/nhaxuatban.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/nhaxuatban.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

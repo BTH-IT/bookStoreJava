@@ -171,17 +171,17 @@ public final class BookGUI extends javax.swing.JFrame {
             if (num > 0) {
                 return num;
             } else {
-                JOptionPane.showMessageDialog(this, name + " là một số không âm");
+                JOptionPane.showMessageDialog(this, name + " là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương");
+            JOptionPane.showMessageDialog(this, name + " là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return -1;
     }
     
     private void showComfirmRemove(int row, int maSach) {
         DefaultTableModel modelBook = (DefaultTableModel) bookTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelBook.removeRow(row);
             sachBLL.delete(maSach);
         }
@@ -201,7 +201,7 @@ public final class BookGUI extends javax.swing.JFrame {
                 || "".equals(maTacGia) || "".equals(maNhaXuatBan)
                 || "".equals(soLuongConLai) || "".equals(giaBan)
                 || "".equals(giaNhap) || "".equals(namXuatBan)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -222,7 +222,7 @@ public final class BookGUI extends javax.swing.JFrame {
         }
         
         if (namXuatBan.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -248,18 +248,19 @@ public final class BookGUI extends javax.swing.JFrame {
         maNhaXuatBanInput.setSelectedIndex(0);
         
         for (TheLoaiDTO tl : theLoaiList) {
-            typeId.addItem(tl.getMaTL());
-            maTheLoaiInput.addItem(String.valueOf(tl.getMaTL()));
+            typeId.addItem(tl.getMaTL() + " - " + tl.getTenTL());
+            
+            maTheLoaiInput.addItem(tl.getMaTL()  + " - " + tl.getTenTL());
         }
         
         for (TacGiaDTO tg : tacGiaList) {
-            authorId.addItem(tg.getMaTacGia());
-            maTacGiaInput.addItem(String.valueOf(tg.getMaTacGia()));
+            authorId.addItem(tg.getMaTacGia() + " - " + tg.getTen());
+            maTacGiaInput.addItem(tg.getMaTacGia() + " - " + tg.getTen());
         }
         
         for (NhaXuatBanDTO nxb : nhaXuatBanList) {
-            publisherId.addItem(nxb.getMaNhaXuatBan());
-            maNhaXuatBanInput.addItem(String.valueOf(nxb.getMaNhaXuatBan()));
+            publisherId.addItem(nxb.getMaNhaXuatBan() + " - " + nxb.getTenNhaXuatBan());
+            maNhaXuatBanInput.addItem(nxb.getMaNhaXuatBan() + " - " + nxb.getTenNhaXuatBan());
         }
     }
     
@@ -528,7 +529,7 @@ public final class BookGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -857,7 +858,7 @@ public final class BookGUI extends javax.swing.JFrame {
             
 
             if (bookList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setBookTable();
             } else {
                 for (SachDTO s : bookList) {
@@ -890,7 +891,7 @@ public final class BookGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inputBookNameFocusLost
 
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetBtnMouseClicked
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Question", 2) == JOptionPane.OK_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?","Thông báo", 2) == JOptionPane.OK_OPTION) {
             tenSachInput.setText("");
             maTheLoaiInput.setSelectedIndex(0);
             maTacGiaInput.setSelectedIndex(0);
@@ -916,7 +917,7 @@ public final class BookGUI extends javax.swing.JFrame {
                 || "".equals(maTacGia) || "".equals(maNhaXuatBan)
                 || "".equals(soLuongConLai) || "".equals(giaBan)
                 || "".equals(giaNhap) || "".equals(namXuatBan)) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -936,7 +937,7 @@ public final class BookGUI extends javax.swing.JFrame {
         }
         
         if (namXuatBan.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm xuất bản không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -972,7 +973,7 @@ public final class BookGUI extends javax.swing.JFrame {
             DefaultTableModel modelBook = (DefaultTableModel) bookTable.getModel();
             modelBook.addRow(new Object[]{maSach, tenSach, maTheLoai, maTacGia, maNhaXuatBan, soLuongConLai, giaBan, giaNhap, namXuatBan, "O", "X"});
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm sách thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm sách thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
@@ -1061,7 +1062,7 @@ public final class BookGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/sach.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/sach.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

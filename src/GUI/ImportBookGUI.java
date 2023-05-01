@@ -87,10 +87,10 @@ public final class ImportBookGUI extends javax.swing.JFrame {
             if (soLuong > 0) {
                 return soLuong;
             } else {
-                JOptionPane.showMessageDialog(this, "Số lượng là một số không âm");
+                JOptionPane.showMessageDialog(this, "Số lượng là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Số lượng là một số nguyên dương");
+            JOptionPane.showMessageDialog(this, "Số lượng là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return -1;
     }
@@ -99,6 +99,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
         
         int row = modelBuy.getRowCount();
+        tongTien = 0;
         for (int i = 0; i < row; i++) {
             double pay = Double.parseDouble(String.valueOf(modelBuy.getValueAt(i, 4)));
             tongTien += pay;
@@ -147,10 +148,6 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                     if (soLuong <= 0)  {
                         return;
                     }
-                    if (soLuong > conLai) {
-                        JOptionPane.showMessageDialog(rootPane, "Số lượng lớn hơn số lượng còn lại trong cửa hàng");
-                        return;
-                    }
                     
                     conLai += soLuong;
                     modelBook.setValueAt(conLai, row, 2);
@@ -184,7 +181,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
     
     private void showComfirmRemoveAll(int i, int row) {
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             buyList.remove(i);
             int ma = Integer.parseInt(String.valueOf(modelBuy.getValueAt(row, 0)));
             int soLuong = (int) modelBuy.getValueAt(row, 3);
@@ -214,7 +211,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                             String value = JOptionPane.showInputDialog("Nhập số lượng");
                             int soLuongXoa = checkInputNumberValue(value);
                             if (soLuongXoa > soLuong) {
-                                JOptionPane.showMessageDialog(rootPane, "Số lượng xóa lớn hơn số lượng hiện tại");
+                                JOptionPane.showMessageDialog(rootPane, "Số lượng xóa lớn hơn số lượng hiện tại","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                                 return;
                             }
                             
@@ -296,7 +293,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
         supplierCbx.setSelectedIndex(0);
         
         for (NhaCungCapDTO ncc : nccList) {
-            supplierCbx.addItem(String.valueOf(ncc.getMaNhaCungCap()));
+            supplierCbx.addItem(ncc.getMaNhaCungCap() + " - " + ncc.getTenNhaCungCap());
         }
     }
 
@@ -703,7 +700,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
             }
 
             if (bookList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setBookTable();
             } else {
                 for (SachDTO s : bookList) {
@@ -719,12 +716,12 @@ public final class ImportBookGUI extends javax.swing.JFrame {
 
     private void payBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payBtnMouseClicked
         if (buyList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn sách nào cả!!!");
+            JOptionPane.showMessageDialog(this, "Chưa chọn sách nào cả!!!","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         
         if ("".equals(String.valueOf(supplierCbx.getSelectedItem()))) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn nhà cung cấp nào cả!!!");
+            JOptionPane.showMessageDialog(this, "Chưa chọn nhà cung cấp nào cả!!!","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         

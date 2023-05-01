@@ -44,6 +44,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
      */
     private TaiKhoanDTO tk;
     private KhachHangDTO kh;
+    private String kmBefore;
     private SachBLL sachBLL = new SachBLL();
     private PhieuBanBLL phieuBanBLL = new PhieuBanBLL();
     private KhuyenMaiBLL khuyenMaiBLL = new KhuyenMaiBLL();
@@ -125,7 +126,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         saleCbx.addItem("");
         
         for (KhuyenMaiDTO t : saleList) {
-            saleCbx.addItem(String.valueOf(t.getMaKhuyenMai()));
+            saleCbx.addItem(t.getMaKhuyenMai()  + " - " + t.getTenKhuyenMai() + " - " + t.getPhanTram());
         }
     }
     
@@ -167,10 +168,10 @@ public final class SellBookGUI extends javax.swing.JFrame {
             if (soLuong > 0) {
                 return soLuong;
             } else {
-                JOptionPane.showMessageDialog(this, "Số lượng là một số không âm");
+                JOptionPane.showMessageDialog(this, "Số lượng là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Số lượng là một số nguyên dương");
+            JOptionPane.showMessageDialog(this, "Số lượng là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         return -1;
     }
@@ -179,6 +180,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
         
         int row = modelBuy.getRowCount();
+        tongTien = 0;
         for (int i = 0; i < row; i++) {
             double pay = Double.parseDouble(String.valueOf(modelBuy.getValueAt(i, 4)));
             tongTien += pay;
@@ -228,7 +230,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                         return;
                     }
                     if (soLuong > conLai) {
-                        JOptionPane.showMessageDialog(rootPane, "Số lượng lớn hơn số lượng còn lại trong cửa hàng");
+                        JOptionPane.showMessageDialog(rootPane, "Số lượng lớn hơn số lượng còn lại trong cửa hàng","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
                     
@@ -265,7 +267,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
     
     private void showComfirmRemoveAll(int i, int row) {
         DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             buyList.remove(i);
             int ma = Integer.parseInt(String.valueOf(modelBuy.getValueAt(row, 0)));
             int soLuong = (int) modelBuy.getValueAt(row, 3);
@@ -295,7 +297,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
                             String value = JOptionPane.showInputDialog("Nhập số lượng");
                             int soLuongXoa = checkInputNumberValue(value);
                             if (soLuongXoa > soLuong) {
-                                JOptionPane.showMessageDialog(rootPane, "Số lượng xóa lớn hơn số lượng hiện tại");
+                                JOptionPane.showMessageDialog(rootPane, "Số lượng xóa lớn hơn số lượng hiện tại","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                                 return;
                             }
                             
@@ -845,7 +847,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
 
             this.kh = khachHangBLL.getCustomerByPhone(value);
             if (this.kh == null) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 customerName.setText(this.kh.getTen());
                 customerPhone.setText(this.kh.getSoDienThoai());
@@ -877,7 +879,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
             }
 
             if (bookList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setBookTable();
             } else {
                 for (SachDTO s : bookList) {
@@ -894,12 +896,12 @@ public final class SellBookGUI extends javax.swing.JFrame {
     
     private void payBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payBtnMouseClicked
         if (buyList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn sách nào cả!!!");
+            JOptionPane.showMessageDialog(this, "Chưa chọn sách nào cả!!!","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         
         if ("".equals(customerName.getText()) || "".equals(customerPhone.getText())) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn khách hàng!!!");
+            JOptionPane.showMessageDialog(this, "Chưa chọn khách hàng!!!","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         
@@ -947,8 +949,10 @@ public final class SellBookGUI extends javax.swing.JFrame {
             for (int i = 0; i < modelBuy.getRowCount(); i++) {
                 modelBuy.removeRow(i);
             }
+            
             customerName.setText("");
             customerPhone.setText("");
+            saleCbx.setSelectedIndex(0);
             totalPay.setText("0 VNĐ");
             buyList.removeAll(buyList);
         }
@@ -970,17 +974,17 @@ public final class SellBookGUI extends javax.swing.JFrame {
             String nam = yearBirth.getText();
             
             if ("".equals(ten) || "".equals(sdt) || "".equals(nam)) {
-                JOptionPane.showMessageDialog(this, "Không được để trống tên hoặc số điện thoại");
+                JOptionPane.showMessageDialog(this, "Không được để trống tên hoặc số điện thoại","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             
             if (sdt.matches(patternPhone) == false) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             
             if (nam.matches(patternYear) == false) {
-                JOptionPane.showMessageDialog(this, "Năm không hợp lệ");
+                JOptionPane.showMessageDialog(this, "Năm không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             
@@ -991,6 +995,7 @@ public final class SellBookGUI extends javax.swing.JFrame {
             int maKhachHang = khachHangBLL.insert(kh);
             
             if (maKhachHang >= 0) {
+                this.kh = new KhachHangDTO(this.kh.getMaKhachHang(), ten, gioiTinh, sdt, namNumber);
                 customerName.setText(ten);
                 customerPhone.setText(sdt);
                 name.setText("");
@@ -1022,6 +1027,9 @@ public final class SellBookGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inputBookIdFocusLost
 
     private void saleCbxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saleCbxActionPerformed
+
+        if (String.valueOf(saleCbx.getSelectedItem()).equals(kmBefore)) return;
+        
         if (String.valueOf(saleCbx.getSelectedItem()).equals("")) {
             tongTien += tmp;
             tmp = 0;
@@ -1032,6 +1040,9 @@ public final class SellBookGUI extends javax.swing.JFrame {
         int maKhuyenMai;
         maKhuyenMai = Integer.parseInt(String.valueOf(saleCbx.getSelectedItem()));
         KhuyenMaiDTO km = khuyenMaiBLL.getById(maKhuyenMai);
+        
+        kmBefore = String.valueOf(km.getMaKhuyenMai());
+        tongTien = tongTien + tmp;
         
         tmp = tongTien * km.getPhanTram() / 100;
         tongTien = tongTien - tmp;

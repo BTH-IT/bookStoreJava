@@ -79,12 +79,12 @@ public class AuthorGUI extends javax.swing.JFrame {
         
         if ("".equals(tentg) || "".equals(gt)
                 || "".equals(namsinh) ) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
         if (namsinh.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -99,12 +99,12 @@ public class AuthorGUI extends javax.swing.JFrame {
         
         if ("".equals(tentg) || "".equals(gt)
                 || "".equals(namsinh) ) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
       
         if (namsinh.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -209,7 +209,7 @@ public class AuthorGUI extends javax.swing.JFrame {
     
     private void showComfirmRemove(int row, int matg) {
         DefaultTableModel modelTG = (DefaultTableModel) TGTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelTG.removeRow(row);
             tacGiaBLL.delete(matg);
         }
@@ -328,7 +328,7 @@ public class AuthorGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -641,12 +641,12 @@ public class AuthorGUI extends javax.swing.JFrame {
             DefaultTableModel modelTG = (DefaultTableModel) TGTable.getModel();
             modelTG.addRow(new Object[] { matg,tentg,gt,namsinh, "O", "X" });
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm tác giả thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm tác giả thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addBtnMouseClicked
 
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetBtnMouseClicked
-       if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
+       if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == JOptionPane.OK_OPTION) {
             tenTGInput.setText("");
             gioiTinhInput.setSelectedIndex(0);
             namSinhInput.setText("");
@@ -690,7 +690,7 @@ public class AuthorGUI extends javax.swing.JFrame {
             modelTG.setRowCount(0);
 
             if (TGList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setTGTable();
             } else {
                 for (TacGiaDTO s : TGList) {
@@ -765,7 +765,7 @@ public class AuthorGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/tacgia.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/tacgia.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

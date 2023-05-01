@@ -76,7 +76,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
         
     private void showComfirmRemove(int row, int manv) {
         DefaultTableModel modelNV = (DefaultTableModel) NVTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelNV.removeRow(row);
             nhanVienBLL.delete(manv);
         }
@@ -95,18 +95,18 @@ public class EmployeeGUI extends javax.swing.JFrame {
                            || "".equals(lg) || "".equals(songaydanghi) || "".equals(vaitro))
 
            {
-                   JOptionPane.showMessageDialog(this, "Không được để trống bất kỳ trường nào");
+                   JOptionPane.showMessageDialog(this, "Không được để trống bất kỳ trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                    return false;
            }
 
 
            if (namsinh.matches("[0-9]\\d{1,}") == false) {
-                   JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+                   JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                    return false;
            }
 
            if (sdt.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false) {
-                   JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+                   JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                    return false;
            }
 
@@ -293,10 +293,10 @@ public class EmployeeGUI extends javax.swing.JFrame {
                         if (num >= 0) {
                                 return num;
                         } else {
-                                JOptionPane.showMessageDialog(this, name + " là một số không âm");
+                                JOptionPane.showMessageDialog(this, name + " là một số không âm","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         }
                 } catch (HeadlessException | NumberFormatException e) {
-                        JOptionPane.showMessageDialog(this, name + " là một số nguyên dương");
+                        JOptionPane.showMessageDialog(this, name + " là một số nguyên dương","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 }
                 return -1;
         }
@@ -314,17 +314,17 @@ public class EmployeeGUI extends javax.swing.JFrame {
                                 || "".equals(lg) || "".equals(songaydanghi) || "".equals(vaitro))
 
                 {
-                        JOptionPane.showMessageDialog(this, "Không được để trống bất kỳ trường nào");
+                        JOptionPane.showMessageDialog(this, "Không được để trống bất kỳ trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         return false;
                 }
 
                 if (namsinh.matches("[0-9]\\d{1,}") == false) {
-                        JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+                        JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         return false;
                 }
 
                 if (sdt.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false) {
-                        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+                        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         return false;
                 }
 
@@ -467,7 +467,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -567,7 +567,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
                                 .addComponent(namSinhInput))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(136, 136, 136)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -903,7 +903,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
             modelNV.setRowCount(0);
 
             if (NVList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setNVTable();
             } else {
                 for (NhanVienDTO s : NVList) {
@@ -1014,7 +1014,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/nhanvien.xlsx");
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/nhanvien.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1080,12 +1080,12 @@ public class EmployeeGUI extends javax.swing.JFrame {
                     DefaultTableModel modelNV = (DefaultTableModel) NVTable.getModel();
                     modelNV.addRow(new Object[] {manv,tennv,namsinh,gioitinh,sdt,lg,sndn,vaitro, "O", "X" });
 
-                    JOptionPane.showMessageDialog(rootPane, "Thêm nhân viên thành công");
+                    JOptionPane.showMessageDialog(rootPane, "Thêm nhân viên thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 }
         }// GEN-LAST:event_addBtnMouseClicked
 
         private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_resetBtnMouseClicked
-                if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
+                if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == JOptionPane.OK_OPTION) {
                         tenNVInput.setText("");
                         namSinhInput.setText("");
                         gioiTinhInput.setSelectedIndex(0);

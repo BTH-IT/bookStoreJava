@@ -59,7 +59,7 @@ public class SachDAL implements DALInterface<SachDTO>{
         
         return auto_id;
     }
-
+    
     @Override
     public boolean update(SachDTO t) {
         boolean result = false;

@@ -84,7 +84,7 @@ public class CustomerGUI extends javax.swing.JFrame {
         
         if ("".equals(tenKH) || "".equals(gt) || "".equals(sDT)
                 || "".equals(nSinh) ) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -94,19 +94,19 @@ public class CustomerGUI extends javax.swing.JFrame {
 
         for (KhachHangDTO s : KHList) {
             if (s.getSoDienThoai().equals(sDT)) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }
         }
         
         
         if (nSinh.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
         if(sDT.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false){
-            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }       
         
@@ -121,7 +121,7 @@ public class CustomerGUI extends javax.swing.JFrame {
         
         if ("".equals(tenKH) || "".equals(gt) || "".equals(sDT)
                 || "".equals(nSinh) ) {
-            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào");
+            JOptionPane.showMessageDialog(this, "Không được để trống bất kì trường nào","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
@@ -129,18 +129,18 @@ public class CustomerGUI extends javax.swing.JFrame {
 
         for (KhachHangDTO s : KHList) {
             if (s.getSoDienThoai().equals(sDT) && s.getMaKhachHang() != maKhachHang) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu");
+                JOptionPane.showMessageDialog(this, "Số điện thoại khách hàng đã tồn tại trong cơ sở dữ liệu","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }
         }
       
         if (nSinh.matches("[0-9]\\d{1,}") == false) {
-            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Năm sinh không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
         if(sDT.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b") == false){
-            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ","Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         return true;
@@ -260,7 +260,7 @@ public class CustomerGUI extends javax.swing.JFrame {
      
      private void showComfirmRemove(int row, int ma) {
         DefaultTableModel modelKH = (DefaultTableModel) KHTable.getModel();
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == 0) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == 0) {
             modelKH.removeRow(row);
             khachHangBLL.delete(ma);
         }
@@ -412,7 +412,7 @@ public class CustomerGUI extends javax.swing.JFrame {
         });
 
         resetBtn.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-        resetBtn.setText("Reset");
+        resetBtn.setText("Đặt lại");
         resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resetBtnMouseClicked(evt);
@@ -433,9 +433,8 @@ public class CustomerGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 46, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,7 +443,7 @@ public class CustomerGUI extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(genderInput, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(genderInput, 0, 247, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -695,8 +694,7 @@ public class CustomerGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(kGradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -822,9 +820,9 @@ public class CustomerGUI extends javax.swing.JFrame {
 
                 workbook.write(fis);
                 fis.close();
-                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/khachhang.xlsx");
-            } catch (IOException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(rootPane, "Xuất file thành công: D:/khachhang.xlsx","Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }catch (Exception e){
+                e.printStackTrace();                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -869,7 +867,7 @@ public class CustomerGUI extends javax.swing.JFrame {
             modelKH.setRowCount(0);
 
             if (KHList.isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng");
+                JOptionPane.showMessageDialog(rootPane, value + " không tồn tại  hoặc điều kiện kiện tìm kiếm không đúng","Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setKHTable();
             } else {
                 for (KhachHangDTO s : KHList) {
@@ -918,12 +916,12 @@ public class CustomerGUI extends javax.swing.JFrame {
             DefaultTableModel modelKH = (DefaultTableModel) KHTable.getModel();
             modelKH.addRow(new Object[] { maKH,tenKH,gt,sDT,nSinh, "O", "X" });
 
-            JOptionPane.showMessageDialog(rootPane, "Thêm khách hàng thành công");
+            JOptionPane.showMessageDialog(rootPane, "Thêm khách hàng thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }// GEN-LAST:event_addBtnMouseClicked
 
     private void resetBtnMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_resetBtnMouseClicked
-        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Question", 2) == JOptionPane.OK_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Bạn chắc chứ?", "Thông báo", 2) == JOptionPane.OK_OPTION) {
             tenKHInput.setText("");
             genderInput.setSelectedIndex(0);
             sdtInput.setText("");
