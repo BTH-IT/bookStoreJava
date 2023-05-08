@@ -23,7 +23,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -91,7 +90,6 @@ public class PrintPDF {
             }
             file = new FileOutputStream(url);
             document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, file);
             document.open();
             
             setTitle("Thông tin hóa đơn");
@@ -99,6 +97,7 @@ public class PrintPDF {
             PhieuBanBLL phieuBanBLL = new PhieuBanBLL();
             KhachHangBLL khachHangBLL = new KhachHangBLL();
             NhanVienBLL nhanVienBLL = new NhanVienBLL();
+            KhuyenMaiBLL khuyenMaiBLL = new KhuyenMaiBLL();
             SachBLL sachBLL = new SachBLL();
             ChiTietPhieuBanBLL chiTietPhieuBanBLL = new ChiTietPhieuBanBLL();
 
@@ -118,6 +117,7 @@ public class PrintPDF {
             para2.setFont(fontData);
             para2.add(String.valueOf("Nhân viên: " + nhanVienBLL.getByNVid(pb.getMaNhanVien()).getTen() + "  -  " + pb.getMaNhanVien()));
             para2.add(glue);
+            para2.add("Khuyến mãi: " + String.valueOf(khuyenMaiBLL.getById(pb.getMaKhuyenMai()).getPhanTram() + "%"));
 
 
             document.add(paraMaHoaDon);
@@ -198,7 +198,6 @@ public class PrintPDF {
             }
             file = new FileOutputStream(url);
             document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, file);
             document.open();
             
             setTitle("Thông tin phiếu nhập");

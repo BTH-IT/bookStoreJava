@@ -25,7 +25,6 @@ import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 
@@ -143,7 +142,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                     int conLai = Integer.parseInt(String.valueOf(bookTable.getValueAt(row, 2)));
                     long donGia = Long.parseLong(String.valueOf(bookTable.getValueAt(row, 3)));
                     
-                    String value = JOptionPane.showInputDialog("Nhập số lượng");
+                    String value = JOptionPane.showInputDialog(rootPane, "Nhập số lượng", "Mời nhập", JOptionPane.NO_OPTION);
                     int soLuong = checkInputNumberValue(value);
                     if (soLuong <= 0)  {
                         return;
@@ -200,7 +199,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                 DefaultTableModel modelBuy = (DefaultTableModel) buyTable.getModel();
 
                 if (row >= 0 && col == 5) {
-                    int ma =  Integer.parseInt(String.valueOf(bookTable.getValueAt(row, 0)));
+                    int ma =  Integer.parseInt(String.valueOf(buyTable.getValueAt(row, 0)));
                     for (int i = 0; i < buyList.size(); i++) {
                         int maSach = Integer.parseInt(Array.get(buyList.get(i), 0).toString());
                         if (maSach == ma) {
@@ -208,7 +207,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                             long donGia = Long.parseLong(Array.get(buyList.get(i), 2).toString());
                             int soLuong = Integer.parseInt(Array.get(buyList.get(i), 3).toString());
                             
-                            String value = JOptionPane.showInputDialog("Nhập số lượng");
+                            String value = JOptionPane.showInputDialog(rootPane, "Nhập số lượng", "Mời nhập", JOptionPane.NO_OPTION);
                             int soLuongXoa = checkInputNumberValue(value);
                             if (soLuongXoa > soLuong) {
                                 JOptionPane.showMessageDialog(rootPane, "Số lượng xóa lớn hơn số lượng hiện tại","Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -241,7 +240,7 @@ public final class ImportBookGUI extends javax.swing.JFrame {
                 }
                 
                 if (row >= 0 && col == 6) {
-                    int ma =  Integer.parseInt(String.valueOf(bookTable.getValueAt(row, 0)));
+                    int ma =  Integer.parseInt(String.valueOf(buyTable.getValueAt(row, 0)));
                     for (int i = 0; i < buyList.size(); i++) {
                         int maSach = Integer.parseInt(Array.get(buyList.get(i), 0).toString());
                         if (maSach == ma) {
